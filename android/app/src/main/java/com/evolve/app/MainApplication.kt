@@ -1,4 +1,4 @@
-package com.evolve
+package com.evolve.app
 
 import android.app.Application
 import com.facebook.react.PackageList

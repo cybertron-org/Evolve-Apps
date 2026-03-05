@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "evolve.app"
-               BlueprintName = "evolve"
-               ReferencedContainer = "container:evolve.xcodeproj">
+               BuildableName = "Evolve.app"
+               BlueprintName = "Evolve"
+               ReferencedContainer = "container:Evolve.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "evolveTests.xctest"
-               BlueprintName = "evolveTests"
-               ReferencedContainer = "container:evolve.xcodeproj">
+               BuildableName = "EvolveTests.xctest"
+               BlueprintName = "EvolveTests"
+               ReferencedContainer = "container:Evolve.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,14 +55,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "evolve.app"
-            BlueprintName = "evolve"
-            ReferencedContainer = "container:evolve.xcodeproj">
+            BuildableName = "Evolve.app"
+            BlueprintName = "Evolve"
+            ReferencedContainer = "container:Evolve.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "evolve.app"
-            BlueprintName = "evolve"
-            ReferencedContainer = "container:evolve.xcodeproj">
+            BuildableName = "Evolve.app"
+            BlueprintName = "Evolve"
+            ReferencedContainer = "container:Evolve.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -82,7 +82,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
