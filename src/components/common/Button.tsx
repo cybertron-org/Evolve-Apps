@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
-import { colors } from '../../theme/colors';
+import { TouchableOpacity, Text, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
+import { useTheme } from '../../theme/ThemeContext';
 
 interface ButtonProps {
   title: string;
@@ -10,6 +10,8 @@ interface ButtonProps {
   style?: ViewStyle;
   textStyle?: TextStyle;
   icon?: React.ReactNode;
+  className?: string;
+  textClassName?: string; 
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -20,42 +22,61 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   textStyle,
   icon,
+  className,
+  textClassName,
 }) => {
-  const getBackgroundColor = () => {
+  const { isDark } = useTheme();
+
+  const getContainerClass = () => {
     switch (variant) {
-      case 'primary': return colors.primary;
-      case 'secondary': return colors.secondary;
-      case 'social': return colors.background.light;
-      case 'outline': return 'transparent';
-      default: return colors.primary;
+      case 'primary':   return 'bg-[#578096]';
+      case 'secondary': return 'bg-secondary';
+      case 'outline':   return 'border border-primary bg-transparent';
+      case 'social':    return isDark ? 'bg-dropdown-dark border border-gray-700' : 'bg-white border border-gray-200';
+      default:          return 'bg-primary';
     }
   };
 
-  const getTextColor = () => {
+  const getTextClass = () => {
     switch (variant) {
-      case 'outline': return colors.primary;
-      case 'social': return colors.text.light;
-      default: return '#FFFFFF';
+      case 'outline': return 'text-primary';
+      case 'social':  return isDark ? 'text-gray-100' : 'text-gray-800';
+      default:        return 'text-white';
+    }
+  };
+
+  const getActivityColor = () => {
+    switch (variant) {
+      case 'outline': return '#578096';
+      case 'social':  return isDark ? '#F1F5F9' : '#1E293B';
+      default:        return '#FFFFFF';
     }
   };
 
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        { backgroundColor: getBackgroundColor() },
-        variant === 'outline' && styles.outline,
-        style,
-      ]}
+      className={`
+        h-[50px] rounded-[25px] flex-row
+        justify-center items-center px-5 my-2
+        shadow-sm
+        ${getContainerClass()}
+        ${loading ? 'opacity-70' : 'opacity-100'}
+        ${className ?? ''}
+      `}
+      style={style}
       onPress={onPress}
       disabled={loading}
+      activeOpacity={0.8}
     >
       {loading ? (
-        <ActivityIndicator color={getTextColor()} />
+        <ActivityIndicator color={getActivityColor()} />
       ) : (
         <>
           {icon}
-          <Text style={[styles.text, { color: getTextColor() }, textStyle]}>
+          <Text
+            className={`text-base font-semibold ml-2 ${getTextClass()} ${textClassName ?? ''}`}
+            style={textStyle}
+          >
             {title}
           </Text>
         </>
@@ -63,29 +84,3 @@ export const Button: React.FC<ButtonProps> = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginVertical: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  outline: {
-    borderWidth: 1,
-    borderColor: colors.primary,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-});

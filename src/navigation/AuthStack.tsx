@@ -1,15 +1,19 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { WelcomeScreen } from '../screens/auth/WelcomeScreen';
-import { LoginScreen } from '../screens/auth/LoginScreen';
+import { WelcomeScreen } from '../screens/splash/WelcomeScreen';
+import  LoginScreen  from '../screens/auth/LoginScreen';
+import VerifyOTP from '../screens/auth/VerifyOtp';
 
 const Stack = createNativeStackNavigator();
 
-export const AuthStack = () => {
+ const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="VerifyOTP" component={VerifyOTP}/>
     </Stack.Navigator>
   );
 };
+
+
+export default AuthStack

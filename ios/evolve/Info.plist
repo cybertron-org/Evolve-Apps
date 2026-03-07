@@ -34,11 +34,37 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+<string>Your location is used to find nearby services</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
-		<key>StallionApiKey</key>
+	<key>NSCameraUsageDescription</key>
+<string>This app needs access to camera to take profile photos</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs access to photo library to choose profile photos</string>
+	<key>StallionApiKey</key>
 	<string>69a60011b92541e3a76c31b6</string>
+	<key>UIUserInterfaceStyle</key>
+<string>Automatic</string>
+<key>UIAppFonts</key>
+<array>
+    <string>AntDesign.ttf</string>
+    <string>Entypo.ttf</string>
+    <string>EvilIcons.ttf</string>
+    <string>Feather.ttf</string>
+    <string>FontAwesome.ttf</string>
+    <string>FontAwesome5_Brands.ttf</string>
+    <string>FontAwesome5_Regular.ttf</string>
+    <string>FontAwesome5_Solid.ttf</string>
+    <string>FontAwesome6_Brands.ttf</string>
+    <string>FontAwesome6_Regular.ttf</string>
+    <string>FontAwesome6_Solid.ttf</string>
+    <string>Fontisto.ttf</string>
+    <string>Ionicons.ttf</string>
+    <string>MaterialCommunityIcons.ttf</string>
+    <string>MaterialIcons.ttf</string>
+    <string>Octicons.ttf</string>
+</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

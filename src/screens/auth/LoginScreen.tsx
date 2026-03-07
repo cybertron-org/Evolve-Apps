@@ -1,160 +1,122 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Input } from '../../components/common/Input';
+import { View, Text, Image, Dimensions } from 'react-native';
+import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
+import { useTheme } from '../../theme/ThemeContext';
+import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
-import { colors } from '../../theme/colors';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/RootNavigator';
 
-export const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
+type NavProp = NativeStackNavigationProp<RootStackParamList>;
+const { height } = Dimensions.get('window');
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+
+const LoginScreen: React.FC = () => {
+  const { isDark } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const navigation = useNavigation<NavProp>();
 
-  const handleLogin = () => {
-    // Implement login logic here
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Main' as never }],
-    });
+  const handleSubmit = () => {
+    let isValid = true;
+
+    if (!email) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else if (!EMAIL_REGEX.test(email)) {
+      setEmailError('Please enter a valid email address');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Password is required');
+      isValid = false;
+    } else if (!PASSWORD_REGEX.test(password)) {
+      setPasswordError('Min 8 characters, must include letters and numbers');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    if (!isValid) return;
+
+    console.log('Email:', email,"Password" , password);
+    navigation.navigate('VerifyOTP' , { email });
+    // setEmail(" ")
+    // setPassword(" ")
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Welcome!</Text>
-        <Text style={styles.subtitle}>Sign in to continue your journey</Text>
-      </View>
+    <ScreenWrapper>
+      <View className="flex-1 px-6">
 
-      <View style={styles.form}>
-        <Input
-          label="Email"
-          placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <Input
-          label="Password"
-          placeholder="Enter your password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View
+          className="items-center"
+          style={{ marginTop: height * 0.12 }}
+        >
+          <Image
+            key={isDark ? 'dark' : 'light'}
+            source={
+              isDark
+                ? require('../../assets/images/light.png')
+                : require('../../assets/images/dark.png')
+            }
+            className="w-36 h-36"
+            resizeMode="contain"
+          />
 
-        <TouchableOpacity style={styles.forgotPassword}>
-          <Text style={styles.forgotText}>Forgot Password?</Text>
-        </TouchableOpacity>
+          <Text className="text-sublabel dark:text-sublabel-dark text-2xl font-bold uppercase mt-4 tracking-widest">
+            CREATE ACCOUNT
+          </Text>
 
-        <Button
-          title="Sign In"
-          onPress={handleLogin}
-          style={styles.loginButton}
-        />
-
-        <View style={styles.divider}>
-          <View style={styles.line} />
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.line} />
+          <Text className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
+            Hi, Welcome to evolve vocational
+          </Text>
         </View>
 
-        <View style={styles.socialButtons}>
+        <View className="mt-10 w-full px-4 sm:px-6 md:px-8">
+            <View className="w-full max-w-md mx-auto">
+              <Input
+              label="Enter Your Email"
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                if (emailError) setEmailError('');
+              }}
+              keyboardType="email-address"
+              placeholder="Enter your Email"
+              error={emailError}
+            />
+             <Input
+              label="Enter Your Password"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                if (passwordError) setPasswordError('');
+              }}
+              secureTextEntry={true}
+              placeholder="*******"
+              error={passwordError}
+            />
+          </View>
+
           <Button
-            title="Google"
-            onPress={() => {}}
-            variant="social"
-            style={styles.socialButton}
-            textStyle={{ color: colors.social.google }}
-          />
-          <Button
-            title="Facebook"
-            onPress={() => {}}
-            variant="social"
-            style={styles.socialButton}
-            textStyle={{ color: colors.social.facebook }}
+            title="GET OTP"
+            className={`rounded-md mt-5 ${isDark ? 'bg-[#BDC3C7]' : 'bg-[#578096]'}`}
+            textClassName={isDark ? 'text-[#333337]' : 'text-white'}
+            onPress={handleSubmit}
           />
         </View>
       </View>
-      
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account? </Text>
-        <TouchableOpacity>
-          <Text style={styles.signupText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    </ScreenWrapper>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 24,
-    backgroundColor: colors.background.light,
-    justifyContent: 'center',
-  },
-  header: {
-    marginBottom: 40,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: colors.text.light,
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: colors.text.muted,
-  },
-  form: {
-    marginBottom: 20,
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: 24,
-  },
-  forgotText: {
-    color: colors.primary,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  loginButton: {
-    backgroundColor: colors.accent,
-    marginBottom: 24,
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: colors.border,
-  },
-  orText: {
-    marginHorizontal: 16,
-    color: colors.text.muted,
-  },
-  socialButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  socialButton: {
-    flex: 0.48,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  footerText: {
-    color: colors.text.muted,
-  },
-  signupText: {
-    color: colors.primary,
-    fontWeight: 'bold',
-  },
-});
+export default LoginScreen;

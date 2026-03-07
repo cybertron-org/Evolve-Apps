@@ -9,7 +9,7 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts"
-  ],
+, "src/assets/svg/evolve.js"  ],
   "exclude": [
     "**/node_modules",
     "**/Pods"

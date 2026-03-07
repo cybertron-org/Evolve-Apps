@@ -1,80 +1,84 @@
-import React from 'react';
-import { TextInput, View, Text, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native';
-import { colors } from '../../theme/colors';
+// src/components/common/Input.tsx
+import React, { forwardRef } from 'react';
+import { TextInput, TextInputProps, View, Text } from 'react-native';
+import { useTheme } from '../../theme/ThemeContext';
 
-interface InputProps extends TextInputProps {
+interface Props extends TextInputProps {
+  className?: string;
   label?: string;
   error?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  onRightIconPress?: () => void;
+  leftIcon?: React.ReactNode;  // ✅ new prop
 }
 
-export const Input: React.FC<InputProps> = ({
+const Input = forwardRef<TextInput, Props>(({
+  className = '',
   label,
   error,
   leftIcon,
-  rightIcon,
-  onRightIconPress,
-  style,
   ...props
-}) => {
+}, ref) => {
+  const { isDark } = useTheme();
+
+  const labelColorClass = isDark ? 'text-gray-300' : 'text-gray-700';
+  const borderColorClass = error
+    ? 'border-red-500'
+    : isDark
+      ? 'border-gray-700'
+      : 'border-gray-200';
+
   return (
-    <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
-      <View style={[styles.inputContainer, error && styles.inputError]}>
-        {leftIcon && <View style={styles.iconContainer}>{leftIcon}</View>}
+    <View className="mb-4 w-full">
+      {label && (
+        <Text className={`text-sm font-medium mb-2 ml-1 ${labelColorClass}`}>
+          {label}
+        </Text>
+      )}
+
+      {/* ✅ icon hai toh wrapper, nahi toh direct TextInput */}
+      {leftIcon ? (
+        <View
+          className={`
+            flex-row items-center
+            bg-surface dark:bg-surface-dark
+            border rounded-md px-4
+            ${borderColorClass}
+          `}
+        >
+          {/* Icon */}
+          <View className="mr-3 opacity-60">
+            {leftIcon}
+          </View>
+
+          {/* Input */}
+          <TextInput
+            ref={ref}
+            className={`flex-1 py-5 text-label dark:text-label-dark ${className}`}
+            placeholderTextColor={isDark ? '#c1c6cf' : '#9CA3AF'}
+            {...props}
+          />
+        </View>
+      ) : (
         <TextInput
-          style={[styles.input, style]}
-          placeholderTextColor={colors.input.placeholder}
+          ref={ref}
+          className={`
+            bg-surface dark:bg-surface-dark
+            text-label dark:text-label-dark
+            border rounded-md px-6 py-5
+            ${borderColorClass}
+            ${className}
+          `}
+          placeholderTextColor={isDark ? '#c1c6cf' : '#9CA3AF'}
           {...props}
         />
-        {rightIcon && (
-          <TouchableOpacity onPress={onRightIconPress} style={styles.iconContainer}>
-            {rightIcon}
-          </TouchableOpacity>
-        )}
-      </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      )}
+
+      {error && (
+        <Text className="text-xs mt-1 ml-1 text-red-500">
+          {error}
+        </Text>
+      )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 10,
-  },
-  label: {
-    fontSize: 14,
-    color: colors.text.light,
-    marginBottom: 6,
-    fontWeight: '500',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.input.background,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    paddingHorizontal: 12,
-    height: 50,
-  },
-  inputError: {
-    borderColor: 'red',
-  },
-  input: {
-    flex: 1,
-    height: '100%',
-    color: colors.text.light,
-    fontSize: 16,
-  },
-  iconContainer: {
-    padding: 8,
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginTop: 4,
-  },
 });
+
+export default Input;

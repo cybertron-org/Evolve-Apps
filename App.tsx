@@ -1,45 +1,85 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import { StatusBar, useColorScheme, StyleSheet, View } from 'react-native';
+// App.tsx
+import React, { useEffect, useState } from 'react';
+import { StatusBar, Platform, ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { withStallion } from 'react-native-stallion';
+import { createMMKV } from 'react-native-mmkv';
 import { RootNavigator } from './src/navigation/RootNavigator';
-import { colors } from './src/theme/colors';
+import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+import { ToastProvider } from './src/hooks/useToast';
+import Toast from './src/components/common/Toast';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export const storage = createMMKV();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? colors.background.dark : colors.background.light,
-    flex: 1,
-  };
+const NAVIGATION_STATE_KEY = 'NAVIGATION_STATE';
+
+function AppContent(): React.JSX.Element {
+  const { isDark } = useTheme();
+  const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState();
+
+  useEffect(() => {
+    const restoreState = async () => {
+      try {
+        const savedStateString = storage.getString(NAVIGATION_STATE_KEY);
+        const state = savedStateString ? JSON.parse(savedStateString) : undefined;
+
+        if (state !== undefined) {
+          setInitialState(state);
+        }
+      } catch (e) {
+        console.log('Failed to restore navigation state:', e);
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    if (!isReady) {
+      restoreState();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: isDark ? '#0F172A' : '#FFFFFF' }}>
+        <ActivityIndicator size="large" color="#578096" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaProvider>
-      <View style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <NavigationContainer>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={isDark ? '#0F172A' : '#FFFFFF'}
+        translucent={Platform.OS === 'android' ? false : undefined}
+      />
+      <ToastProvider>
+        <NavigationContainer
+          initialState={initialState}
+          onStateChange={(state) => {
+            try {
+              storage.set(NAVIGATION_STATE_KEY, JSON.stringify(state));
+            } catch (e) {
+              console.log('Failed to save navigation state:', e);
+            }
+          }}
+        >
           <RootNavigator />
         </NavigationContainer>
-      </View>
+        <Toast />
+      </ToastProvider>
     </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+function App(): React.JSX.Element {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
 
 export default withStallion(App);
