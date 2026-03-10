@@ -19,6 +19,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useToast } from '../../hooks/useToast';
+import AccountCreated from '../../components/specific/AccountCreated';
 
 const { height ,width  } = Dimensions.get('window');
 const otpFontSize = width < 360 ? 14 : width < 400 ? 18 : 22;
@@ -46,12 +47,20 @@ useEffect(() => {
 }, []); 
 
 
-    // OTP input fields
     const [otp, setOtp] = useState(['', '', '', '']);
+    const [showAccountCreated, setShowAccountCreated] = useState(false);
     const inputRefs = useRef<Array<TextInput | null>>([]);
 
-    // Mock phone number
     const phoneNumber = '+823478252532';
+
+    useEffect(() => {
+        if (showAccountCreated) {
+            const timer = setTimeout(() => {
+                navigation.navigate('AddProfile');
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [showAccountCreated, navigation]);
 
     const handleOtpChange = (text: string, index: number) => {
         const newOtp = [...otp];
@@ -65,7 +74,6 @@ useEffect(() => {
     };
 
     const handleKeyPress = (e: any, index: number) => {
-        // Backspace press pe previous input focus
         if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
@@ -75,8 +83,7 @@ useEffect(() => {
         const otpString = otp.join('');
         if (otpString.length === 4) {
             console.log('Verifying OTP:', otpString);
-            // Navigate to next screen
-                 navigation.navigate('AccountCreated');
+            setShowAccountCreated(true);
         } else {
             console.log('Please enter complete OTP');
         }
@@ -92,6 +99,10 @@ useEffect(() => {
         }
         return isDark ? '#BDC3C7' : '#F3F4F6';
     };
+
+    if (showAccountCreated) {
+        return <AccountCreated />;
+    }
 
     return (
         <ScreenWrapper>

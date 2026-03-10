@@ -55,29 +55,37 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
 
   return (
     <>
+      {/* ── Trigger Button ──────────────────────────────────────────────── */}
       <TouchableOpacity
         onPress={() => setVisible(true)}
         className={`
-          flex-row items-center px-5 py-5
-           border rounded-md
+          flex-row items-center px-5 py-5 border rounded-md
           ${isDark
             ? 'bg-dropdown-dark border-dropdown-border-dark'
             : 'bg-white border-gray-200'}
         `}
       >
-      {selectedCountry ? (
-  <Text className="text-2xl">{selectedCountry.flag}</Text>
-) : (
-  <GlobalIcon
-    library="Fontisto"
-    name="world-o"
-    size={21}
-    color={iconColor}
-  />
-)}
+        {/* Flag or world icon */}
+        {selectedCountry ? (
+          <Text className="text-2xl">{selectedCountry.flag}</Text>
+        ) : (
+          <GlobalIcon
+            library="Fontisto"
+            name="world-o"
+            size={21}
+            color={iconColor}
+          />
+        )}
 
-        <Text className={`ml-1 text-sm font-medium ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
-          {selectedCountry?.dial_code ?? ' + ? '}
+        {/* ✅ Country NAME show hoga — pehle dial_code tha */}
+        <Text
+          className={`ml-2 flex-1 text-sm font-medium ${
+            selectedCountry
+              ? isDark ? 'text-gray-100' : 'text-gray-800'
+              : isDark ? 'text-gray-500' : 'text-gray-400'
+          }`}
+        >
+          {selectedCountry?.name ?? 'Select Country'}
         </Text>
 
         <GlobalIcon
@@ -88,6 +96,7 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
         />
       </TouchableOpacity>
 
+      {/* ── Modal ───────────────────────────────────────────────────────── */}
       <Modal
         visible={visible}
         transparent
@@ -101,11 +110,11 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
               ${isDark ? 'bg-dropdown-dark' : 'bg-white'}
             `}
           >
+            {/* Header */}
             <View className="flex-row justify-between items-center px-5 py-4">
               <Text className={`text-lg font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                 Select Country
               </Text>
-
               <TouchableOpacity
                 onPress={() => { setVisible(false); setSearch(''); }}
                 className="p-1"
@@ -119,6 +128,7 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
               </TouchableOpacity>
             </View>
 
+            {/* Search */}
             <View className="px-4 mb-3">
               <View className={`
                 flex-row items-center rounded-xl px-3
@@ -142,6 +152,8 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
                 />
               </View>
             </View>
+
+            {/* List */}
             <FlatList
               data={filtered}
               keyExtractor={(item) => item.code}
@@ -149,14 +161,11 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
                 <TouchableOpacity
                   onPress={() => {
                     onSelect(item);
-                    console.log('Selected Country:', item.name);
-                    console.log('Dial Code:', item.dial_code);
                     setVisible(false);
                     setSearch('');
                   }}
                   className={`
-                    flex-row items-center px-5 py-3
-                    border-b
+                    flex-row items-center px-5 py-3 border-b
                     ${isDark ? 'border-item-border-dark' : 'border-gray-100'}
                   `}
                 >

@@ -24,8 +24,21 @@ function AppContent(): React.JSX.Element {
       try {
         const savedStateString = storage.getString(NAVIGATION_STATE_KEY);
         const state = savedStateString ? JSON.parse(savedStateString) : undefined;
-
+        
         if (state !== undefined) {
+          // Function to get current route name for logging
+          const getCurrentRoute = (navState: any): string | undefined => {
+            if (!navState || !navState.routes) return undefined;
+            const route = navState.routes[navState.index];
+            if (route.state) {
+              return getCurrentRoute(route.state);
+            }
+            return route.name;
+          };
+          
+          const currentRoute = getCurrentRoute(state);
+          console.log("User was on screen:", currentRoute);
+          
           setInitialState(state);
         }
       } catch (e) {
@@ -60,6 +73,19 @@ function AppContent(): React.JSX.Element {
           initialState={initialState}
           onStateChange={(state) => {
             try {
+              // Log current navigation state
+              const getCurrentRoute = (navState: any): string => {
+                if (!navState || !navState.routes) return 'unknown';
+                const route = navState.routes[navState.index];
+                if (route.state) {
+                  return getCurrentRoute(route.state);
+                }
+                return route.name;
+              };
+              
+              const currentRoute = getCurrentRoute(state);
+              console.log("Current screen:", currentRoute);
+              
               storage.set(NAVIGATION_STATE_KEY, JSON.stringify(state));
             } catch (e) {
               console.log('Failed to save navigation state:', e);

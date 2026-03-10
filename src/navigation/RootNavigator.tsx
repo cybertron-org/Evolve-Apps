@@ -5,7 +5,7 @@ import { AppTabs } from './AppTabs';
 
 import { ShareModal } from '../screens/shared/ShareModal';
 import { WelcomeScreen } from '../screens/splash/WelcomeScreen';
-import AccountCreated from '../components/specific/AccountCreated';
+// import AccountCreated from '../components/specific/AccountCreated';
 import ServiceDetail from '../screens/services/ServiceDetail';
 import OnlineSession from '../screens/consultation/OnlineSession';
 import BookingCalendar from '../screens/booking/BookingCalendar';
@@ -18,7 +18,7 @@ export type RootStackParamList = {
   Main: { screen?: string } | undefined;
   Share: undefined;
   VerifyOTP: { email?: string ,password?: string} | undefined; 
-  AccountCreated : undefined;
+  AccountCreated :{ otpString?: string } | undefined;
   ServiceDetail: { serviceId: number };
   OnlineSession: { consultationId: number };
   BookingCalendar: { serviceId: number };
@@ -40,7 +40,7 @@ export const RootNavigator = () => {
       <Stack.Screen name="Auth" component={AuthStack} />
       <Stack.Screen name="Main" component={AppTabs} />
       <Stack.Screen name="Share" component={ShareModal} options={{ presentation: 'transparentModal', animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="AccountCreated" component={AccountCreated}/>
+      {/* <Stack.Screen name="AccountCreated" component={AccountCreated}/> */}
       <Stack.Screen name="ServiceDetail" component={ServiceDetail}/>
       <Stack.Screen name="OnlineSession" component={OnlineSession}/>
       <Stack.Screen name="BookingCalendar" component={BookingCalendar}/>

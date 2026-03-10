@@ -32,20 +32,34 @@ function Profile() {
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [menuVisible, setMenuVisible] = useState(false);
+    const [isRestoring, setIsRestoring] = useState(true);
+
+    // Prevent automatic navigation during app restore
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsRestoring(false);
+        }, 1000); // Wait 1 second after component mounts
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleMenuItemPress = (item: string) => {
-        if (item === 'profile') {
+        if (item === 'profile' && !isRestoring) {
             navigation.navigate('AddProfile');
         }
         console.log('Menu item pressed:', item);
     };
 
     const handleEditProfile = () => {
-        navigation.navigate('AddProfile');
+        if (!isRestoring) {
+            navigation.navigate('AddProfile');
+        }
     };
 
     const handleOrderPress = (order: OrderItem) => {
-        navigation.navigate('OrderDetail', { orderId: order.id });
+        if (!isRestoring) {
+            navigation.navigate('OrderDetail', { orderId: order.id });
+        }
     };
 
     return (

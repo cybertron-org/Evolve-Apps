@@ -1,13 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, Dimensions } from 'react-native';
+import { View, Text, Animated } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from '../../components/common/GlobalIcon';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/RootNavigator';
-
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
 const SPARKLES = [
   { angle: 320, distance: 100, color: '#F59E0B', size: 18, delay: 0,   icon: 'star' },
@@ -30,22 +25,12 @@ const getSparklePosition = (angle: number, distance: number) => {
 
 const AccountCreated: React.FC = () => {
   const { isDark } = useTheme();
-  const navigation = useNavigation<NavProp>()
 
   const badgeScale = useRef(new Animated.Value(0)).current;
   const badgeOpacity = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
   const textTranslateY = useRef(new Animated.Value(20)).current;
 
-  useEffect(()=>{
-
-    const timer = setTimeout(()=>{
-      navigation.navigate('AddProfile')
-    },3000);
-
-    return ()=> clearTimeout(timer)
-
-  },[])
 
   const sparkleAnims = useRef(
     SPARKLES.map(() => ({

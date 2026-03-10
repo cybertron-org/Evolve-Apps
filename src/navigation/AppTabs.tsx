@@ -29,7 +29,7 @@ export const AppTabs = () => {
           backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
           borderTopColor: isDark ? '#374151' : '#E5E7EB',
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 90 : 70,
+          height: Platform.OS === 'ios' ? 100 : 100,
           paddingBottom: Platform.OS === 'ios' ? 30 : 15,
           paddingTop: 10,
           elevation: 8,

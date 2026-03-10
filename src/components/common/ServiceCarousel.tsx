@@ -3,8 +3,8 @@ import { View, ScrollView, Dimensions, NativeScrollEvent, NativeSyntheticEvent, 
 import { useTheme } from '../../theme/ThemeContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_WIDTH = SCREEN_WIDTH * 0.85;
-const CARD_SPACING = 16;
+const CARD_WIDTH = (SCREEN_WIDTH - 48) / 2; // Show 2 cards with padding
+const CARD_SPACING = 2;
 
 type Service = {
     id: number;
@@ -43,7 +43,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                 snapToInterval={CARD_WIDTH + CARD_SPACING}
                 snapToAlignment="start"
                 contentContainerStyle={{
-                    paddingHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
+                    paddingHorizontal: 16,
                 }}
             >
                 {services?.map((service, index) => (
@@ -56,30 +56,30 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                             marginRight: index === services.length - 1 ? 0 : CARD_SPACING,
                         }}
                     >
-                        <View 
-    className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-lg"
-    style={{ width: 218, height: 191 }}
->
-    <Image
-        source={typeof service.image === 'string' ? { uri: service.image } : service.image}
-        style={{ width: '100%', height: 140 }}
-        resizeMode="cover"
-    />
-    <View style={{ flex: 1, paddingHorizontal: 10, justifyContent: 'center' }}>
-        <Text 
-            className="text-sm font-semibold text-gray-900 dark:text-white"
-            numberOfLines={2}
-        >
-            {service.title}
-        </Text>
-    </View>
-</View>
+                                           <View 
+                            className="rounded-2xl overflow-hidden  shadow-lg"
+                            style={{ width: '100%', height: 180 }}
+                        >
+                            <Image
+                                source={typeof service.image === 'string' ? { uri: service.image } : service.image}
+                                className='w-56 h-48'
+                                resizeMode="contain"
+                            />
+                        </View>
+                            <View style={{ flex: 1, paddingHorizontal: 8, alignItems: 'center' }}>
+                                <Text 
+                                    className="text-sm not-italic font-normal text-gray-900 dark:text-white "
+                                    numberOfLines={2}
+                                    style={{ lineHeight: 16 }}
+                                >
+                                    {service.title}
+                                </Text>
+                            </View>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
 
-            {/* Dots Indicator */}
-            <View className="flex-row justify-center items-center mt-4 gap-2">
+            <View className="flex-row justify-center items-center gap-2">
                 {services.map((_, index) => (
                     <View
                         key={index}

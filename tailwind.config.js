@@ -9,6 +9,10 @@ content: [
 darkMode: 'class', 
   theme: {
     extend: {
+      fontFamily: {
+        // Simple font family - use 'font-outfit' in your components
+        outfit: ['Outfit-VariableFont_wght', 'system-ui', 'sans-serif'],
+      },
       colors: {
         primary: {
           DEFAULT: '#0C213F',
