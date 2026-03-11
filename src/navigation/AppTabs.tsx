@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeContext';
 import GlobalIcon from '../components/common/GlobalIcon';
 import Home from '../screens/home/Home';
@@ -8,11 +9,49 @@ import Messages from '../screens/messages/Messages';
 import Services from '../screens/services/Services';
 import History from '../screens/history/History';
 import Profile from '../screens/user/Profile';
+import ServicesSvg from '../assets/svg/service';
+import { HomeSvg , MessageSvg , HistorySvg , ProfileSvg} from '../assets/svg';
+
 
 const Tab = createBottomTabNavigator();
 
 export const AppTabs = () => {
   const { isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  // Calculate tab bar height based on safe area insets
+  const getTabBarHeight = () => {
+    if (Platform.OS === 'ios') {
+      // iOS: Account for home indicator
+      return insets.bottom > 0 ? 65 + insets.bottom : 75;
+    } else {
+      // Android: Account for gesture navigation vs 3-button navigation
+      // Gesture navigation typically has insets.bottom > 0
+      // 3-button navigation has insets.bottom === 0
+      return insets.bottom > 0 ? 70 + insets.bottom : 70;
+    }
+  };
+
+  const getPaddingBottom = () => {
+    if (Platform.OS === 'ios') {
+      return insets.bottom > 0 ? insets.bottom + 5 : 10;
+    } else {
+      // Android: Add extra padding for gesture navigation
+      return insets.bottom > 0 ? insets.bottom + 8 : 12;
+    }
+  };
+
+  const getBottomPosition = () => {
+    // Add margin from bottom for gesture navigation
+    if (Platform.OS === 'android' && insets.bottom > 0) {
+      return 8; // 8px gap from bottom for gesture bar
+    }
+    return 0;
+  };
+
+  const tabBarHeight = getTabBarHeight();
+  const paddingBottom = getPaddingBottom();
+  const bottomPosition = getBottomPosition();
 
   return (
     <Tab.Navigator
@@ -23,28 +62,36 @@ export const AppTabs = () => {
         tabBarInactiveTintColor: isDark ? '#94A3B8' : '#9CA3AF',
         tabBarStyle: {
           position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          bottom: bottomPosition,
+          left: 8,
+          right: 8,
           backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
-          borderTopColor: isDark ? '#374151' : '#E5E7EB',
-          borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 100 : 100,
-          paddingBottom: Platform.OS === 'ios' ? 30 : 15,
-          paddingTop: 10,
-          elevation: 8,
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+          borderBottomLeftRadius: bottomPosition > 0 ? 24 : 0,
+          borderBottomRightRadius: bottomPosition > 0 ? 24 : 0,
+          borderTopColor: 'transparent',
+          borderTopWidth: 0,
+          height: tabBarHeight,
+          paddingBottom: paddingBottom,
+          paddingTop: 12,
+          paddingHorizontal: 8,
+          elevation: 20,
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.15,
+          shadowRadius: 12,
         },
         tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '500',
-          marginTop: -2,
+          fontSize: 11,
+          fontWeight: '600',
+          marginTop: 4,
         },
         tabBarIconStyle: {
-          marginTop: 2,
+          marginTop: 0,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 4,
         },
       }}
     >
@@ -53,11 +100,9 @@ export const AppTabs = () => {
         component={Home} 
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <GlobalIcon 
-              name="home" 
-              library="Feather" 
-              size={24} 
-              color={color} 
+            <HomeSvg 
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+              focused={focused}
             />
           ),
         }}
@@ -67,11 +112,9 @@ export const AppTabs = () => {
         component={Messages}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <GlobalIcon 
-              name="message-circle" 
-              library="Feather" 
-              size={24} 
-              color={color} 
+            <MessageSvg 
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+              focused={focused}
             />
           ),
         }}
@@ -81,11 +124,9 @@ export const AppTabs = () => {
         component={Services}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <GlobalIcon 
-              name="grid" 
-              library="Feather" 
-              size={24} 
-              color={color} 
+            <ServicesSvg 
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+              focused={focused}
             />
           ),
         }}
@@ -95,11 +136,9 @@ export const AppTabs = () => {
         component={History}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <GlobalIcon 
-              name="clock" 
-              library="Feather" 
-              size={24} 
-              color={color} 
+            <HistorySvg 
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+              focused={focused}
             />
           ),
         }}
@@ -109,11 +148,9 @@ export const AppTabs = () => {
         component={Profile}
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <GlobalIcon 
-              name="user" 
-              library="Feather" 
-              size={24} 
-              color={color} 
+            <ProfileSvg 
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+              focused={focused}
             />
           ),
         }}

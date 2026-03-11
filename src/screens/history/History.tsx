@@ -54,12 +54,21 @@ function History() {
         navigation.navigate('OnlineSession', { consultationId: consultation.id });
     };
 
+    // Sort consultations based on sortOrder
+    const sortedConsultations = [...consultations].sort((a, b) => {
+        if (sortOrder === 'older') {
+            return a.id - b.id; // Older first (ascending)
+        } else {
+            return b.id - a.id; // Newer first (descending)
+        }
+    });
+
     return (
         <ScreenWrapper>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Header 
-                    userName="Angelina" 
-                    onMenuPress={() => setMenuVisible(true)} 
+                <Header
+                    userName="Angelina"
+                    onMenuPress={() => setMenuVisible(true)}
                 />
 
                 {/* Title */}
@@ -75,47 +84,53 @@ function History() {
                         onPress={() => setSortOrder(sortOrder === 'older' ? 'newer' : 'older')}
                         className="flex-row items-center"
                     >
-                        <Text className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                        <Text className="text-sm font-normal text-gray-600 dark:text-gray-400 capitalize">
                             {sortOrder}
                         </Text>
-                        <GlobalIcon 
-                            name="chevron-down" 
-                            library="Feather" 
-                            size={16} 
-                            color={isDark ? '#9CA3AF' : '#6B7280'} 
+                        <GlobalIcon
+                            name="chevron-down"
+                            library="Feather"
+                            size={16}
+                            color={isDark ? '#9CA3AF' : '#6B7280'}
                         />
                     </TouchableOpacity>
                 </View>
 
                 {/* Consultation List */}
                 <View className="px-6">
-                    {consultations.map((consultation) => (
+                    {sortedConsultations.map((consultation, index) => (
                         <View
                             key={consultation.id}
-                            className="bg-white dark:bg-gray-800 rounded-2xl p-4 mb-4 border border-gray-200 dark:border-gray-700"
+                            className={`rounded-2xl p-4 mb-4 border
+  ${index === 1 
+    ? 'border-gray-400 bg-gray-50 dark:bg-gray-700' 
+    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+  }`}
                         >
                             <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">
                                 {consultation.title}
                             </Text>
 
                             {/* Status and Price */}
-                            <View className="flex-row items-center mb-4">
-                                <GlobalIcon 
-                                    name={consultation.status === 'free' ? 'tag' : 'dollar-sign'} 
-                                    library="Feather" 
-                                    size={16} 
-                                    color={consultation.status === 'free' ? '#10B981' : '#6B7280'} 
+                            <View className="flex-row items-center mb-1">
+                                <GlobalIcon
+                                    name={consultation.status === 'free' ? 'tag' : 'dollar-sign'}
+                                    library="Feather"
+                                    size={16}
+                                    color={consultation.status === 'free' ? '#10B981' : '#6B7280'}
                                 />
-                                <Text 
-                                    className={`ml-2 text-sm font-semibold ${
-                                        consultation.status === 'free' 
-                                            ? 'text-green-500' 
+                                <Text
+                                    className={`ml-2 text-sm font-semibold ${consultation.status === 'free'
+                                            ? 'text-green-500'
                                             : 'text-gray-600 dark:text-gray-400'
-                                    }`}
+                                        }`}
                                 >
                                     {consultation.status === 'free' ? 'Free' : `$${consultation.price}`}
                                 </Text>
-                                <Text className="ml-2 text-xs text-red-500">
+                            </View>
+                            <View className='flex-row items-center mb-4 ml-4'>
+
+                                <Text className="ml-2 text-xs text-[#FA8789]">
                                     Start in {consultation.startTime}
                                 </Text>
                             </View>

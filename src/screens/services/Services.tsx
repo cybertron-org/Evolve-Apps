@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
 import { useTheme } from '../../theme/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { getAllServices } from '../../data/servicesData';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const isSmallScreen = SCREEN_WIDTH < 375;
 
 type ServiceItem = {
     id: number;
     title: string;
-    image: string;
+    image: string | any;
 };
 
-const services: ServiceItem[] = [
-    { id: 1, title: 'Executive Coaching Session', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400' },
-    { id: 2, title: 'Personal Aid Services', image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400' },
-    { id: 3, title: 'ADA Accommodations Consultation', image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400' },
-    { id: 4, title: 'Career Counseling', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400' },
-];
-
 function Services() {
+    const services: ServiceItem[] = getAllServices().map(service => ({
+        id: service.id,
+        title: service.title,
+        image: service.thumbnail,
+    }));
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [menuVisible, setMenuVisible] = useState(false);
@@ -60,7 +62,7 @@ function Services() {
                                 style={{ width: '48%' }}
                             >
                                 <Image
-                                    source={{ uri: service.image }}
+                                    source={typeof service.image === 'string' ? { uri: service.image } : service.image}
                                     className="w-full h-32"
                                     resizeMode="cover"
                                 />

@@ -11,6 +11,12 @@ import OnlineSession from '../screens/consultation/OnlineSession';
 import BookingCalendar from '../screens/booking/BookingCalendar';
 import AddProfile from '../screens/user/AddProfile';
 import OrderDetail from '../screens/user/OrderDetail';
+import Transactions from '../screens/transactions/Transactions';
+import Contact from '../screens/contact/Contact';
+import About from '../screens/about/About';
+import Invoice from '../screens/invoice/Invoice';
+import Assessment from '../screens/assessment/Assessment';
+import FAQ from '../screens/faq/FAQ';
 
 export type RootStackParamList = {
   Welcome: undefined;
@@ -24,6 +30,13 @@ export type RootStackParamList = {
   BookingCalendar: { serviceId: number };
   AddProfile: undefined;
   OrderDetail: { orderId: number };
+  Profile: undefined;
+  Transactions: undefined;
+  Contact: undefined;
+  About: undefined;
+  Invoice: undefined;
+  Assessment: undefined;
+  FAQ: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,6 +59,12 @@ export const RootNavigator = () => {
       <Stack.Screen name="BookingCalendar" component={BookingCalendar}/>
       <Stack.Screen name="AddProfile" component={AddProfile}/>
       <Stack.Screen name="OrderDetail" component={OrderDetail}/>
+      <Stack.Screen name="Transactions" component={Transactions}/>
+      <Stack.Screen name="Contact" component={Contact}/>
+      <Stack.Screen name="About" component={About}/>
+      <Stack.Screen name="Invoice" component={Invoice}/>
+      <Stack.Screen name="Assessment" component={Assessment}/>
+      <Stack.Screen name="FAQ" component={FAQ}/>
     </Stack.Navigator>
   );
 };
