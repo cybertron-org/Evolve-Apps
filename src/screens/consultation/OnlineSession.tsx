@@ -4,7 +4,9 @@ import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
 import { useTheme } from '../../theme/ThemeContext';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/RootNavigator';
 import GlobalIcon from '../../components/common/GlobalIcon';
 
 type OnlineSessionRouteParams = {
@@ -25,6 +27,7 @@ type SessionData = {
 };
 
 const sessionsData: Record<number, SessionData> = {
+    // Old consultations
     1: {
         id: 1,
         title: 'Executive Coaching Session',
@@ -55,11 +58,53 @@ const sessionsData: Record<number, SessionData> = {
         duration: '30 Minutes',
         isLive: true,
     },
+    // New consultations (IDs 101-104)
+    101: {
+        id: 101,
+        title: 'Personal Aid Services',
+        coachName: 'Emma',
+        coachExperience: '6 year of experience',
+        coachImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+        startTime: '9:00 AM',
+        duration: '30 Minutes',
+        isLive: false,
+    },
+    102: {
+        id: 102,
+        title: 'Executive Coaching Session',
+        coachName: 'James',
+        coachExperience: '12 year of experience',
+        coachImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+        startTime: '9:00 AM',
+        duration: '45 Minutes',
+        isLive: true,
+    },
+    103: {
+        id: 103,
+        title: 'ADA Accommodations Consultation',
+        coachName: 'Lisa',
+        coachExperience: '9 year of experience',
+        coachImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+        startTime: '9:00 AM',
+        duration: '30 Minutes',
+        isLive: false,
+    },
+    104: {
+        id: 104,
+        title: 'Wellness Coaching',
+        coachName: 'David',
+        coachExperience: '7 year of experience',
+        coachImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+        startTime: '10:00 AM',
+        duration: '60 Minutes',
+        isLive: false,
+    },
 };
 
 function OnlineSession() {
     const { isDark } = useTheme();
     const route = useRoute<RouteProp<OnlineSessionRouteParams, 'OnlineSession'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [menuVisible, setMenuVisible] = useState(false);
 
     const consultationId = route.params?.consultationId || 1;
@@ -69,8 +114,17 @@ function OnlineSession() {
         console.log('Menu item pressed:', item);
     };
 
+    const handleViewDetail = () => {
+        navigation.navigate('PurchaseSummary');
+    };
+
     const handleJoinNow = () => {
-        console.log('Joining session:', session.id);
+        // If session is live, go through SessionExpired or SessionCompleted flow
+        if (session.isLive) {
+            navigation.navigate('SessionCompleted', { type: 'invoice' });
+        } else {
+            navigation.navigate('PurchaseSummary');
+        }
     };
 
     return (
@@ -88,8 +142,10 @@ function OnlineSession() {
                             {session.title}
                         </Text>
                         <TouchableOpacity
+                            onPress={handleViewDetail}
                             className="rounded-full py-3 mb-4"
                             style={{ backgroundColor: '#7FA5B8' }}
+                            activeOpacity={0.8}
                         >
                             <Text className="text-center text-white font-semibold text-sm">
                                 VIEW DETAIL

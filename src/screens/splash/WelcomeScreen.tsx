@@ -22,7 +22,7 @@ export const WelcomeScreen: React.FC = () => {
   const navigation = useNavigation<NavProp>();
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-console.log("welcome=>",isDark)
+// console.log("welcome=>",isDark)
   const handleNext = () => {
     if (activeIndex === TOTAL_SLIDES - 1) {
       themeStorage.set('onboarding_seen', 'true');

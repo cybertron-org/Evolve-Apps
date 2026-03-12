@@ -44,7 +44,7 @@ function ConsultationHistory() {
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [menuVisible, setMenuVisible] = useState(false);
-    const [sortOrder, setSortOrder] = useState<'older' | 'newer'>('older');
+    const [sortOrder, setSortOrder] = useState<'older' | 'newer'>('newer');
 
     const handleMenuItemPress = (item: string) => {
         console.log('Menu item pressed:', item);

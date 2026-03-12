@@ -103,12 +103,14 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
             {/* Price */}
             <View style={{ alignItems: 'flex-end', paddingVertical: 16 }}>
                 <Text>
-                    <Text style={{ color: '#FB7185', fontSize: 28, fontWeight: '800' }}>${totalPrice} </Text>
+                    <Text style={{ color: '#FB7185', fontSize: 28, fontWeight: '800' }}>$70
+                        {/* {totalPrice}  */}
+                        </Text>
                     <Text style={{ color: textSecondary, fontSize: 20, fontWeight: '400' }}>/ hrs</Text>
                 </Text>
-                <Text style={{ color: textSecondary, fontSize: 12, marginTop: 2 }}>
+                {/* <Text style={{ color: textSecondary, fontSize: 12, marginTop: 2 }}>
                     ${pricePerHour}/hr × {selectedDuration}
-                </Text>
+                </Text> */}
             </View>
         </View>
     );

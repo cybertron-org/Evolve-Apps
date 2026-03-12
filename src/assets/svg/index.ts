@@ -6,8 +6,10 @@ import HomeSvg from './home';
 import MessageSvg from './message';
 import HistorySvg from './history';
 import ProfileSvg from './profile';
+import TxtSvg from './txt';
+import ContactSvg from './contact';
 
 
 export { Logo , CopilotSVG , Evolve , Account};
 
-export {HomeSvg , MessageSvg ,HistorySvg , ProfileSvg}
+export {HomeSvg , MessageSvg ,HistorySvg , ProfileSvg , TxtSvg , ContactSvg}
