@@ -1,12 +1,11 @@
+import AppText from '../common/AppText';
 import React, { useState, useMemo } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   Modal,
   FlatList,
-  TextInput,
-} from 'react-native';
+  TextInput} from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import worldCountries from 'world-countries';
 import GlobalIcon from '../common/GlobalIcon';
@@ -27,8 +26,7 @@ const COUNTRIES: Country[] = worldCountries
       name: c.name.common,
       code: c.cca2,
       dial_code: `${root}${suffix}`,
-      flag: c.flag,
-    };
+      flag: c.flag};
   })
   .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -57,7 +55,10 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
     <>
       {/* ── Trigger Button ──────────────────────────────────────────────── */}
       <TouchableOpacity
-        onPress={() => setVisible(true)}
+        onPress={() => {
+          setSearch('');
+          setVisible(true);
+        }}
         className={`
           flex-row items-center px-5 py-5 border rounded-md
           ${isDark
@@ -67,7 +68,7 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
       >
         {/* Flag or world icon */}
         {selectedCountry ? (
-          <Text className="text-2xl">{selectedCountry.flag}</Text>
+          <AppText className="text-2xl">{selectedCountry.flag}</AppText>
         ) : (
           <GlobalIcon
             library="Fontisto"
@@ -78,7 +79,7 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
         )}
 
         {/* ✅ Country NAME show hoga — pehle dial_code tha */}
-        <Text
+        <AppText
           className={`ml-2 flex-1 text-sm font-medium ${
             selectedCountry
               ? isDark ? 'text-gray-100' : 'text-gray-800'
@@ -86,7 +87,7 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
           }`}
         >
           {selectedCountry?.name ?? 'Select Country'}
-        </Text>
+        </AppText>
 
         <GlobalIcon
           library="Feather"
@@ -112,11 +113,11 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
           >
             {/* Header */}
             <View className="flex-row justify-between items-center px-5 py-4">
-              <Text className={`text-lg font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+              <AppText className={`text-lg font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                 Select Country
-              </Text>
+              </AppText>
               <TouchableOpacity
-                onPress={() => { setVisible(false); setSearch(''); }}
+                onPress={() => setVisible(false)}
                 className="p-1"
               >
                 <GlobalIcon
@@ -157,27 +158,29 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
             <FlatList
               data={filtered}
               keyExtractor={(item) => item.code}
+              initialNumToRender={20}
+              maxToRenderPerBatch={20}
+              windowSize={10}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
                     onSelect(item);
                     setVisible(false);
-                    setSearch('');
                   }}
                   className={`
                     flex-row items-center px-5 py-3 border-b
                     ${isDark ? 'border-item-border-dark' : 'border-gray-100'}
                   `}
                 >
-                  <Text className="text-2xl">{item.flag}</Text>
+                  <AppText className="text-2xl">{item.flag}</AppText>
 
-                  <Text className={`ml-3 text-base flex-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                  <AppText className={`ml-3 text-base flex-1 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                     {item.name}
-                  </Text>
+                  </AppText>
 
-                  <Text className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <AppText className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                     {item.dial_code}
-                  </Text>
+                  </AppText>
 
                   <GlobalIcon
                     library="Feather"

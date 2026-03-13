@@ -1,3 +1,4 @@
+import AppText from './AppText';
 /**
  * StatusScreen Component - Usage Examples
  * 
@@ -5,7 +6,7 @@
  */
 
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View} from 'react-native';
 import { ScreenWrapper } from '../specific/ScreenWrapper';
 import StatusScreen from './StatusScreen';
 
@@ -29,13 +30,12 @@ export const ConsultationCompletedExample = () => (
         {
           text: 'PAY INVOICE',
           onPress: () => console.log('Pay Invoice'),
-          backgroundColor: '#578096',
-        },
+          backgroundColor: '#578096'},
       ]}
       customContent={
-        <Text className="text-center text-red-500 text-sm mt-4">
+        <AppText className="text-center text-red-500 text-sm mt-4">
           Generated Invoice $60
-        </Text>
+        </AppText>
       }
     />
   </ScreenWrapper>
@@ -51,8 +51,7 @@ export const ConsultationWithAssessmentExample = () => (
         {
           text: 'INTAKE ASSESSMENT',
           onPress: () => console.log('Intake Assessment'),
-          backgroundColor: '#1E3A5F',
-        },
+          backgroundColor: '#1E3A5F'},
       ]}
     />
   </ScreenWrapper>
@@ -73,8 +72,7 @@ export const PaymentFailedExample = () => (
         {
           text: 'TRY AGAIN',
           onPress: () => console.log('Try Again'),
-          backgroundColor: '#F87171',
-        },
+          backgroundColor: '#F87171'},
       ]}
     />
   </ScreenWrapper>
@@ -95,8 +93,7 @@ export const PaymentInProcessExample = () => (
         {
           text: "DON'T PRESS BACK",
           onPress: () => console.log('Warning'),
-          backgroundColor: '#1E3A5F',
-        },
+          backgroundColor: '#1E3A5F'},
       ]}
     />
   </ScreenWrapper>
@@ -119,13 +116,11 @@ export const CustomExample = () => (
         {
           text: 'VIEW DETAILS',
           onPress: () => console.log('View Details'),
-          backgroundColor: '#10B981',
-        },
+          backgroundColor: '#10B981'},
         {
           text: 'GO HOME',
           onPress: () => console.log('Go Home'),
-          backgroundColor: '#6B7280',
-        },
+          backgroundColor: '#6B7280'},
       ]}
     />
   </ScreenWrapper>
@@ -143,8 +138,7 @@ export const InfoExample = () => (
         {
           text: 'RESEND EMAIL',
           onPress: () => console.log('Resend Email'),
-          backgroundColor: '#3B82F6',
-        },
+          backgroundColor: '#3B82F6'},
       ]}
     />
   </ScreenWrapper>
@@ -159,25 +153,23 @@ export const CustomContentExample = () => (
       subtitle="Order #12345"
       customContent={
         <View className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 w-full">
-          <Text className="text-center text-gray-900 dark:text-white font-bold">
+          <AppText className="text-center text-gray-900 dark:text-white font-bold">
             Estimated Delivery
-          </Text>
-          <Text className="text-center text-gray-600 dark:text-gray-400 mt-1">
+          </AppText>
+          <AppText className="text-center text-gray-600 dark:text-gray-400 mt-1">
             March 15, 2026
-          </Text>
+          </AppText>
         </View>
       }
       buttons={[
         {
           text: 'TRACK ORDER',
           onPress: () => console.log('Track Order'),
-          backgroundColor: '#578096',
-        },
+          backgroundColor: '#578096'},
         {
           text: 'CONTINUE SHOPPING',
           onPress: () => console.log('Continue Shopping'),
-          backgroundColor: '#6B7280',
-        },
+          backgroundColor: '#6B7280'},
       ]}
     />
   </ScreenWrapper>

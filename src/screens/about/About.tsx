@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, Dimensions, Platform } from 'react-native';
+import { View, ScrollView, Image, Dimensions, Platform } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -21,8 +22,7 @@ function About() {
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
-                    paddingBottom: Platform.OS === 'ios' ? 20 : 16,
-                }}
+                    paddingBottom: Platform.OS === 'ios' ? 20 : 16}}
             >
                 <Header
                     userName="Angelina"
@@ -35,8 +35,7 @@ function About() {
                         className="rounded-2xl overflow-hidden"
                         style={{
                             width: SCREEN_WIDTH - 32,
-                            height: SCREEN_HEIGHT * 0.28,
-                        }}
+                            height: SCREEN_HEIGHT * 0.28}}
                     >
                         <Image
                             source={require('../../assets/images/about.png')}
@@ -49,36 +48,36 @@ function About() {
                 {/* Content */}
                 <View className="px-6 mt-6">
                     {/* Title */}
-                    <Text
+                    <AppText
                         className="text-black dark:text-white not-italic font-bold uppercase mb-4"
                         style={{ fontSize: isSmallScreen ? 20 : 24 }}
                     >
                         ABOUT US
-                    </Text>
+                    </AppText>
 
                     {/* Paragraph 1 */}
-                    <Text
+                    <AppText
                         className="text-gray-700 dark:text-gray-300 mb-4 leading-6"
                         style={{ fontSize: isSmallScreen ? 13 : 14 }}
                     >
                         Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae vitae dicta sunt for explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi froms a nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora.
-                    </Text>
+                    </AppText>
 
                     {/* Paragraph 2 */}
-                    <Text
+                    <AppText
                         className="text-gray-700 dark:text-gray-300 mb-4 leading-6"
                         style={{ fontSize: isSmallScreen ? 13 : 14 }}
                     >
                         Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae vitae dicta sunt for explicabo nemo enim ipsam voluptatem quia.
-                    </Text>
+                    </AppText>
 
                     {/* Paragraph 3 */}
-                    <Text
+                    <AppText
                         className="text-gray-700 dark:text-gray-300 mb-4 leading-6"
                         style={{ fontSize: isSmallScreen ? 13 : 14 }}
                     >
                         Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam.
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="h-6" />

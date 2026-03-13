@@ -1,6 +1,7 @@
+import AppText from './AppText';
 // src/components/common/Toast.tsx
 import React, { useEffect, useRef } from 'react';
-import { Animated, View, Text, Image, Easing, StyleSheet } from 'react-native';
+import { Animated, View, Image, Easing, StyleSheet } from 'react-native';
 import { useToast } from '../../hooks/useToast';
 
 const STYLES = {
@@ -10,25 +11,21 @@ const STYLES = {
     iconWrapper:'border border-[#2ecc71] bg-white/5',
     title:      'text-[#d4f5e2]',
     message:    'text-[#d4f5e2] opacity-75',
-    dot:        'bg-[#2ecc71]',
-  },
+    dot:        'bg-[#2ecc71]'},
   error: {
     container:  'bg-[#2e1a1a] border border-[#e74c3c]',
     accentBar:  'bg-[#e74c3c]',
     iconWrapper:'border border-[#e74c3c] bg-white/5',
     title:      'text-[#f5d4d4]',
     message:    'text-[#f5d4d4] opacity-75',
-    dot:        'bg-[#e74c3c]',
-  },
+    dot:        'bg-[#e74c3c]'},
   info: {
     container:  'bg-[#1a2535] border border-[#578096]',
     accentBar:  'bg-[#578096]',
     iconWrapper:'border border-[#578096] bg-white/5',
     title:      'text-[#d4e8f5]',
     message:    'text-[#d4e8f5] opacity-75',
-    dot:        'bg-[#578096]',
-  },
-};
+    dot:        'bg-[#578096]'}};
 
 const Toast: React.FC = () => {
   const { toast } = useToast();
@@ -80,13 +77,13 @@ const Toast: React.FC = () => {
 
         {/* Text */}
         <View className="flex-1 gap-0.5">
-          <Text className={`text-sm font-bold tracking-wide ${s.title}`}>
+          <AppText className={`text-sm font-bold tracking-wide ${s.title}`}>
             {toast.title}
-          </Text>
+          </AppText>
           {toast.message ? (
-            <Text className={`text-xs mt-0.5 ${s.message}`}>
+            <AppText className={`text-xs mt-0.5 ${s.message}`}>
               {toast.message}
-            </Text>
+            </AppText>
           ) : null}
         </View>
 
@@ -105,14 +102,11 @@ const styles = StyleSheet.create({
     right:      16,
     zIndex:     9999,
     elevation:  20,
-    alignItems: 'center',
-  },
+    alignItems: 'center'},
   shadow: {
     shadowColor:   '#000',
     shadowOffset:  { width: 0, height: 8 },
     shadowOpacity: 0.45,
-    shadowRadius:  16,
-  },
-});
+    shadowRadius:  16}});
 
 export default Toast;

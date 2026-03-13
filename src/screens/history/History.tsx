@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -43,9 +44,9 @@ function History() {
                 <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
 
                 <View className="px-6 mt-4 mb-4">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         CONSULTATION HISTORY
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="px-6 mb-4">
@@ -53,9 +54,9 @@ function History() {
                         onPress={() => setSortOrder(sortOrder === 'older' ? 'newer' : 'older')}
                         className="flex-row items-center"
                     >
-                        <Text className="text-sm font-normal text-gray-600 dark:text-gray-400 capitalize">
+                        <AppText className="text-sm font-normal text-gray-600 dark:text-gray-400 capitalize">
                             {sortOrder}
-                        </Text>
+                        </AppText>
                         <GlobalIcon name="chevron-down" library="Feather" size={16} color={isDark ? '#9CA3AF' : '#6B7280'} />
                     </TouchableOpacity>
                 </View>

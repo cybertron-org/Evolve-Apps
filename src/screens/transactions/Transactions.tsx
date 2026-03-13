@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -40,9 +41,9 @@ function Transactions() {
                 />
 
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         TRANSACTIONS
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="px-6">
@@ -65,24 +66,24 @@ function Transactions() {
 
                             <View className="flex-1">
                                 <View className="flex-row items-center justify-between mb-1">
-                                    <Text className="text-base font-bold text-gray-900 dark:text-white">
+                                    <AppText className="text-base font-bold text-gray-900 dark:text-white">
                                         {transaction.status}
-                                    </Text>
-                                    <Text className="text-xl font-bold text-[#10B981]">
+                                    </AppText>
+                                    <AppText className="text-xl font-bold text-[#10B981]">
                                         ${transaction.amount}
-                                    </Text>
+                                    </AppText>
                                 </View>
                                 <View className="flex-row items-center justify-between">
-                                    <Text className="text-sm text-gray-600 dark:text-gray-400">
+                                    <AppText className="text-sm text-gray-600 dark:text-gray-400">
                                         {transaction.transactionId}
-                                    </Text>
+                                    </AppText>
                                     <View className="flex-row items-center">
                                         <GlobalIcon name="calendar" library="Feather" size={12} color="#EF4444" />
-                                        <Text className="text-xs text-[#EF4444] ml-1">{transaction.date}</Text>
+                                        <AppText className="text-xs text-[#EF4444] ml-1">{transaction.date}</AppText>
                                         <View className="ml-2">
                                             <GlobalIcon name="clock" library="Feather" size={12} color="#EF4444" />
                                         </View>
-                                        <Text className="text-xs text-[#EF4444] ml-1">{transaction.time}</Text>
+                                        <AppText className="text-xs text-[#EF4444] ml-1">{transaction.time}</AppText>
                                     </View>
                                 </View>
                             </View>

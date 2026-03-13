@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import { useTheme } from '../../theme/ThemeContext';
@@ -34,8 +35,7 @@ function ServiceDetail() {
         title: serviceData.title.toUpperCase(),
         description: serviceData.description,
         fee: serviceData.fee,
-        images: serviceData.images,
-    };
+        images: serviceData.images};
 
     const isLongText = service.description.length > COLLAPSED_CHAR_LIMIT;
     const displayedText =
@@ -92,13 +92,13 @@ function ServiceDetail() {
                 </View>
 
                 <View className="px-6">
-                    <Text className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    <AppText className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                         {service.title}
-                    </Text>
+                    </AppText>
 
-                    <Text className="text-sm text-gray-600 dark:text-gray-300 leading-6 mb-1">
+                    <AppText className="text-sm text-gray-600 dark:text-gray-300 leading-6 mb-1">
                         {displayedText}
-                    </Text>
+                    </AppText>
 
                     <View className="flex-row items-center justify-between mb-6">
                         
@@ -107,19 +107,19 @@ function ServiceDetail() {
                                 activeOpacity={0.7}
                                 onPress={() => setIsExpanded((prev) => !prev)}
                             >
-                                <Text className="text-[#578096] text-base not-italic font-bold leading-4 font-outfit">
+                                <AppText className="text-[#578096] text-base not-italic font-bold leading-4 font-outfit">
                                     {isExpanded ? 'Read Less' : 'Read More'}
-                                </Text>
+                                </AppText>
                             </TouchableOpacity>
                         )}
 
-                        <View className="flex-row items-center gap-2">
-                            <GlobalIcon name="credit-card" library="Feather" size={32} color="#E07070" />
+                        <View style={{ marginLeft: 'auto' }} className="flex-row items-center gap-2">
+                            <GlobalIcon name="credit-card" library="FontAwesome" size={32} color="#E07070" />
                             <View>
-                                <Text className="text-xl font-extrabold text-[#E07070]">FEE</Text>
-                                <Text className="text-base font-bold text-[#E07070]">
+                                <AppText className="text-xl font-extrabold text-[#E07070]">FEE</AppText>
+                                <AppText className="text-base font-bold text-[#E07070]">
                                     {service.fee}
-                                </Text>
+                                </AppText>
                             </View>
                         </View>
                     </View>
@@ -132,12 +132,12 @@ function ServiceDetail() {
     style={{ backgroundColor: isDark ? '#0C213F' : '#1ABC9C' }}
     className="rounded-full py-6 items-center justify-center"
 >
-    <Text
+    <AppText
         style={{ color: isDark ? '#FFFFFF' : '#0C213F' }}
         className="text-base font-extrabold tracking-widest"
     >
         30 MINUTES FREE CONSULTATION
-    </Text>
+    </AppText>
 </TouchableOpacity>
                 </View>
 

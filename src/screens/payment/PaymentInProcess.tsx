@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -34,25 +35,25 @@ function PaymentInProcess() {
                             style={{ backgroundColor: '#F1F5F9' }}
                         >
                             {/* Hourglass shape */}
-                            <Text style={{ fontSize: 48 }}>⏳</Text>
+                            <AppText style={{ fontSize: 48 }}>⏳</AppText>
                         </View>
                     </View>
                 </View>
 
-                <Text className="text-2xl font-bold text-gray-900 text-center mb-3">
+                <AppText className="text-2xl font-bold text-gray-900 text-center mb-3">
                     YOUR PAYMENT IS{'\n'}IN-PROCESS
-                </Text>
+                </AppText>
 
                 <TouchableOpacity
                     className="rounded-full py-4 px-10 mt-6"
                     style={{ backgroundColor: '#1E3A5F', minWidth: 220 }}
                     onPress={() => {}}
                 >
-                    <Text className="text-white text-center text-base font-bold">DON'T PRESS BACK</Text>
+                    <AppText className="text-white text-center text-base font-bold">DON'T PRESS BACK</AppText>
                 </TouchableOpacity>
 
                 <ActivityIndicator size="small" color="#578096" style={{ marginTop: 24 }} />
-                <Text className="text-gray-400 text-sm mt-2">Processing your payment...</Text>
+                <AppText className="text-gray-400 text-sm mt-2">Processing your payment...</AppText>
             </View>
 
             {/* Bottom Tab Bar */}
@@ -60,7 +61,7 @@ function PaymentInProcess() {
                 style={{ paddingBottom: 20 }}>
                 {['Home', 'Messages', 'Services', 'History', 'Profile'].map((tab, i) => (
                     <View key={tab} className="items-center">
-                        <Text style={{ fontSize: 10, color: '#9CA3AF' }}>{tab}</Text>
+                        <AppText style={{ fontSize: 10, color: '#9CA3AF' }}>{tab}</AppText>
                     </View>
                 ))}
             </View>

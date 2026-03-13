@@ -7,7 +7,8 @@ interface Props extends TextInputProps {
   className?: string;
   label?: string;
   error?: string;
-  leftIcon?: React.ReactNode;  // ✅ new prop
+  leftIcon?: React.ReactNode;  
+  rightIcon?: React.ReactNode;
 }
 
 const Input = forwardRef<TextInput, Props>(({
@@ -15,6 +16,7 @@ const Input = forwardRef<TextInput, Props>(({
   label,
   error,
   leftIcon,
+  rightIcon,
   ...props
 }, ref) => {
   const { isDark } = useTheme();
@@ -34,8 +36,7 @@ const Input = forwardRef<TextInput, Props>(({
         </Text>
       )}
 
-      {/* ✅ icon hai toh wrapper, nahi toh direct TextInput */}
-      {leftIcon ? (
+      {leftIcon || rightIcon ? (
         <View
           className={`
             flex-row items-center
@@ -44,10 +45,12 @@ const Input = forwardRef<TextInput, Props>(({
             ${borderColorClass}
           `}
         >
-          {/* Icon */}
-          <View className="mr-3 opacity-60">
-            {leftIcon}
-          </View>
+          {/* Left Icon */}
+          {leftIcon && (
+            <View className="mr-3 opacity-60">
+              {leftIcon}
+            </View>
+          )}
 
           {/* Input */}
           <TextInput
@@ -56,6 +59,13 @@ const Input = forwardRef<TextInput, Props>(({
             placeholderTextColor={isDark ? '#c1c6cf' : '#9CA3AF'}
             {...props}
           />
+
+          {/* Right Icon */}
+          {rightIcon && (
+            <View className="ml-3 opacity-100">
+              {rightIcon}
+            </View>
+          )}
         </View>
       ) : (
         <TextInput

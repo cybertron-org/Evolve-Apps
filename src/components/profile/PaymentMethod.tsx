@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { PaymentCard } from './PaymentCard';
 
 type Card = {
@@ -27,13 +28,12 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({
     onAddCard,
     onSave,
     onUpdate,
-    onPrivacyPolicy,
-}) => {
+    onPrivacyPolicy}) => {
     return (
         <View className="px-6 mb-6">
-            <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <AppText className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 Payment Method
-            </Text>
+            </AppText>
 
             {cards.map((card) => (
                 <PaymentCard
@@ -48,9 +48,9 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({
             ))}
 
             <TouchableOpacity onPress={onAddCard} className="mb-6">
-                <Text className="text-red-400 text-base text-right">
+                <AppText className="text-red-400 text-base text-right">
                     Add New Credit Card
-                </Text>
+                </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -58,9 +58,9 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({
                 className="rounded-full py-4 mb-4"
                 style={{ backgroundColor: '#578096' }}
             >
-                <Text className="text-white text-center text-lg font-bold">
+                <AppText className="text-white text-center text-lg font-bold">
                     SAVE
-                </Text>
+                </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -68,15 +68,15 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({
                 className="rounded-full py-4 mb-4"
                 style={{ backgroundColor: '#1E3A5F' }}
             >
-                <Text className="text-white text-center text-lg font-bold">
+                <AppText className="text-white text-center text-lg font-bold">
                     UPDATE
-                </Text>
+                </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={onPrivacyPolicy}>
-                <Text className="text-gray-600 dark:text-gray-400 text-center text-base">
+                <AppText className="text-gray-600 dark:text-gray-400 text-center text-base">
                     Privacy Policy
-                </Text>
+                </AppText>
             </TouchableOpacity>
         </View>
     );

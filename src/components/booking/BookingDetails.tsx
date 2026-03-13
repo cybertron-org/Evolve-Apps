@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import GlobalIcon from '../common/GlobalIcon';
 
 interface BookingDetailsProps {
@@ -25,8 +26,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
     onDurationPress,
     textPrimary,
     textSecondary,
-    cardBorder,
-}) => {
+    cardBorder}) => {
     return (
         <View className="px-6 mb-6">
             {/* Booking Date */}
@@ -38,10 +38,10 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
                 borderBottomWidth: 1, 
                 borderBottomColor: cardBorder 
             }}>
-                <Text style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Booking Date</Text>
-                 <Text style={{ color: textSecondary, fontSize: 15, fontWeight: '600' }}>
+                <AppText style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Booking Date</AppText>
+                 <AppText style={{ color: textSecondary, fontSize: 15, fontWeight: '600' }}>
                     {bookingDate}
-                </Text>
+                </AppText>
             </View>
 
             {/* Select Time */}
@@ -53,7 +53,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
                 borderBottomWidth: 1, 
                 borderBottomColor: cardBorder 
             }}>
-                <Text style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Select Time</Text>
+                <AppText style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Select Time</AppText>
                 <TouchableOpacity 
                     onPress={onTimePress}
                     style={{ 
@@ -67,7 +67,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
                         justifyContent: 'flex-end' 
                     }}
                 >
-                    <Text style={{ color: textPrimary, fontSize: 15, fontWeight: '600' }}>{selectedTime}</Text>
+                    <AppText style={{ color: textPrimary, fontSize: 15, fontWeight: '600' }}>{selectedTime}</AppText>
                     <GlobalIcon name="chevron-down" library="Feather" size={16} color={textSecondary} />
                 </TouchableOpacity>
             </View>
@@ -81,7 +81,7 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
                 borderBottomWidth: 1, 
                 borderBottomColor: cardBorder 
             }}>
-                <Text style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Select Duration</Text>
+                <AppText style={{ color: textPrimary, fontSize: 16, fontWeight: '700' }}>Select Duration</AppText>
                 <TouchableOpacity 
                     onPress={onDurationPress}
                     style={{ 
@@ -95,22 +95,22 @@ const BookingDetails: React.FC<BookingDetailsProps> = ({
                         justifyContent: 'flex-end' 
                     }}
                 >
-                    <Text style={{ color: textPrimary, fontSize: 15, fontWeight: '600' }}>{selectedDuration}</Text>
+                    <AppText style={{ color: textPrimary, fontSize: 15, fontWeight: '600' }}>{selectedDuration}</AppText>
                     <GlobalIcon name="chevron-down" library="Feather" size={16} color={textSecondary} />
                 </TouchableOpacity>
             </View>
 
             {/* Price */}
             <View style={{ alignItems: 'flex-end', paddingVertical: 16 }}>
-                <Text>
-                    <Text style={{ color: '#FB7185', fontSize: 28, fontWeight: '800' }}>$70
+                <AppText>
+                    <AppText style={{ color: '#FB7185', fontSize: 28, fontWeight: '800' }}>$70
                         {/* {totalPrice}  */}
-                        </Text>
-                    <Text style={{ color: textSecondary, fontSize: 20, fontWeight: '400' }}>/ hrs</Text>
-                </Text>
-                {/* <Text style={{ color: textSecondary, fontSize: 12, marginTop: 2 }}>
+                        </AppText>
+                    <AppText style={{ color: textSecondary, fontSize: 20, fontWeight: '400' }}>/ hrs</AppText>
+                </AppText>
+                {/* <AppText style={{ color: textSecondary, fontSize: 12, marginTop: 2 }}>
                     ${pricePerHour}/hr × {selectedDuration}
-                </Text> */}
+                </AppText> */}
             </View>
         </View>
     );

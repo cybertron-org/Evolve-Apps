@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from '../common/GlobalIcon';
 
@@ -17,10 +18,10 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, avatar, onMe
             <View className="flex-row items-center gap-3">
                 <Image source={{ uri: avatar }} className="w-12 h-12 rounded-full" />
                 <View>
-                    <Text className="text-sm text-gray-600 dark:text-gray-400">Hi,</Text>
-                    <Text className="text-base font-semibold text-gray-900 dark:text-white">
+                    <AppText className="text-sm text-gray-600 dark:text-gray-400">Hi,</AppText>
+                    <AppText className="text-base font-semibold text-gray-900 dark:text-white">
                         {name}
-                    </Text>
+                    </AppText>
                 </View>
             </View>
             <TouchableOpacity onPress={onMenuPress} className="p-2">

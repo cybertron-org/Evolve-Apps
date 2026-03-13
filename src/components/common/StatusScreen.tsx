@@ -1,5 +1,6 @@
+import AppText from './AppText';
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, TouchableOpacity } from 'react-native';
+import { View, Animated, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from './GlobalIcon';
 
@@ -49,8 +50,7 @@ const getSparklePosition = (angle: number, distance: number) => {
   const rad = (angle * Math.PI) / 180;
   return {
     x: Math.cos(rad) * distance,
-    y: Math.sin(rad) * distance,
-  };
+    y: Math.sin(rad) * distance};
 };
 
 const getDefaultConfig = (type: string) => {
@@ -61,40 +61,35 @@ const getDefaultConfig = (type: string) => {
         iconLibrary: 'MaterialIcons' as const,
         iconColor: '#4CAF82',
         badgeColor: '#4CAF82',
-        showSparkles: true,
-      };
+        showSparkles: true};
     case 'error':
       return {
         iconName: 'close-circle',
         iconLibrary: 'Ionicons' as const,
         iconColor: '#EF4444',
         badgeColor: '#EF4444',
-        showSparkles: false,
-      };
+        showSparkles: false};
     case 'loading':
       return {
         iconName: 'hourglass-empty',
         iconLibrary: 'MaterialIcons' as const,
         iconColor: '#60A5FA',
         badgeColor: '#60A5FA',
-        showSparkles: false,
-      };
+        showSparkles: false};
     case 'info':
       return {
         iconName: 'info',
         iconLibrary: 'Feather' as const,
         iconColor: '#3B82F6',
         badgeColor: '#3B82F6',
-        showSparkles: false,
-      };
+        showSparkles: false};
     default:
       return {
         iconName: 'check',
         iconLibrary: 'Feather' as const,
         iconColor: '#4CAF82',
         badgeColor: '#4CAF82',
-        showSparkles: false,
-      };
+        showSparkles: false};
   }
 };
 
@@ -110,8 +105,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
   showSparkles,
   sparklesConfig,
   buttons = [],
-  customContent,
-}) => {
+  customContent}) => {
   const { isDark } = useTheme();
   const defaults = getDefaultConfig(type);
 
@@ -131,8 +125,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
     finalSparkles.map(() => ({
       scale: new Animated.Value(0),
       opacity: new Animated.Value(0),
-      translate: new Animated.Value(0),
-    }))
+      translate: new Animated.Value(0)}))
   ).current;
 
   useEffect(() => {
@@ -141,13 +134,11 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         toValue: 1,
         tension: 50,
         friction: 5,
-        useNativeDriver: true,
-      }),
+        useNativeDriver: true}),
       Animated.timing(badgeOpacity, {
         toValue: 1,
         duration: 250,
-        useNativeDriver: true,
-      }),
+        useNativeDriver: true}),
     ]).start();
 
     if (finalShowSparkles) {
@@ -160,26 +151,22 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
                 toValue: 1.3,
                 tension: 100,
                 friction: 4,
-                useNativeDriver: true,
-              }),
+                useNativeDriver: true}),
               Animated.spring(anim.scale, {
                 toValue: 1,
                 tension: 80,
                 friction: 6,
-                useNativeDriver: true,
-              }),
+                useNativeDriver: true}),
             ]),
             Animated.timing(anim.opacity, {
               toValue: 1,
               duration: 300,
-              useNativeDriver: true,
-            }),
+              useNativeDriver: true}),
             Animated.spring(anim.translate, {
               toValue: 1,
               tension: 40,
               friction: 7,
-              useNativeDriver: true,
-            }),
+              useNativeDriver: true}),
           ]),
         ]).start();
       });
@@ -190,15 +177,13 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         toValue: 1,
         duration: 500,
         delay: 500,
-        useNativeDriver: true,
-      }),
+        useNativeDriver: true}),
       Animated.spring(textTranslateY, {
         toValue: 0,
         tension: 60,
         friction: 8,
         delay: 500,
-        useNativeDriver: true,
-      }),
+        useNativeDriver: true}),
     ]).start();
   }, []);
 
@@ -212,12 +197,10 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
 
             const translateX = anim.translate.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, x],
-            });
+              outputRange: [0, x]});
             const translateY = anim.translate.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, y],
-            });
+              outputRange: [0, y]});
 
             return (
               <Animated.View
@@ -225,8 +208,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
                 style={{
                   position: 'absolute',
                   opacity: anim.opacity,
-                  transform: [{ translateX }, { translateY }, { scale: anim.scale }],
-                }}
+                  transform: [{ translateX }, { translateY }, { scale: anim.scale }]}}
               >
                 <GlobalIcon
                   library="AntDesign"
@@ -241,8 +223,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         <Animated.View
           style={{
             opacity: badgeOpacity,
-            transform: [{ scale: badgeScale }],
-          }}
+            transform: [{ scale: badgeScale }]}}
         >
           <View
             className="w-32 h-32 rounded-full items-center justify-center"
@@ -267,25 +248,24 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         className="items-center mt-8 px-4"
         style={{
           opacity: textOpacity,
-          transform: [{ translateY: textTranslateY }],
-        }}
+          transform: [{ translateY: textTranslateY }]}}
       >
-        <Text
+        <AppText
           className={`text-2xl font-bold uppercase text-center ${
             isDark ? 'text-gray-100' : 'text-gray-900'
           }`}
           style={{ letterSpacing: 2, lineHeight: 36 }}
         >
           {title}
-        </Text>
+        </AppText>
         {subtitle && (
-          <Text
+          <AppText
             className={`text-base text-center mt-2 ${
               isDark ? 'text-gray-400' : 'text-gray-600'
             }`}
           >
             {subtitle}
-          </Text>
+          </AppText>
         )}
       </Animated.View>
 
@@ -293,8 +273,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         <Animated.View
           className="mt-6 w-full"
           style={{
-            opacity: textOpacity,
-          }}
+            opacity: textOpacity}}
         >
           {customContent}
         </Animated.View>
@@ -304,8 +283,7 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
         <Animated.View
           className="w-full mt-8"
           style={{
-            opacity: textOpacity,
-          }}
+            opacity: textOpacity}}
         >
           {buttons.map((button, index) => (
             <TouchableOpacity
@@ -314,12 +292,12 @@ const StatusScreen: React.FC<StatusScreenProps> = ({
               className="w-full rounded-full py-4 mb-3"
               style={{ backgroundColor: button.backgroundColor || '#578096' }}
             >
-              <Text
+              <AppText
                 className="text-center font-bold text-lg"
                 style={{ color: button.textColor || '#FFFFFF' }}
               >
                 {button.text}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           ))}
         </Animated.View>

@@ -1,5 +1,6 @@
+import AppText from '../../common/AppText';
 import React from 'react';
-import { Modal, Pressable, View, Text, TouchableOpacity } from 'react-native';
+import { Modal, Pressable, View, TouchableOpacity } from 'react-native';
 import GlobalIcon from '../../common/GlobalIcon';
 
 interface ImagePickerModalProps {
@@ -21,9 +22,8 @@ const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
     onRemove,
     hasImage,
     isDark,
-    avatarLayout,
-}) => {
-    const menuBg = isDark ? '#1F2937' : '#FFFFFF';
+    avatarLayout}) => {
+    const menuBg = isDark ? '#28282A' : '#FFFFFF';
     const menuBorder = isDark ? '#374151' : '#E5E7EB';
     const textColor = isDark ? '#F1F5F9' : '#1E293B';
     const divider = isDark ? '#374151' : '#F3F4F6';
@@ -51,8 +51,7 @@ const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
                         shadowOpacity: 0.15,
                         shadowRadius: 12,
                         elevation: 10,
-                        overflow: 'hidden',
-                    }}
+                        overflow: 'hidden'}}
                 >
                     <TouchableOpacity
                         onPress={onGallery}
@@ -62,13 +61,12 @@ const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
                             paddingHorizontal: 16,
                             flexDirection: 'row',
                             alignItems: 'center',
-                            gap: 10,
-                        }}
+                            gap: 10}}
                     >
                         <GlobalIcon name="image" library="Feather" size={16} color="#578096" />
-                        <Text style={{ color: textColor, fontSize: 13, fontWeight: '500' }}>
+                        <AppText style={{ color: textColor, fontSize: 13, fontWeight: '500' }}>
                             Choose from Gallery
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
 
                     <View style={{ height: 1, backgroundColor: divider }} />
@@ -81,13 +79,12 @@ const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
                             paddingHorizontal: 16,
                             flexDirection: 'row',
                             alignItems: 'center',
-                            gap: 10,
-                        }}
+                            gap: 10}}
                     >
                         <GlobalIcon name="camera" library="Feather" size={16} color="#578096" />
-                        <Text style={{ color: textColor, fontSize: 13, fontWeight: '500' }}>
+                        <AppText style={{ color: textColor, fontSize: 13, fontWeight: '500' }}>
                             Take a Photo
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
 
                     {hasImage && onRemove && (
@@ -101,13 +98,12 @@ const ImagePickerModal: React.FC<ImagePickerModalProps> = ({
                                     paddingHorizontal: 16,
                                     flexDirection: 'row',
                                     alignItems: 'center',
-                                    gap: 10,
-                                }}
+                                    gap: 10}}
                             >
                                 <GlobalIcon name="trash-2" library="Feather" size={16} color="#e74c3c" />
-                                <Text style={{ color: '#e74c3c', fontSize: 13, fontWeight: '500' }}>
+                                <AppText style={{ color: '#e74c3c', fontSize: 13, fontWeight: '500' }}>
                                     Remove Photo
-                                </Text>
+                                </AppText>
                             </TouchableOpacity>
                         </>
                     )}

@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import GlobalIcon from '../../components/common/GlobalIcon';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -20,13 +21,13 @@ function PayslipDetail() {
                 {/* Header */}
                 <View className="flex-row items-center justify-between px-6 pt-4 pb-6">
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <GlobalIcon name="chevron-left" library="Feather" size={24} color="#1F2937" />
+                        <GlobalIcon name="chevron-left" library="Feather" size={24} color="#28282A" />
                     </TouchableOpacity>
-                    <Text className="text-xl font-bold text-gray-900 dark:text-white uppercase">
+                    <AppText className="text-xl font-bold text-gray-900 dark:text-white uppercase">
                         {month}
-                    </Text>
+                    </AppText>
                     <TouchableOpacity>
-                        <GlobalIcon name="download" library="Feather" size={24} color="#1F2937" />
+                        <GlobalIcon name="download" library="Feather" size={24} color="#28282A" />
                     </TouchableOpacity>
                 </View>
 
@@ -34,56 +35,56 @@ function PayslipDetail() {
                     {/* Logo */}
                     <View className="items-center mb-8">
                         <View className="w-32 h-32 rounded-full bg-gray-100 dark:bg-gray-800 items-center justify-center mb-4">
-                            <Text className="text-4xl font-bold text-[#1E3A5F]">E</Text>
+                            <AppText className="text-4xl font-bold text-[#1E3A5F]">E</AppText>
                         </View>
-                        <Text className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                        <AppText className="text-sm text-gray-500 dark:text-gray-400 text-center">
                             • EVOLVE VOCATIONAL •{'\n'}• SERVICES LLC •
-                        </Text>
+                        </AppText>
                     </View>
 
                     {/* Company Info */}
                     <View className="mb-6">
-                        <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                        <AppText className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                             Evolve Vocational
-                        </Text>
-                        <Text className="text-base text-gray-600 dark:text-gray-400 mb-1">
+                        </AppText>
+                        <AppText className="text-base text-gray-600 dark:text-gray-400 mb-1">
                             PS - Anthony - {month} {year}
-                        </Text>
-                        <Text className="text-base text-gray-600 dark:text-gray-400 mb-1">
+                        </AppText>
+                        <AppText className="text-base text-gray-600 dark:text-gray-400 mb-1">
                             Pay Date : 01/12/2023
-                        </Text>
-                        <Text className="text-base text-gray-600 dark:text-gray-400">
+                        </AppText>
+                        <AppText className="text-base text-gray-600 dark:text-gray-400">
                             Pay Period : 01/12/2023 - 01/01/2024
-                        </Text>
+                        </AppText>
                     </View>
 
                     {/* Service Detail */}
                     <View className="mb-6">
-                        <Text className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        <AppText className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                             Service Detail
-                        </Text>
-                        <Text className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        </AppText>
+                        <AppText className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                             Course Name
-                        </Text>
-                        <Text className="text-base text-gray-700 dark:text-gray-300">
+                        </AppText>
+                        <AppText className="text-base text-gray-700 dark:text-gray-300">
                             Executive Coaching Session
-                        </Text>
+                        </AppText>
                     </View>
 
                     {/* Insurance Detail */}
                     <View className="mb-6">
-                        <Text className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        <AppText className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                             Insurance Detail
-                        </Text>
-                        <Text className="text-base text-gray-700 dark:text-gray-300 mb-1">
+                        </AppText>
+                        <AppText className="text-base text-gray-700 dark:text-gray-300 mb-1">
                             1000 Simpson Road Rockford, Illinois 61102
-                        </Text>
-                        <Text className="text-base text-gray-700 dark:text-gray-300 mb-1">
+                        </AppText>
+                        <AppText className="text-base text-gray-700 dark:text-gray-300 mb-1">
                             123-456-7890
-                        </Text>
-                        <Text className="text-base text-gray-700 dark:text-gray-300">
+                        </AppText>
+                        <AppText className="text-base text-gray-700 dark:text-gray-300">
                             U.S./MEXICO
-                        </Text>
+                        </AppText>
                     </View>
 
                     {/* Divider */}
@@ -92,44 +93,44 @@ function PayslipDetail() {
                     {/* Earning Table */}
                     <View className="mb-6">
                         <View className="flex-row justify-between mb-4">
-                            <Text className="text-xl font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-xl font-bold text-gray-900 dark:text-white">
                                 Earning
-                            </Text>
-                            <Text className="text-xl font-bold text-gray-900 dark:text-white">
+                            </AppText>
+                            <AppText className="text-xl font-bold text-gray-900 dark:text-white">
                                 Amount
-                            </Text>
+                            </AppText>
                         </View>
 
                         <View className="h-px bg-gray-300 dark:bg-gray-700 mb-4" />
 
                         <View className="flex-row justify-between mb-4">
-                            <Text className="text-base text-gray-600 dark:text-gray-400">
+                            <AppText className="text-base text-gray-600 dark:text-gray-400">
                                 Service Fee (Per hours)
-                            </Text>
-                            <Text className="text-base text-gray-900 dark:text-white">
+                            </AppText>
+                            <AppText className="text-base text-gray-900 dark:text-white">
                                 $80.00
-                            </Text>
+                            </AppText>
                         </View>
 
                         <View className="h-px bg-gray-300 dark:bg-gray-700 mb-4" />
 
                         <View className="flex-row justify-between mb-4">
-                            <Text className="text-base text-gray-600 dark:text-gray-400">
+                            <AppText className="text-base text-gray-600 dark:text-gray-400">
                                 Tax (6%)
-                            </Text>
-                            <Text className="text-base text-gray-900 dark:text-white">
+                            </AppText>
+                            <AppText className="text-base text-gray-900 dark:text-white">
                                 $4.8
-                            </Text>
+                            </AppText>
                         </View>
 
                         {/* Total Pay */}
                         <View className="bg-[#578096] rounded-lg p-4 flex-row justify-between items-center">
-                            <Text className="text-xl font-bold text-white">
+                            <AppText className="text-xl font-bold text-white">
                                 Total Pay
-                            </Text>
-                            <Text className="text-xl font-bold text-white">
+                            </AppText>
+                            <AppText className="text-xl font-bold text-white">
                                 $84.8
-                            </Text>
+                            </AppText>
                         </View>
                     </View>
                 </View>

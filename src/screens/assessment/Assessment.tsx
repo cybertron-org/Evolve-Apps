@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -45,15 +46,15 @@ function Assessment() {
                 />
 
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         INTAKE ASSESSMENT
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="px-6">
-                    <Text className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    <AppText className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                         LIFE COACHING SESSION
-                    </Text>
+                    </AppText>
 
                     <View className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 mb-6">
                         <View className="flex-row items-center mb-3">
@@ -62,20 +63,20 @@ function Assessment() {
                                 className="w-16 h-16 rounded-full mr-3"
                             />
                             <View className="flex-1">
-                                <Text className="text-sm text-gray-600 dark:text-gray-400">
+                                <AppText className="text-sm text-gray-600 dark:text-gray-400">
                                     Coach/Counselor
-                                </Text>
-                                <Text className="text-lg font-bold text-gray-900 dark:text-white">
+                                </AppText>
+                                <AppText className="text-lg font-bold text-gray-900 dark:text-white">
                                     Robert
-                                </Text>
+                                </AppText>
                             </View>
                             <View className="items-end">
-                                <Text className="text-sm text-gray-600 dark:text-gray-400">
+                                <AppText className="text-sm text-gray-600 dark:text-gray-400">
                                     Last Session
-                                </Text>
-                                <Text className="text-sm text-[#578096] font-semibold">
+                                </AppText>
+                                <AppText className="text-sm text-[#578096] font-semibold">
                                     12 | May | 24
-                                </Text>
+                                </AppText>
                             </View>
                         </View>
 
@@ -83,16 +84,16 @@ function Assessment() {
                             onPress={handleCoachPress}
                             className="mt-2"
                         >
-                            <Text className="text-sm text-gray-700 dark:text-gray-300">
+                            <AppText className="text-sm text-gray-700 dark:text-gray-300">
                                 Tap To View Profile
-                            </Text>
+                            </AppText>
                         </TouchableOpacity>
                     </View>
 
                     <View className="flex-row items-center mb-4">
-                        <Text className="text-base text-gray-700 dark:text-gray-300 mr-2">
+                        <AppText className="text-base text-gray-700 dark:text-gray-300 mr-2">
                             {selectedFilter}
-                        </Text>
+                        </AppText>
                         <GlobalIcon name="chevron-down" library="Feather" size={16} color="#6B7280" />
                     </View>
 
@@ -105,9 +106,9 @@ function Assessment() {
                                     : 'bg-gray-50 dark:bg-gray-800'
                             }`}
                         >
-                            <Text className="text-lg font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-lg font-bold text-gray-900 dark:text-white">
                                 {assessment.title}
-                            </Text>
+                            </AppText>
                             <View className="flex-row items-center">
                                 <View className="w-10 h-10 rounded-full bg-[#578096] items-center justify-center mr-3">
                                     <GlobalIcon name="download" library="Feather" size={20} color="#FFFFFF" />

@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 interface CalendarDay {
     day: number;
@@ -31,8 +32,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
     getDateRangeStatus,
     isDark,
     textPrimary,
-    textSecondary,
-}) => {
+    textSecondary}) => {
     const CELL_H = 54;
     const CIRCLE = 36;
     const STRIP_TOP = 4;
@@ -58,7 +58,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                 const textColor =
                     !item.isCurrentMonth ? (isDark ? '#3A4455' : '#CBD5E1') :
                     isSelected || isTodayCell || isRangeStart || isRangeEnd ? '#FFFFFF' :
-                    isRangeMiddle ? '#FB7185' :
+                    isRangeMiddle ? (isDark ? '#CBD5E1' : '#000'):
                     isAvailable ? textPrimary :
                     textSecondary;
 
@@ -83,8 +83,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                                 height: CIRCLE,
                                 left: isRangeStart ? '50%' : 0,
                                 right: isRangeEnd ? '50%' : 0,
-                                backgroundColor: 'rgba(190,100,100,0.40)',
-                            }} />
+                                backgroundColor: 'rgba(190,100,100,0.40)'}} />
                         )}
 
                         {/* Date circle */}
@@ -97,13 +96,13 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                             backgroundColor: circleBg, 
                             zIndex: 1 
                         }}>
-                            <Text style={{ 
+                            <AppText style={{ 
                                 fontSize: 14, 
                                 fontWeight: isSelected || isTodayCell || isRangeStart || isRangeEnd ? '700' : '400', 
                                 color: textColor 
                             }}>
                                 {item.day}
-                            </Text>
+                            </AppText>
                         </View>
 
                         {/* Today indicator dot */}

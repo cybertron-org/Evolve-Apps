@@ -1,6 +1,6 @@
 // src/components/specific/OnboardingContent.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,6 +9,7 @@ import { themeStorage } from '../../theme/storage';
 import { useTheme } from '../../theme/ThemeContext';
 import { colors } from '../../theme/colors';
 import GlobalIcon from '../common/GlobalIcon';
+import { AppText } from '../common/AppText';
 
 const { height } = Dimensions.get('window');
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
@@ -24,8 +25,7 @@ const OnboardingContent: React.FC<Props> = ({
   title,
   activeIndex,
   totalSlides,
-  onNext,
-}) => {
+  onNext}) => {
   const navigation = useNavigation<NavProp>();
   const { isDark } = useTheme();
 
@@ -57,11 +57,11 @@ const OnboardingContent: React.FC<Props> = ({
         className="px-6 pb-10 items-center pt-2">
 
         {/* Title */}
-        <Text
+        <AppText
           className="text-xl font-extrabold text-center tracking-wide mb-4 leading-8"
           style={{ color: isDark ? '#F1F5F9' : '#0C213F' }}>
           {title}
-        </Text>
+        </AppText>
 
         {/* Dots */}
         <View className="flex-row mb-7" style={{ gap: 8 }}>
@@ -75,8 +75,7 @@ const OnboardingContent: React.FC<Props> = ({
                 backgroundColor:
                   dotIndex === onboardingIndex
                     ? isDark ? '#BDC3C7' : '#578096'
-                    : isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)',
-              }}
+                    : isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)'}}
             />
           ))}
         </View>
@@ -88,11 +87,10 @@ const OnboardingContent: React.FC<Props> = ({
           className="flex-row items-center justify-center w-full py-5 rounded-full mb-5"
           style={{
             backgroundColor: isDark ? '#BDC3C7' : '#578096',
-            gap: 10,
-          }}>
-          <Text className={`text-${colors.primary} text-md font-bold tracking-widest`}>
+            gap: 10}}>
+          <AppText className={`text-${colors.primary} text-md font-bold tracking-widest`}>
             {isLastSlide ? 'GET STARTED' : 'NEXT'}
-          </Text>
+          </AppText>
           <GlobalIcon
             name="arrow-right"
                 library="FontAwesome6"
@@ -107,23 +105,23 @@ const OnboardingContent: React.FC<Props> = ({
           activeOpacity={0.7}
           className="flex-row items-center"
           style={{ gap: 8 }}>
-          <Text
+          <AppText
             className="text-xs font-semibold tracking-widest"
             style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)' }}>
             CREATE YOUR ACCOUNT
-          </Text>
+          </AppText>
           <View
             className="w-6 h-6  items-center justify-center"
             style={{
             //   borderWidth: 1.5,
-            //   borderColor: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)',
+            //   borderColor: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)'
             }}>
            <GlobalIcon
-  name="user-check"          
-  library="FontAwesome6"
-  size={18}
-  color={colors.text.muted}
-/>
+              name="user-check"          
+              library="FontAwesome6"
+              size={18}
+              color={colors.text.muted}
+            />
           </View>
         </TouchableOpacity>
 

@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -77,9 +78,9 @@ function Invoice() {
                                 onPress={() => setShowYearDropdown(!showYearDropdown)}
                                 className="bg-gray-100 dark:bg-gray-800 rounded-xl px-6 py-3 flex-row items-center"
                             >
-                                <Text className="text-lg text-gray-700 dark:text-gray-300 mr-2">
+                                <AppText className="text-lg text-gray-700 dark:text-gray-300 mr-2">
                                     {selectedYear}
-                                </Text>
+                                </AppText>
                                 <GlobalIcon name="chevron-down" library="Feather" size={20} color="#6B7280" />
                             </TouchableOpacity>
 
@@ -91,22 +92,22 @@ function Invoice() {
                                             onPress={() => handleYearSelect(year)}
                                             className="px-6 py-3 border-b border-gray-200 dark:border-gray-700"
                                         >
-                                            <Text className={`text-base ${
+                                            <AppText className={`text-base ${
                                                 year === selectedYear 
                                                     ? 'text-[#578096] font-bold' 
                                                     : 'text-gray-700 dark:text-gray-300'
                                             }`}>
                                                 {year}
-                                            </Text>
+                                            </AppText>
                                         </TouchableOpacity>
                                     ))}
                                 </View>
                             )}
                         </View>
 
-                        <Text className="text-lg text-gray-600 dark:text-gray-400">
+                        <AppText className="text-lg text-gray-600 dark:text-gray-400">
                             Payslips Per month
-                        </Text>
+                        </AppText>
                     </View>
 
                     {filteredPayslips.map((payslip) => (
@@ -128,12 +129,12 @@ function Invoice() {
                                 />
                             </View>
                             <View className="flex-1">
-                                <Text className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                                <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-1">
                                     {payslip.month}
-                                </Text>
-                                <Text className="text-sm text-gray-600 dark:text-gray-400">
+                                </AppText>
+                                <AppText className="text-sm text-gray-600 dark:text-gray-400">
                                     {payslip.dateRange}
-                                </Text>
+                                </AppText>
                             </View>
                         </TouchableOpacity>
                     ))}

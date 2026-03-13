@@ -1,16 +1,18 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
 import { useTheme } from '../../theme/ThemeContext';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import ImageCarousel from '../../components/booking/ImageCarousel';
 import CalendarHeader from '../../components/booking/CalendarHeader';
 import CalendarGrid from '../../components/booking/CalendarGrid';
 import CalendarLegend from '../../components/booking/CalendarLegend';
 import BookingDetails from '../../components/booking/BookingDetails';
-import DropdownModal from '../../components/booking/DropdownModal';
+import GlobalIcon from '../../components/common/GlobalIcon';
+import PickerModal from '../../components/common/PickerModal';
 import { getServiceById, ServiceData } from '../../data/servicesData';
 import { ImageSourcePropType } from 'react-native';
 
@@ -40,6 +42,7 @@ const DURATION_OPTIONS: { label: string; hours: number }[] = [
 
 function BookingCalendar() {
     const { isDark } = useTheme();
+    const navigation = useNavigation<any>();
     const route = useRoute<RouteProp<BookingCalendarRouteParams, 'BookingCalendar'>>();
 
     // Get service data
@@ -117,11 +120,11 @@ function BookingCalendar() {
     // Check if booking is complete
     const isBookingComplete = selectedDate !== null && selectedTime && selectedDuration;
 
-    const cardBg       = isDark ? '#1E2530' : '#F1F5F9';
+    const cardBg       = isDark ? '#242427' : '#F1F5F9';
     const cardBorder   = isDark ? '#2A3240' : '#E2E8F0';
     const textPrimary  = isDark ? '#F1F5F9' : '#0F172A';
     const textSecondary = isDark ? '#94A3B8' : '#64748B';
-    const pageBg       = isDark ? '#151A22' : '#FFFFFF';
+    const pageBg       = isDark ? '#333337' : '#FFFFFF';
 
     const handlePrevImage = () => setCurrentImageIndex(p => p === 0 ? images.length - 1 : p - 1);
     const handleNextImage = () => setCurrentImageIndex(p => p === images.length - 1 ? 0 : p + 1);
@@ -159,7 +162,7 @@ function BookingCalendar() {
                     <View className="flex-row px-2 mb-1">
                         {DAYS.map((day) => (
                             <View key={day} style={{ width: '14.28%', alignItems: 'center' }}>
-                                <Text style={{ color: textSecondary, fontSize: 12, fontWeight: '500' }}>{day}</Text>
+                                <AppText style={{ color: textSecondary, fontSize: 12, fontWeight: '500' }}>{day}</AppText>
                             </View>
                         ))}
                     </View>
@@ -205,6 +208,17 @@ function BookingCalendar() {
                     <TouchableOpacity 
                         activeOpacity={0.85}
                         disabled={!isBookingComplete}
+                        onPress={() => {
+                            navigation.navigate('PurchaseSummary', {
+                                serviceId,
+                                date: formatBookingDate(),
+                                time: selectedTime,
+                                durationHours: selectedDuration.hours,
+                                durationLabel: selectedDuration.label,
+                                totalPrice,
+                                serviceTitle: serviceData?.title
+                            });
+                        }}
                         style={{ 
                             backgroundColor: isBookingComplete ? '#1ABC9C' : '#94A3B8', 
                             borderRadius: 50, 
@@ -214,33 +228,35 @@ function BookingCalendar() {
                             opacity: isBookingComplete ? 1 : 0.5
                         }}
                     >
-                        <Text style={{ color: '#FFFFFF', fontSize: 15, fontWeight: '800', letterSpacing: 2 }}>
+                        <AppText style={{ color: '#FFFFFF', fontSize: 15, fontWeight: '800', letterSpacing: 2 }}>
                             BOOK NOW
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
                 </View>
 
                 <View className="h-6" />
             </ScrollView>
 
-            {/* Time Dropdown */}
-            <DropdownModal
+            {/* Time Picker */}
+            <PickerModal
                 visible={showTimePicker}
-                options={TIME_OPTIONS.map(l => ({ label: l }))}
-                onSelect={(v) => setSelectedTime(v.label)}
+                title="Select Time"
+                options={TIME_OPTIONS}
+                selected={selectedTime}
+                onSelect={(v: string) => setSelectedTime(v)}
                 onClose={() => setShowTimePicker(false)}
-                isDark={isDark}
-                textPrimary={textPrimary}
+                labelFn={(v) => v as string}
             />
 
-            {/* Duration Dropdown */}
-            <DropdownModal
+            {/* Duration Picker */}
+            <PickerModal
                 visible={showDurationPicker}
+                title="Select Duration"
                 options={DURATION_OPTIONS}
-                onSelect={(v) => setSelectedDuration(v)}
+                selected={selectedDuration}
+                onSelect={(v: typeof DURATION_OPTIONS[0]) => setSelectedDuration(v)}
                 onClose={() => setShowDurationPicker(false)}
-                isDark={isDark}
-                textPrimary={textPrimary}
+                labelFn={(v) => (v as typeof DURATION_OPTIONS[0]).label}
             />
 
             <MenuDrawer 

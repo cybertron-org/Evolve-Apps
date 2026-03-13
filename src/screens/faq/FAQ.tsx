@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -16,33 +17,27 @@ const faqData: FAQItem[] = [
     {
         id: 1,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
     {
         id: 2,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
     {
         id: 3,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
     {
         id: 4,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
     {
         id: 5,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
     {
         id: 6,
         question: 'Lorem ipsum dolor sit amet?',
-        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.',
-    },
+        answer: 'Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque laudantium, ands totam rem aperiam, eaque ipsa quae ab illo inventorud veritatis et quasi architecto beatae.'},
 ];
 
 const FAQAccordion: React.FC<{ item: FAQItem; isOpen: boolean; onToggle: () => void; isDark: boolean }> = ({ 
@@ -57,19 +52,16 @@ const FAQAccordion: React.FC<{ item: FAQItem; isOpen: boolean; onToggle: () => v
         Animated.timing(animation, {
             toValue: isOpen ? 1 : 0,
             duration: 300,
-            useNativeDriver: false,
-        }).start();
+            useNativeDriver: false}).start();
     }, [isOpen]);
 
     const heightInterpolate = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 200],
-    });
+        outputRange: [0, 200]});
 
     const rotateInterpolate = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    });
+        outputRange: ['0deg', '180deg']});
 
     return (
         <View className="mb-4">
@@ -82,13 +74,13 @@ const FAQAccordion: React.FC<{ item: FAQItem; isOpen: boolean; onToggle: () => v
                         : 'bg-gray-50 dark:bg-gray-800'
                 }`}
             >
-                <Text 
+                <AppText 
                     className={`flex-1 text-base font-semibold mr-3 ${
                         isOpen ? 'text-[#7FA5B8]' : 'text-gray-900 dark:text-white'
                     }`}
                 >
                     {item.question}
-                </Text>
+                </AppText>
                 <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
                     <GlobalIcon 
                         name="chevron-down" 
@@ -103,8 +95,7 @@ const FAQAccordion: React.FC<{ item: FAQItem; isOpen: boolean; onToggle: () => v
                 <Animated.View
                     style={{
                         maxHeight: heightInterpolate,
-                        overflow: 'hidden',
-                    }}
+                        overflow: 'hidden'}}
                 >
                     <View className="bg-white dark:bg-gray-800 border-x border-b border-gray-300 dark:border-gray-600 rounded-b-2xl px-4 pb-4 pt-2">
                         <View 
@@ -114,9 +105,9 @@ const FAQAccordion: React.FC<{ item: FAQItem; isOpen: boolean; onToggle: () => v
                                 backgroundColor: isDark ? '#4B5563' : '#E5E7EB' 
                             }} 
                         />
-                        <Text className="text-sm text-gray-600 dark:text-gray-400 leading-6">
+                        <AppText className="text-sm text-gray-600 dark:text-gray-400 leading-6">
                             {item.answer}
-                        </Text>
+                        </AppText>
                     </View>
                 </Animated.View>
             )}
@@ -146,9 +137,9 @@ function FAQ() {
                 />
 
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         FAQ'S
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="px-6">

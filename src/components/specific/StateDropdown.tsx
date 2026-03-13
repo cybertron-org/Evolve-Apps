@@ -1,12 +1,11 @@
+import AppText from '../common/AppText';
 import React, { useState, useMemo } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   Modal,
   FlatList,
-  TextInput,
-} from 'react-native';
+  TextInput} from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import { State } from 'country-state-city';
 import GlobalIcon from '../common/GlobalIcon';
@@ -26,8 +25,7 @@ interface Props {
 const StateDropdown: React.FC<Props> = ({
   countryCode,
   onSelect,
-  selectedState,
-}) => {
+  selectedState}) => {
   const { isDark } = useTheme();
   const [visible, setVisible] = useState(false);
   const [search, setSearch] = useState('');
@@ -41,8 +39,7 @@ const StateDropdown: React.FC<Props> = ({
     return State.getStatesOfCountry(countryCode).map((s) => ({
       name: s.name,
       code: s.isoCode,
-      countryCode: s.countryCode,
-    }));
+      countryCode: s.countryCode}));
   }, [countryCode]);
 
   const filtered = useMemo(
@@ -57,12 +54,12 @@ const StateDropdown: React.FC<Props> = ({
 
   const handleOpen = () => {
     if (isDisabled) return;
+    setSearch('');
     setVisible(true);
   };
 
   const handleClose = () => {
     setVisible(false);
-    setSearch('');
   };
 
   return (
@@ -88,7 +85,7 @@ const StateDropdown: React.FC<Props> = ({
         />
 
         {/* Label */}
-        <Text
+        <AppText
           className={`ml-2 flex-1 text-sm font-medium ${
             selectedState
               ? isDark ? 'text-gray-100' : 'text-gray-800'
@@ -96,7 +93,7 @@ const StateDropdown: React.FC<Props> = ({
           }`}
         >
           {selectedState?.name ?? (isDisabled ? 'Select country first' : 'Select State')}
-        </Text>
+        </AppText>
 
         <GlobalIcon
           library="Feather"
@@ -125,13 +122,13 @@ const StateDropdown: React.FC<Props> = ({
           >
             {/* Header */}
             <View className="flex-row justify-between items-center px-5 py-4">
-              <Text
+              <AppText
                 className={`text-lg font-bold ${
                   isDark ? 'text-gray-100' : 'text-gray-900'
                 }`}
               >
                 Select State
-              </Text>
+              </AppText>
 
               <TouchableOpacity onPress={handleClose} className="p-1">
                 <GlobalIcon
@@ -179,13 +176,13 @@ const StateDropdown: React.FC<Props> = ({
                   size={32}
                   color={subIconColor}
                 />
-                <Text
+                <AppText
                   className={`mt-3 text-sm ${
                     isDark ? 'text-gray-400' : 'text-gray-500'
                   }`}
                 >
                   No states found
-                </Text>
+                </AppText>
               </View>
             )}
 
@@ -193,6 +190,9 @@ const StateDropdown: React.FC<Props> = ({
             <FlatList
               data={filtered}
               keyExtractor={(item) => `${item.countryCode}-${item.code}`}
+              initialNumToRender={20}
+              maxToRenderPerBatch={20}
+              windowSize={10}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
@@ -211,31 +211,31 @@ const StateDropdown: React.FC<Props> = ({
                       ${isDark ? 'bg-gray-700' : 'bg-gray-100'}
                     `}
                   >
-                    <Text
+                    <AppText
                       className={`text-xs font-bold ${
                         isDark ? 'text-gray-300' : 'text-gray-600'
                       }`}
                       numberOfLines={1}
                     >
                       {item.code.slice(0, 2)}
-                    </Text>
+                    </AppText>
                   </View>
 
-                  <Text
+                  <AppText
                     className={`flex-1 text-base ${
                       isDark ? 'text-gray-100' : 'text-gray-900'
                     }`}
                   >
                     {item.name}
-                  </Text>
+                  </AppText>
 
-                  <Text
+                  <AppText
                     className={`text-xs mr-2 ${
                       isDark ? 'text-gray-400' : 'text-gray-500'
                     }`}
                   >
                     {item.code}
-                  </Text>
+                  </AppText>
 
                   <GlobalIcon
                     library="Feather"

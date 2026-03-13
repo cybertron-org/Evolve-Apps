@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import GlobalIcon from '../common/GlobalIcon';
 
 interface CalendarHeaderProps {
@@ -23,8 +24,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
     isDark,
     textPrimary,
     textSecondary,
-    cardBorder,
-}) => {
+    cardBorder}) => {
     return (
         <View className="flex-row items-center justify-between px-5 pt-5 pb-4">
             <TouchableOpacity 
@@ -44,12 +44,12 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             </TouchableOpacity>
             
             <View className="items-center" style={{ minWidth: 100 }}>
-                <Text style={{ color: textPrimary, fontSize: 22, fontWeight: '800', letterSpacing: 1 }}>
+                <AppText style={{ color: textPrimary, fontSize: 22, fontWeight: '800', letterSpacing: 1 }}>
                     {months[currentMonth]}
-                </Text>
-                <Text style={{ color: textSecondary, fontSize: 13, marginTop: 1, fontWeight: '500' }}>
+                </AppText>
+                <AppText style={{ color: textSecondary, fontSize: 13, marginTop: 1, fontWeight: '500' }}>
                     {currentYear}
-                </Text>
+                </AppText>
             </View>
             
             <TouchableOpacity 

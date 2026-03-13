@@ -1,9 +1,8 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from "react";
 import {
-  Text,
   View,
-  Platform,
-} from "react-native";
+  Platform} from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScreenWrapper } from "../../components/specific/ScreenWrapper";
 import Input from "../../components/common/Input";
@@ -93,8 +92,7 @@ function Profile() {
       countryCode: selectedCountry?.code,
       state: selectedState?.name,
       stateCode: selectedState?.code,
-      postalCode,
-    });
+      postalCode});
 
     navigation.navigate('Main');
   };
@@ -117,12 +115,12 @@ function Profile() {
               size={96}
               onImageSelected={(base64) => setAvatarBase64(base64)}
             />
-            <Text className="text-sublabel dark:text-sublabel-dark text-xl font-bold uppercase mt-4 tracking-widest">
+            <AppText className="text-sublabel dark:text-sublabel-dark text-xl font-bold uppercase mt-4 tracking-widest">
               CHOOSE IMAGE
-            </Text>
-            <Text className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
+            </AppText>
+            <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
               Hi, Welcome to evolve vocational
-            </Text>
+            </AppText>
           </View>
 
           {/* ── Form fields ─────────────────────────────────────────── */}
@@ -192,33 +190,33 @@ function Profile() {
 
             {/* Country Dropdown */}
             <View className="w-full">
-              <Text
+              <AppText
                 className={`text-sm font-medium mb-1 ${
                   isDark ? 'text-gray-300' : 'text-gray-700'
                 }`}
               >
                 Select Country
-              </Text>
+              </AppText>
               <CountryDropdown
                 selectedCountry={selectedCountry}
                 onSelect={handleCountrySelect}
               />
               {countryError ? (
-                <Text className="text-red-500 text-xs mt-1 ml-1">
+                <AppText className="text-red-500 text-xs mt-1 ml-1">
                   {countryError}
-                </Text>
+                </AppText>
               ) : null}
             </View>
 
             {/* State Dropdown */}
             <View className="w-full">
-              <Text
+              <AppText
                 className={`text-sm font-medium mb-1 ${
                   isDark ? 'text-gray-300' : 'text-gray-700'
                 }`}
               >
                 Select State
-              </Text>
+              </AppText>
               <StateDropdown
                 countryCode={selectedCountry?.code ?? null}
                 selectedState={selectedState}

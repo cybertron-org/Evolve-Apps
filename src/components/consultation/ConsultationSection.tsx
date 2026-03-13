@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View} from 'react-native';
 
 type ConsultationSectionProps = {
     title: string;
@@ -8,14 +9,13 @@ type ConsultationSectionProps = {
 
 export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
     title,
-    children,
-}) => {
+    children}) => {
     return (
         <>
             <View className="mb-4">
-                <Text className="text-lg text-gray-700 dark:text-gray-300">
+                <AppText className="text-lg text-gray-700 dark:text-gray-300">
                     {title}
-                </Text>
+                </AppText>
             </View>
             {children}
         </>

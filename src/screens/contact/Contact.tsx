@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Linking, Alert } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking, Alert } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -65,9 +66,9 @@ function Contact() {
                 />
               
                 <View className="px-6 mt-6">
-                    <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
+                    <AppText className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
                         CONTACT US
-                    </Text>
+                    </AppText>
 
                     <View className="items-center mb-12">
                         <ContactSvg/>
@@ -80,9 +81,9 @@ function Contact() {
                         <View className="w-12 h-12 rounded-full bg-[#578096] items-center justify-center mr-4">
                             <GlobalIcon name="phone" library="Feather" size={24} color="#FFFFFF" />
                         </View>
-                        <Text className="text-lg text-gray-900 dark:text-white">
+                        <AppText className="text-lg text-gray-900 dark:text-white">
                             +1207123-4567
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
 
                     {/* Email */}
@@ -93,9 +94,9 @@ function Contact() {
                         <View className="w-12 h-12 rounded-full bg-[#578096] items-center justify-center mr-4">
                             <GlobalIcon name="mail" library="Feather" size={24} color="#FFFFFF" />
                         </View>
-                        <Text className="text-lg text-gray-900 dark:text-white">
+                        <AppText className="text-lg text-gray-900 dark:text-white">
                             support@gmail.com
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
 
                     {/* Location */}
@@ -106,9 +107,9 @@ function Contact() {
                         <View className="w-12 h-12 rounded-full bg-[#578096] items-center justify-center mr-4">
                             <GlobalIcon name="map-pin" library="Feather" size={24} color="#FFFFFF" />
                         </View>
-                        <Text className="text-lg text-gray-900 dark:text-white">
+                        <AppText className="text-lg text-gray-900 dark:text-white">
                             Alaska, United State
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
                 </View>
 

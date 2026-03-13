@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -23,9 +24,9 @@ function CoachProfile() {
                 />
 
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         COACH PROFILE
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="mx-6 mb-6">
@@ -35,35 +36,35 @@ function CoachProfile() {
                             className="w-20 h-20 rounded-full"
                         />
                         <View className="flex-1 ml-4">
-                            <Text className="text-xl font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-xl font-bold text-gray-900 dark:text-white">
                                 JAMES
-                            </Text>
-                            <Text className="text-sm text-red-500 font-medium">
+                            </AppText>
+                            <AppText className="text-sm text-red-500 font-medium">
                                 9 years experience
-                            </Text>
+                            </AppText>
                         </View>
                         <View className="flex-row items-center">
                             <View className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                            <Text className="text-sm text-green-500 font-medium">Active</Text>
+                            <AppText className="text-sm text-green-500 font-medium">Active</AppText>
                         </View>
                     </View>
                 </View>
 
                 {/* Bio Section */}
                 <View className="px-6 mb-6">
-                    <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                    <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-3">
                         BIO
-                    </Text>
-                    <Text className="text-sm text-gray-600 dark:text-gray-300 leading-6">
+                    </AppText>
+                    <AppText className="text-sm text-gray-600 dark:text-gray-300 leading-6">
                         Sed ut perspiciatis unde omnis iste natus error sit thems voluptatem accusantium doloremque for a laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-                    </Text>
+                    </AppText>
                 </View>
 
                 {/* Key Expertise Section */}
                 <View className="px-6 mb-6">
-                    <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                    <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-3">
                         KEY EXPERTISE
-                    </Text>
+                    </AppText>
                     <View className="space-y-2">
                         {[
                             'Psychology',
@@ -73,9 +74,9 @@ function CoachProfile() {
                         ].map((expertise, index) => (
                             <View key={index} className="flex-row items-center mb-2">
                                 <View className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-3" />
-                                <Text className="text-sm text-blue-600 dark:text-blue-400">
+                                <AppText className="text-sm text-blue-600 dark:text-blue-400">
                                     {expertise}
-                                </Text>
+                                </AppText>
                             </View>
                         ))}
                     </View>

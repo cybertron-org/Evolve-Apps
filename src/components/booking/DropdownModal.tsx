@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { Modal, TouchableOpacity, View, Text, FlatList } from 'react-native';
+import { Modal, TouchableOpacity, View, FlatList } from 'react-native';
 
 interface DropdownOption {
     label: string;
@@ -20,8 +21,7 @@ function DropdownModal<T extends DropdownOption>({
     onSelect,
     onClose,
     isDark,
-    textPrimary,
-}: DropdownModalProps<T>) {
+    textPrimary}: DropdownModalProps<T>) {
     return (
         <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
             <TouchableOpacity
@@ -57,9 +57,9 @@ function DropdownModal<T extends DropdownOption>({
                                     borderBottomColor: isDark ? '#2A3240' : '#F1F5F9' 
                                 }}
                             >
-                                <Text style={{ color: textPrimary, fontSize: 15, fontWeight: '500' }}>
+                                <AppText style={{ color: textPrimary, fontSize: 15, fontWeight: '500' }}>
                                     {item.label}
-                                </Text>
+                                </AppText>
                             </TouchableOpacity>
                         )}
                     />

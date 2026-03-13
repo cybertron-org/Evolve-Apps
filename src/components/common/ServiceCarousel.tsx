@@ -1,5 +1,6 @@
+import AppText from './AppText';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, ScrollView, Dimensions, NativeScrollEvent, NativeSyntheticEvent, Image, Text, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { View, ScrollView, Dimensions, NativeScrollEvent, NativeSyntheticEvent, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 
 type Service = {
@@ -53,8 +54,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                 snapToInterval={CARD_WIDTH + CARD_SPACING}
                 snapToAlignment="start"
                 contentContainerStyle={{
-                    paddingHorizontal: 16,
-                }}
+                    paddingHorizontal: 16}}
             >
                 {services?.map((service, index) => (
                     <TouchableOpacity
@@ -63,8 +63,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                         activeOpacity={0.8}
                         style={{
                             width: CARD_WIDTH,
-                            marginRight: index === services.length - 1 ? 0 : CARD_SPACING,
-                        }}
+                            marginRight: index === services.length - 1 ? 0 : CARD_SPACING}}
                     >
                         <View 
                             className="rounded-2xl overflow-hidden "
@@ -88,7 +87,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                             paddingTop: isSmallScreen ? 6 : 8,
                             alignItems: 'center' 
                         }}>
-                            <Text 
+                            <AppText 
                                 className="text-gray-900 dark:text-white"
                                 numberOfLines={2}
                                 style={{ 
@@ -99,7 +98,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                                 }}
                             >
                                 {service.title}
-                            </Text>
+                            </AppText>
                         </View>
                     </TouchableOpacity>
                 ))}
@@ -121,8 +120,7 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ services, onServicePr
                             height: isSmallScreen ? 6 : 8,
                             backgroundColor: index === activeIndex 
                                 ? '#578096' 
-                                : isDark ? '#4B5563' : '#D1D5DB',
-                        }}
+                                : isDark ? '#4B5563' : '#D1D5DB'}}
                     />
                 ))}
             </View>

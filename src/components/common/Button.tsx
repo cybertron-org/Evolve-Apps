@@ -7,8 +7,9 @@ interface ButtonProps {
   onPress: () => void;
   variant?: 'primary' | 'secondary' | 'outline' | 'social';
   loading?: boolean;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
+  disabled?: boolean;
+  style?: ViewStyle | ViewStyle[];
+  textStyle?: TextStyle | TextStyle[];
   icon?: React.ReactNode;
   className?: string;
   textClassName?: string; 
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
   variant = 'primary',
   loading = false,
+  disabled = false,
   style,
   textStyle,
   icon,
@@ -53,6 +55,8 @@ export const Button: React.FC<ButtonProps> = ({
     }
   };
 
+  const isDisabled = loading || disabled;
+
   return (
     <TouchableOpacity
       className={`
@@ -60,12 +64,12 @@ export const Button: React.FC<ButtonProps> = ({
         justify-center items-center px-5 my-2
         shadow-sm
         ${getContainerClass()}
-        ${loading ? 'opacity-70' : 'opacity-100'}
+        ${isDisabled ? 'opacity-70' : 'opacity-100'}
         ${className ?? ''}
       `}
       style={style}
       onPress={onPress}
-      disabled={loading}
+      disabled={isDisabled}
       activeOpacity={0.8}
     >
       {loading ? (
@@ -75,7 +79,7 @@ export const Button: React.FC<ButtonProps> = ({
           {icon}
           <Text
             className={`text-base font-semibold ml-2 ${getTextClass()} ${textClassName ?? ''}`}
-            style={textStyle}
+            style={textStyle as any}
           >
             {title}
           </Text>

@@ -7,7 +7,7 @@ export const colors = {
     dark: '#111827',
   },
   text: {
-    light: '#1F2937',
+    light: '#28282A',
     dark: '#F9FAFB',
     muted: '#9CA3AF',
   },

@@ -34,7 +34,7 @@ const AvatarDisplay: React.FC<AvatarDisplayProps> = ({
                     overflow: 'hidden',
                     borderWidth: 2,
                     borderColor: isDark ? '#374151' : '#E5E7EB',
-                    backgroundColor: isDark ? '#1F2937' : '#F3F4F6',
+                    backgroundColor: isDark ? '#28282A' : '#F3F4F6',
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}

@@ -1,5 +1,6 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from '../common/GlobalIcon';
 
@@ -22,12 +23,12 @@ export const ProfileInfoItem: React.FC<ProfileInfoItemProps> = ({
         <View className={`mb-4 pb-4 ${!isLast ? 'border-b border-gray-200 dark:border-gray-700' : ''}`}>
             <View className="flex-row items-start justify-between">
                 <View className="flex-1">
-                    <Text className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <AppText className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                         {label}
-                    </Text>
-                    <Text className="text-base text-gray-900 dark:text-white">
+                    </AppText>
+                    <AppText className="text-base text-gray-900 dark:text-white">
                         {value}
-                    </Text>
+                    </AppText>
                 </View>
                 <TouchableOpacity
                     onPress={onEditPress}

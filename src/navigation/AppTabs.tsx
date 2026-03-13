@@ -65,7 +65,7 @@ export const AppTabs = () => {
           bottom: bottomPosition,
           left: 8,
           right: 8,
-          backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
+          backgroundColor: isDark ? '#28282A' : '#FFFFFF',
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
           borderBottomLeftRadius: bottomPosition > 0 ? 24 : 0,

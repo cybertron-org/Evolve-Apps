@@ -1,5 +1,6 @@
+import AppText from './AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from './GlobalIcon';
 
@@ -25,8 +26,8 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Angelina', userImage, onMen
                     )}
                 </View>
                 <View>
-                    <Text className="text-sm text-gray-600 dark:text-gray-400">Hi,</Text>
-                    <Text className="text-base font-semibold text-gray-900 dark:text-white">{userName}</Text>
+                    <AppText className="text-sm text-gray-600 dark:text-gray-400">Hi,</AppText>
+                    <AppText className="text-base font-semibold text-gray-900 dark:text-white">{userName}</AppText>
                 </View>
             </View>
 

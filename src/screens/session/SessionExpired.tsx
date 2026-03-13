@@ -1,5 +1,7 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Image } from 'react-native';
+import { Button } from '../../components/common/Button';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -36,12 +38,12 @@ function SessionExpired() {
 
             <View className="flex-1 items-center justify-center px-8">
                 {/* Time Duration Exceed */}
-                <Text className="text-2xl font-bold text-center mb-2" style={{ color: '#E74C3C' }}>
+                <AppText className="text-2xl font-bold text-center mb-2" style={{ color: '#E74C3C' }}>
                     TIME DURATION EXCEED
-                </Text>
-                <Text className="text-base text-gray-500 dark:text-gray-400 text-center mb-8">
+                </AppText>
+                <AppText className="text-base text-gray-500 dark:text-gray-400 text-center mb-8">
                     Your Session has been closed
-                </Text>
+                </AppText>
 
                 {/* Pay Now illustration */}
                 <View className="mb-3 items-center">
@@ -53,41 +55,37 @@ function SessionExpired() {
                     </View>
                 </View>
 
-                <Text className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Pay Now</Text>
-                <Text className="text-sm text-gray-500 dark:text-gray-400 text-center mb-8">
+                <AppText className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Pay Now</AppText>
+                <AppText className="text-sm text-gray-500 dark:text-gray-400 text-center mb-8">
                     to re-connect with our Coach
-                </Text>
+                </AppText>
 
                 {/* Cancel / Pay Buttons */}
-                <View className="flex-row mb-6" style={{ gap: 16 }}>
-                    <TouchableOpacity
+                <View className="flex-row mb-6 w-full" style={{ gap: 16 }}>
+                    <Button
+                        title="CANCEL"
                         onPress={handleCancel}
-                        className="rounded-full py-4 flex-1 items-center border-2"
+                        variant="outline"
+                        className="border-2 flex-1"
                         style={{ borderColor: '#1E3A5F', minWidth: 120 }}
-                        activeOpacity={0.8}
-                    >
-                        <Text className="font-bold text-base" style={{ color: '#1E3A5F' }}>CANCEL</Text>
-                    </TouchableOpacity>
+                        textStyle={{ color: '#1E3A5F' }}
+                    />
 
-                    <TouchableOpacity
+                    <Button
+                        title="PAY"
                         onPress={handlePay}
-                        className="rounded-full py-4 flex-1 items-center"
+                        className="flex-1"
                         style={{ backgroundColor: '#578096', minWidth: 120 }}
-                        activeOpacity={0.8}
-                    >
-                        <Text className="text-white font-bold text-base">PAY</Text>
-                    </TouchableOpacity>
+                    />
                 </View>
 
                 {/* Intake Assessment */}
-                <TouchableOpacity
+                <Button
+                    title="INTAKE ASSESSMENT"
                     onPress={handleIntakeAssessment}
-                    className="rounded-full py-4 w-full items-center"
+                    className="w-full"
                     style={{ backgroundColor: '#1E3A5F' }}
-                    activeOpacity={0.8}
-                >
-                    <Text className="text-white font-bold text-base">INTAKE ASSESSMENT</Text>
-                </TouchableOpacity>
+                />
             </View>
 
             <MenuDrawer

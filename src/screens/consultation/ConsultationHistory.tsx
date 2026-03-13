@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -22,22 +23,19 @@ const consultations: ConsultationItem[] = [
         title: 'Executive Coaching Session',
         price: 0,
         status: 'free',
-        startTime: '30 minutes',
-    },
+        startTime: '30 minutes'},
     {
         id: 2,
         title: 'Executive Coaching Session',
         price: 30,
         status: 'paid',
-        startTime: '30 minutes',
-    },
+        startTime: '30 minutes'},
     {
         id: 3,
         title: 'ADA Accommodations Consultation',
         price: 60,
         status: 'paid',
-        startTime: '30 minutes',
-    },
+        startTime: '30 minutes'},
 ];
 
 function ConsultationHistory() {
@@ -63,9 +61,9 @@ function ConsultationHistory() {
                 />
 
                 <View className="px-6 mt-4 mb-4">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         CONSULTATION HISTORY
-                    </Text>
+                    </AppText>
                 </View>
 
                 <View className="px-6 mb-4">
@@ -73,9 +71,9 @@ function ConsultationHistory() {
                         onPress={() => setSortOrder(sortOrder === 'older' ? 'newer' : 'older')}
                         className="flex-row items-center"
                     >
-                        <Text className="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                        <AppText className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                             {sortOrder}
-                        </Text>
+                        </AppText>
                         <GlobalIcon 
                             name="chevron-down" 
                             library="Feather" 
@@ -91,9 +89,9 @@ function ConsultationHistory() {
                             key={consultation.id}
                             className="bg-white dark:bg-gray-800 rounded-2xl p-4 mb-4 border border-gray-200 dark:border-gray-700"
                         >
-                            <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                            <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-3">
                                 {consultation.title}
-                            </Text>
+                            </AppText>
 
                             <View className="flex-row items-center mb-4">
                                 <GlobalIcon 
@@ -102,7 +100,7 @@ function ConsultationHistory() {
                                     size={16} 
                                     color={consultation.status === 'free' ? '#10B981' : '#6B7280'} 
                                 />
-                                <Text 
+                                <AppText 
                                     className={`ml-2 text-sm font-semibold ${
                                         consultation.status === 'free' 
                                             ? 'text-green-500' 
@@ -110,10 +108,10 @@ function ConsultationHistory() {
                                     }`}
                                 >
                                     {consultation.status === 'free' ? 'Free' : `$${consultation.price}`}
-                                </Text>
-                                <Text className="ml-2 text-xs text-red-500">
+                                </AppText>
+                                <AppText className="ml-2 text-xs text-red-500">
                                     Start in {consultation.startTime}
-                                </Text>
+                                </AppText>
                             </View>
 
                             <TouchableOpacity
@@ -122,9 +120,9 @@ function ConsultationHistory() {
                                 className="rounded-full py-3"
                                 style={{ backgroundColor: isDark ? '#94A3B8' : '#7FA5B8' }}
                             >
-                                <Text className="text-center text-white font-semibold text-sm">
+                                <AppText className="text-center text-white font-semibold text-sm">
                                     VIEW INTAKE ASSESSMENT
-                                </Text>
+                                </AppText>
                             </TouchableOpacity>
                         </View>
                     ))}

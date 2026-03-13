@@ -1,5 +1,6 @@
+import AppText from './AppText';
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { View, Image, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 
 interface ServiceCardProps {
@@ -24,9 +25,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, image, onPress }) => {
                 resizeMode="cover"
             />
             <View className="p-3">
-                <Text className="text-sm font-semibold text-gray-900 dark:text-white" numberOfLines={2}>
+                <AppText className="text-sm font-semibold text-gray-900 dark:text-white" numberOfLines={2}>
                     {title}
-                </Text>
+                </AppText>
             </View>
         </TouchableOpacity>
     );

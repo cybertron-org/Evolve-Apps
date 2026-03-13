@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -36,8 +37,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
         startTime: '8:00 PM',
         duration: '45 Minutes',
-        isLive: true,
-    },
+        isLive: true},
     2: {
         id: 2,
         title: 'Executive Coaching Session',
@@ -46,8 +46,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
         startTime: '10:00 AM',
         duration: '60 Minutes',
-        isLive: false,
-    },
+        isLive: false},
     3: {
         id: 3,
         title: 'ADA Accommodations Consultation',
@@ -56,8 +55,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
         startTime: '2:00 PM',
         duration: '30 Minutes',
-        isLive: true,
-    },
+        isLive: true},
     // New consultations (IDs 101-104)
     101: {
         id: 101,
@@ -67,8 +65,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
         startTime: '9:00 AM',
         duration: '30 Minutes',
-        isLive: false,
-    },
+        isLive: false},
     102: {
         id: 102,
         title: 'Executive Coaching Session',
@@ -77,8 +74,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
         startTime: '9:00 AM',
         duration: '45 Minutes',
-        isLive: true,
-    },
+        isLive: true},
     103: {
         id: 103,
         title: 'ADA Accommodations Consultation',
@@ -87,8 +83,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
         startTime: '9:00 AM',
         duration: '30 Minutes',
-        isLive: false,
-    },
+        isLive: false},
     104: {
         id: 104,
         title: 'Wellness Coaching',
@@ -97,9 +92,7 @@ const sessionsData: Record<number, SessionData> = {
         coachImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
         startTime: '10:00 AM',
         duration: '60 Minutes',
-        isLive: false,
-    },
-};
+        isLive: false}};
 
 function OnlineSession() {
     const { isDark } = useTheme();
@@ -138,48 +131,48 @@ function OnlineSession() {
                 {/* Session Card */}
                 <View className="mx-6 mt-4 mb-6">
                     <View className="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
-                        <Text className="text-lg font-bold text-gray-900 dark:text-white text-center mb-4">
+                        <AppText className="text-lg font-bold text-gray-900 dark:text-white text-center mb-4">
                             {session.title}
-                        </Text>
+                        </AppText>
                         <TouchableOpacity
                             onPress={handleViewDetail}
                             className="rounded-full py-3 mb-4"
                             style={{ backgroundColor: '#7FA5B8' }}
                             activeOpacity={0.8}
                         >
-                            <Text className="text-center text-white font-semibold text-sm">
+                            <AppText className="text-center text-white font-semibold text-sm">
                                 VIEW DETAIL
-                            </Text>
+                            </AppText>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {/* Coach Info */}
                 <View className="px-6 mb-6">
-                    <Text className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                         Coach Name
-                    </Text>
+                    </AppText>
                     <View className="flex-row items-center">
                         <Image
                             source={{ uri: session.coachImage }}
                             className="w-16 h-16 rounded-full"
                         />
                         <View className="ml-4">
-                            <Text className="text-base font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-base font-bold text-gray-900 dark:text-white">
                                 {session.coachName}
-                            </Text>
-                            <Text className="text-sm text-gray-500 dark:text-gray-400">
+                            </AppText>
+                            <AppText className="text-sm text-gray-500 dark:text-gray-400">
                                 {session.coachExperience}
-                            </Text>
+                            </AppText>
                         </View>
                     </View>
                 </View>
 
                 {/* Start Time */}
                 <View className="px-6 mb-6">
-                    <Text className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                         Start Time
-                    </Text>
+                    </AppText>
                     <View className="flex-row items-center">
                         <View 
                             className="w-12 h-12 rounded-full items-center justify-center"
@@ -188,21 +181,21 @@ function OnlineSession() {
                             <GlobalIcon name="clock" library="Feather" size={24} color="#FFFFFF" />
                         </View>
                         <View className="ml-4">
-                            <Text className="text-base font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-base font-bold text-gray-900 dark:text-white">
                                 {session.startTime}
-                            </Text>
-                            <Text className="text-sm text-gray-500 dark:text-gray-400">
+                            </AppText>
+                            <AppText className="text-sm text-gray-500 dark:text-gray-400">
                                 Time
-                            </Text>
+                            </AppText>
                         </View>
                     </View>
                 </View>
 
                 {/* Duration */}
                 <View className="px-6 mb-6">
-                    <Text className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                    <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                         Duration
-                    </Text>
+                    </AppText>
                     <View className="flex-row items-center">
                         <View 
                             className="w-12 h-12 rounded-full items-center justify-center"
@@ -211,12 +204,12 @@ function OnlineSession() {
                             <GlobalIcon name="clock" library="Feather" size={24} color="#FFFFFF" />
                         </View>
                         <View className="ml-4">
-                            <Text className="text-base font-bold text-gray-900 dark:text-white">
+                            <AppText className="text-base font-bold text-gray-900 dark:text-white">
                                 {session.duration}
-                            </Text>
-                            <Text className="text-sm text-gray-500 dark:text-gray-400">
+                            </AppText>
+                            <AppText className="text-sm text-gray-500 dark:text-gray-400">
                                 Duration
-                            </Text>
+                            </AppText>
                         </View>
                     </View>
                 </View>
@@ -224,9 +217,9 @@ function OnlineSession() {
                 {/* Live Status */}
                 {session.isLive && (
                     <View className="px-6 mb-6">
-                        <Text className="text-center text-red-500 font-semibold text-base">
+                        <AppText className="text-center text-red-500 font-semibold text-base">
                             Session is Live
-                        </Text>
+                        </AppText>
                     </View>
                 )}
 
@@ -238,9 +231,9 @@ function OnlineSession() {
                         className="rounded-full py-4"
                         style={{ backgroundColor: '#1E3A5F' }}
                     >
-                        <Text className="text-center text-white font-bold text-base">
+                        <AppText className="text-center text-white font-bold text-base">
                             JOIN NOW
-                        </Text>
+                        </AppText>
                     </TouchableOpacity>
                 </View>
 

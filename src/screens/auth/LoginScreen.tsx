@@ -1,9 +1,11 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeContext';
 import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
+import GlobalIcon from '../../components/common/GlobalIcon';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -12,6 +14,8 @@ type NavProp = NativeStackNavigationProp<RootStackParamList>;
 const { height } = Dimensions.get('window');
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8}$/;
+// const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/;
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
 
 const LoginScreen: React.FC = () => {
@@ -20,6 +24,7 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<NavProp>();
 
   const handleSubmit = () => {
@@ -72,13 +77,13 @@ const LoginScreen: React.FC = () => {
             resizeMode="contain"
           />
 
-          <Text className="text-sublabel dark:text-sublabel-dark text-2xl font-bold uppercase mt-4 tracking-widest">
+          <AppText className="text-sublabel dark:text-sublabel-dark text-2xl font-bold uppercase mt-4 tracking-widest">
             CREATE ACCOUNT
-          </Text>
+          </AppText>
 
-          <Text className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
+          <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
             Hi, Welcome to evolve vocational
-          </Text>
+          </AppText>
         </View>
 
         <View className="mt-10 w-full px-4 sm:px-6 md:px-8">
@@ -94,16 +99,29 @@ const LoginScreen: React.FC = () => {
               placeholder="Enter your Email"
               error={emailError}
             />
-             <Input
+              <Input
               label="Enter Your Password"
               value={password}
               onChangeText={(text) => {
                 setPassword(text);
                 if (passwordError) setPasswordError('');
               }}
-              secureTextEntry={true}
-              placeholder="*******"
+              secureTextEntry={!showPassword}
+              placeholder="Enter your password"
               error={passwordError}
+              rightIcon={
+                <TouchableOpacity 
+                  onPress={() => setShowPassword(!showPassword)}
+                  className="p-1"
+                >
+                  <GlobalIcon 
+                    name={showPassword ? "eye" : "eye-off"} 
+                    library="Feather" 
+                    size={20} 
+                    color={isDark ? "#c1c6cf" : "#9CA3AF"} 
+                  />
+                </TouchableOpacity>
+              }
             />
           </View>
 

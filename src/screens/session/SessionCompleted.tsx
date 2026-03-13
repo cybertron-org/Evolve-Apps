@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -39,9 +40,9 @@ function SessionCompleted() {
                 <View className="mb-8 items-center">
                     {/* Top sparkles */}
                     <View className="flex-row mb-2">
-                        <Text style={{ fontSize: 20, color: '#F59E0B' }}>✦</Text>
+                        <AppText style={{ fontSize: 20, color: '#F59E0B' }}>✦</AppText>
                         <View style={{ width: 40 }} />
-                        <Text style={{ fontSize: 16, color: '#F97316' }}>✦</Text>
+                        <AppText style={{ fontSize: 16, color: '#F97316' }}>✦</AppText>
                     </View>
 
                     {/* Green badge */}
@@ -54,15 +55,15 @@ function SessionCompleted() {
 
                     {/* Bottom sparkles */}
                     <View className="flex-row mt-2">
-                        <Text style={{ fontSize: 16, color: '#EC4899' }}>✦</Text>
+                        <AppText style={{ fontSize: 16, color: '#EC4899' }}>✦</AppText>
                         <View style={{ width: 50 }} />
-                        <Text style={{ fontSize: 16, color: '#8B5CF6' }}>✦</Text>
+                        <AppText style={{ fontSize: 16, color: '#8B5CF6' }}>✦</AppText>
                     </View>
                 </View>
 
-                <Text className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+                <AppText className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
                     CONSULTATION SESSION{'\n'}COMPLETED
-                </Text>
+                </AppText>
 
                 {type === 'invoice' ? (
                     <>
@@ -72,11 +73,11 @@ function SessionCompleted() {
                             style={{ backgroundColor: '#578096' }}
                             activeOpacity={0.8}
                         >
-                            <Text className="text-white font-bold text-lg">PAY INVOICE</Text>
+                            <AppText className="text-white font-bold text-lg">PAY INVOICE</AppText>
                         </TouchableOpacity>
-                        <Text className="text-base font-semibold mb-2" style={{ color: '#E74C3C' }}>
+                        <AppText className="text-base font-semibold mb-2" style={{ color: '#E74C3C' }}>
                             Generated Invoice $60
-                        </Text>
+                        </AppText>
                     </>
                 ) : (
                     <TouchableOpacity
@@ -85,7 +86,7 @@ function SessionCompleted() {
                         style={{ backgroundColor: '#1E3A5F' }}
                         activeOpacity={0.8}
                     >
-                        <Text className="text-white font-bold text-lg">INTAKE ASSESSMENT</Text>
+                        <AppText className="text-white font-bold text-lg">INTAKE ASSESSMENT</AppText>
                     </TouchableOpacity>
                 )}
             </View>

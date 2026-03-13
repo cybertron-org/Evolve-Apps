@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -21,8 +22,7 @@ function Services() {
     const services: ServiceItem[] = getAllServices().map(service => ({
         id: service.id,
         title: service.title,
-        image: service.thumbnail,
-    }));
+        image: service.thumbnail}));
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [menuVisible, setMenuVisible] = useState(false);
@@ -45,9 +45,9 @@ function Services() {
 
                 {/* Title */}
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         OUR SERVICES
-                    </Text>
+                    </AppText>
                 </View>
 
                 {/* Services Grid */}
@@ -67,12 +67,12 @@ function Services() {
                                     resizeMode="cover"
                                 />
                                 <View className="p-3">
-                                    <Text 
+                                    <AppText 
                                         className="text-sm font-semibold text-gray-900 dark:text-white" 
                                         numberOfLines={2}
                                     >
                                         {service.title}
-                                    </Text>
+                                    </AppText>
                                 </View>
                             </TouchableOpacity>
                         ))}

@@ -1,5 +1,6 @@
+import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -22,16 +23,14 @@ const messages: Message[] = [
         message: 'Hi, how are you doing today?',
         time: '10:30 AM',
         unread: true,
-        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
-    },
+        avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400'},
     {
         id: 2,
         name: 'Sarah Counselor',
         message: 'Your session is scheduled for tomorrow',
         time: 'Yesterday',
         unread: false,
-        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
-    },
+        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400'},
 ];
 
 function Messages() {
@@ -52,9 +51,9 @@ function Messages() {
 
                 {/* Title */}
                 <View className="px-6 mt-4 mb-6">
-                    <Text className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <AppText className="text-2xl font-bold text-gray-900 dark:text-white">
                         Messages
-                    </Text>
+                    </AppText>
                 </View>
 
                 {/* Messages List */}
@@ -71,14 +70,14 @@ function Messages() {
                             />
                             <View className="flex-1 ml-4">
                                 <View className="flex-row items-center justify-between mb-1">
-                                    <Text className="text-base font-semibold text-gray-900 dark:text-white">
+                                    <AppText className="text-base font-semibold text-gray-900 dark:text-white">
                                         {msg.name}
-                                    </Text>
-                                    <Text className="text-xs text-gray-500 dark:text-gray-400">
+                                    </AppText>
+                                    <AppText className="text-xs text-gray-500 dark:text-gray-400">
                                         {msg.time}
-                                    </Text>
+                                    </AppText>
                                 </View>
-                                <Text 
+                                <AppText 
                                     className={`text-sm ${
                                         msg.unread 
                                             ? 'text-gray-900 dark:text-white font-medium' 
@@ -87,7 +86,7 @@ function Messages() {
                                     numberOfLines={1}
                                 >
                                     {msg.message}
-                                </Text>
+                                </AppText>
                             </View>
                             {msg.unread && (
                                 <View className="w-2 h-2 rounded-full bg-blue-500 ml-2" />

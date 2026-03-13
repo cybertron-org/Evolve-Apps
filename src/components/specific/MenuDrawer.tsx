@@ -1,10 +1,22 @@
+import AppText from '../common/AppText';
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, Pressable, Switch, ScrollView, Alert } from 'react-native';
+import { View, TouchableOpacity, Modal, Pressable, Switch, ScrollView, Alert } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import GlobalIcon from '../common/GlobalIcon';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
+import {
+    ProfileManuSvg,
+    ConsultationManuSvg,
+    InvoiceManuSvg,
+    AssessmentManuSvg,
+    TranscationsManuSvg,
+    AboutManuSvg,
+    ContactManuSvg,
+    FaqManuSvg,
+    LogoutManuSvg
+} from '../../assets/svg/manu';
 
 interface MenuDrawerProps {
     visible: boolean;
@@ -15,21 +27,20 @@ interface MenuDrawerProps {
 type MenuItem = {
     key: string;
     label: string;
-    icon: string;
-    library?: 'Feather' | 'MaterialIcons' | 'FontAwesome';
+    SvgComponent: React.ComponentType<any>;
     route?: keyof RootStackParamList;
 };
 
 const menuItems: MenuItem[] = [
-    { key: 'profile', label: 'My Profile', icon: 'user', library: 'Feather', route: 'Profile' },
-    { key: 'consultation', label: 'My Consultation', icon: 'video', library: 'Feather', route: 'ConsultationList' },
-    { key: 'invoice', label: 'Invoice', icon: 'file-text', library: 'Feather', route: 'Invoice' },
-    { key: 'assessment', label: 'Assessment / Exercise', icon: 'clipboard', library: 'Feather', route: 'Assessment' },
-    { key: 'transactions', label: 'Transactions', icon: 'credit-card', library: 'Feather', route: 'Transactions' },
-    { key: 'about', label: 'About Evolve', icon: 'info', library: 'Feather', route: 'About' },
-    { key: 'contact', label: 'Contact Us', icon: 'phone', library: 'Feather', route: 'Contact' },
-    { key: 'faq', label: 'FAQ', icon: 'help-circle', library: 'Feather', route: 'FAQ' },
-    { key: 'logout', label: 'Logout', icon: 'log-out', library: 'Feather' },
+    { key: 'profile', label: 'My Profile', SvgComponent: ProfileManuSvg, route: 'Profile' },
+    { key: 'consultation', label: 'My Consultation', SvgComponent: ConsultationManuSvg, route: 'ConsultationList' },
+    { key: 'invoice', label: 'Invoice', SvgComponent: InvoiceManuSvg, route: 'Invoice' },
+    { key: 'assessment', label: 'Assessment / Exercise', SvgComponent: AssessmentManuSvg, route: 'Assessment' },
+    { key: 'transactions', label: 'Transactions', SvgComponent: TranscationsManuSvg, route: 'Transactions' },
+    { key: 'about', label: 'About Evolve', SvgComponent: AboutManuSvg, route: 'About' },
+    { key: 'contact', label: 'Contact Us', SvgComponent: ContactManuSvg, route: 'Contact' },
+    { key: 'faq', label: 'FAQ', SvgComponent: FaqManuSvg, route: 'FAQ' },
+    { key: 'logout', label: 'Logout', SvgComponent: LogoutManuSvg },
 ];
 
 const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPress }) => {
@@ -51,13 +62,14 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                     text: 'Logout',
                     style: 'destructive',
                     onPress: () => {
-                        // Reset navigation stack and go to Auth screen
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'Auth' }],
+                        import('../../../App').then(({ storage }) => {
+                            storage.remove('NAVIGATION_STATE');
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'Welcome' as any }]
+                            });
                         });
-                    },
-                },
+                    }},
             ]
         );
     };
@@ -68,9 +80,18 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
             handleLogout();
             return;
         }
+        
         if (item.route) {
-            navigation.navigate(item.route as any);
+            const tabRoutes = ['Home', 'Messages', 'Services', 'History', 'Profile'];
+            if (tabRoutes.includes(item.route)) {
+                // Navigate to nested tab in Main navigator
+                navigation.navigate('Main', { screen: item.route });
+            } else {
+                // Navigate to root stack screen
+                navigation.navigate(item.route as any);
+            }
         }
+        
         onMenuItemPress(item.key);
         onClose();
     };
@@ -83,89 +104,78 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
             onRequestClose={onClose}
         >
             <Pressable
-                style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}
+                style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center' }}
                 onPress={onClose}
             >
-                <Pressable
-                    style={{
-                        position: 'absolute',
-                        top: 80,
-                        right: 16,
-                        width: 300,
-                        maxHeight: '85%',
-                        backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
-                        borderRadius: 16,
-                        shadowColor: '#000',
-                        shadowOffset: { width: 0, height: 8 },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 16,
-                        elevation: 12,
-                        overflow: 'hidden',
-                    }}
-                    onPress={(e) => e.stopPropagation()}
-                >
-                    {/* Close Button */}
+                <View style={{ width: '90%', maxWidth: 340 }}>
+                    {/* Floating Close Button */}
                     <TouchableOpacity
                         onPress={onClose}
                         style={{
                             position: 'absolute',
-                            top: 12,
-                            left: 12,
-                            width: 32,
-                            height: 32,
-                            borderRadius: 16,
+                            top: -24,
+                            right: -12,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            backgroundColor: '#1E2944',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: isDark ? '#374151' : '#F3F4F6',
-                            zIndex: 10,
+                            zIndex: 100,
+                            borderWidth: 2,
+                            borderColor: '#FFFFFF'
                         }}
                     >
-                        <GlobalIcon name="x" library="Feather" size={18} color={isDark ? '#F1F5F9' : '#1E293B'} />
+                        <GlobalIcon name="x" library="Feather" size={24} color="#FFFFFF" />
                     </TouchableOpacity>
 
-                    <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-                        <View style={{ paddingVertical: 32 }}>
-                            {/* Theme Toggle */}
-                            <View
-                                style={{
-                                    paddingHorizontal: 20,
-                                    paddingVertical: 14,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ width: 40 }}>
-                                        <GlobalIcon
-                                            name={isDark ? 'moon' : 'sun'}
-                                            library="Feather"
-                                            size={20}
-                                            color={isDark ? '#94A3B8' : '#64748B'}
-                                        />
-                                    </View>
-                                    <Text style={{ fontSize: 16, color: isDark ? '#FFFFFF' : '#111827' }}>
-                                        {isDark ? 'Dark Mode' : 'Light Mode'}
-                                    </Text>
-                                </View>
-                                <Switch
-                                    value={isDark}
-                                    onValueChange={handleThemeToggle}
-                                    trackColor={{ false: '#D1D5DB', true: '#578096' }}
-                                    thumbColor={isDark ? '#FFFFFF' : '#F3F4F6'}
-                                    ios_backgroundColor="#D1D5DB"
+                    {/* Main Container */}
+                    <View
+                        style={{
+                            backgroundColor: isDark ? '#1F2937' : '#F4F7F9',
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 10 },
+                            shadowOpacity: 0.3,
+                            shadowRadius: 20,
+                            elevation: 15
+                        }}
+                    >
+                        {/* Theme Toggle (Optional but kept for functionality) */}
+                        <View
+                            style={{
+                                paddingHorizontal: 25,
+                                paddingVertical: 12,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                borderBottomWidth: 1,
+                                borderBottomColor: isDark ? '#374151' : '#E5E7EB'
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <GlobalIcon
+                                    name={isDark ? 'moon' : 'sun'}
+                                    library="Feather"
+                                    size={18}
+                                    color={isDark ? '#E5E7EB' : '#64748B'}
                                 />
+                                <AppText style={{ fontSize: 14, fontWeight: '600', color: isDark ? '#E5E7EB' : '#1E3A5F', marginLeft: 10 }}>
+                                    {isDark ? 'Dark Mode' : 'Light Mode'}
+                                </AppText>
                             </View>
-
-                            {/* Divider */}
-                            <View
-                                style={{
-                                    marginHorizontal: 20,
-                                    height: 1,
-                                    backgroundColor: isDark ? '#374151' : '#F3F4F6',
-                                }}
+                            <Switch
+                                value={isDark}
+                                onValueChange={handleThemeToggle}
+                                trackColor={{ false: '#D1D5DB', true: '#578096' }}
+                                thumbColor="#FFFFFF"
+                                ios_backgroundColor="#D1D5DB"
+                                style={{ transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] }}
                             />
+                        </View>
 
+                        <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                             {menuItems.map((item, index) => (
                                 <View key={item.key}>
                                     <TouchableOpacity
@@ -175,56 +185,44 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                                             flexDirection: 'row',
                                             alignItems: 'center',
                                             paddingHorizontal: 20,
-                                            paddingVertical: 14,
-                                        }}
+                                            paddingVertical: 18,
+                                            backgroundColor: isDark ? '#1F2937' : '#F4F7F9'}}
                                     >
-                                        <View style={{ width: 40 }}>
-                                            <GlobalIcon
-                                                name={item.icon}
-                                                library={item.library || 'Feather'}
-                                                size={20}
-                                                color={
-                                                    item.key === 'logout'
-                                                        ? '#EF4444'
-                                                        : isDark
-                                                        ? '#94A3B8'
-                                                        : '#64748B'
-                                                }
+                                        <View style={{ width: 32, alignItems: 'center' }}>
+                                            <item.SvgComponent 
+                                                width={22} 
+                                                height={22} 
+                                                color={isDark ? '#E5E7EB' : '#374151'} 
                                             />
                                         </View>
-                                        <Text
+                                        <AppText
                                             style={{
                                                 fontSize: 16,
-                                                color:
-                                                    item.key === 'logout'
-                                                        ? '#EF4444'
-                                                        : isDark
-                                                        ? '#FFFFFF'
-                                                        : '#111827',
-                                                flexShrink: 1,
-                                            }}
+                                                fontWeight: '600',
+                                                color: isDark ? '#E5E7EB' : '#374151',
+                                                marginLeft: 12,
+                                                flexShrink: 1}}
                                             numberOfLines={1}
                                         >
                                             {item.label}
-                                        </Text>
+                                        </AppText>
                                     </TouchableOpacity>
                                     {index < menuItems.length - 1 && (
                                         <View
                                             style={{
-                                                marginHorizontal: 20,
                                                 height: 1,
-                                                backgroundColor: isDark ? '#374151' : '#F3F4F6',
-                                            }}
+                                                backgroundColor: isDark ? '#374151' : '#E5E7EB'}}
                                         />
                                     )}
                                 </View>
                             ))}
-                        </View>
-                    </ScrollView>
-                </Pressable>
+                        </ScrollView>
+                    </View>
+                </View>
             </Pressable>
         </Modal>
     );
 };
+
 
 export default MenuDrawer;

@@ -1,15 +1,13 @@
+import AppText from '../../components/common/AppText';
 import React, { useState, useRef, useEffect } from 'react';
 import {
     View,
-    Text,
     Image,
     Dimensions,
     TouchableOpacity,
-    TextInput,
     KeyboardAvoidingView,
     Platform,
-    ScrollView,
-} from 'react-native';
+    ScrollView} from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import { useTheme } from '../../theme/ThemeContext';
 import { Button } from '../../components/common/Button';
@@ -42,14 +40,13 @@ useEffect(() => {
   showToast({
     type: 'success',
     title: 'OTP Sent!',
-    message: `Check your inbox: ${email}`,
-  });
+    message: `Check your inbox: ${email}`});
 }, []); 
 
 
     const [otp, setOtp] = useState(['', '', '', '']);
     const [showAccountCreated, setShowAccountCreated] = useState(false);
-    const inputRefs = useRef<Array<TextInput | null>>([]);
+    const inputRefs = useRef<Array<any | null>>([]);
 
     const phoneNumber = '+823478252532';
 
@@ -140,13 +137,13 @@ useEffect(() => {
                                 resizeMode="contain"
                             />
 
-                            <Text className="text-sublabel dark:text-sublabel-dark text-xl font-bold uppercase mt-4 tracking-widest">
+                            <AppText className="text-sublabel dark:text-sublabel-dark text-xl font-bold uppercase mt-4 tracking-widest">
                                 OTP VERIFICATION
-                            </Text>
+                            </AppText>
 
-                            <Text className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-2 opacity-70">
+                            <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-2 opacity-70">
                                 Code has been sent to {phoneNumber}
-                            </Text>
+                            </AppText>
                         </View>
 
                         <View className="mt-10 w-full">
@@ -166,16 +163,14 @@ useEffect(() => {
                                                 className="w-16 text-center font-bold px-0"
                                                 style={[
                                                 {
-                                                        backgroundColor: getInputBgColor(digit),fontSize: otpFontSize ,
-                                                      
-                                                    }]
+                                                        backgroundColor: getInputBgColor(digit),fontSize: otpFontSize }]
                                             }
                                             />
                                         </View>
                                         {index === 1 && (
-                                            <Text className="text-2xl font-bold text-sublabel dark:text-sublabel-dark mx-2">
+                                            <AppText className="text-2xl font-bold text-sublabel dark:text-sublabel-dark mx-2">
                                                 -
-                                            </Text>
+                                            </AppText>
                                         )}
                                     </React.Fragment>
                                 ))}
@@ -183,13 +178,13 @@ useEffect(() => {
                         </View>
 
                        <View className=" justify-center items-center mt-8">
-                            <Text className="text-sublabel dark:text-sublabel-dark text-base not-italic font-normal">
+                            <AppText className="text-sublabel dark:text-sublabel-dark text-base not-italic font-normal">
                                 Didn't get OTP Code?{' '}
-                            </Text>
+                            </AppText>
                             <TouchableOpacity onPress={handleResendCode}>
-                                <Text className="text-gray-600 text-base not-italic font-normal">
+                                <AppText className="text-gray-600 text-base not-italic font-normal">
                                     Resend Code
-                                </Text>
+                                </AppText>
                             </TouchableOpacity>
                         </View>
 
@@ -203,14 +198,12 @@ useEffect(() => {
                                     backgroundColor: isDark ? '#BDC3C7' : '#578096',
                                     width: '100%',
                                     borderRadius: 30,
-                                    height: 50,
-                                }}
+                                    height: 50}}
                                 textStyle={{
                                     color: isDark ? '#333337' : '#FFFFFF',
                                     fontSize: 16,
                                     fontWeight: 'bold',
-                                    letterSpacing: 2,
-                                }}
+                                    letterSpacing: 2}}
                             />
                         </View>
 

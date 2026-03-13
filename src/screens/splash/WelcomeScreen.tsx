@@ -1,6 +1,7 @@
+import AppText from '../../components/common/AppText';
 // src/screens/auth/WelcomeScreen.tsx
 import React, { useRef, useState } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeToggle } from '../../components/common/ThemeToggle';
@@ -54,9 +55,9 @@ export const WelcomeScreen: React.FC = () => {
           />
         </View>
         <View className="mb-16 px-6 gap-y-4">
-          <Text className="text-sublabel dark:text-sublabel-dark text-center tracking-widest uppercase">
+          <AppText className="text-sublabel dark:text-sublabel-dark text-center tracking-widest uppercase">
             LOW-SENSORY MODE
-          </Text>
+          </AppText>
           <ThemeToggle />
         </View>
       </ScreenWrapper>
