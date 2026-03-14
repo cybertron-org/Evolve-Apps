@@ -17,6 +17,7 @@ interface IconProps {
   name: string;
   size?: any;
   color?: any;
+  style?: any;
 }
 
 interface IconLibraries {

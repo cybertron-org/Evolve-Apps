@@ -61,8 +61,7 @@ function Profile() {
     };
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <ScreenWrapper scroll={true}>
                 <ProfileHeader 
                     name={userProfile.name} 
                     avatar={userProfile.avatar}
@@ -111,7 +110,6 @@ function Profile() {
                 />
 
                 <View className="h-24" />
-            </ScrollView>
 
             <MenuDrawer
                 visible={menuVisible}

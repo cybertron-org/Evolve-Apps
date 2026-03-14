@@ -1,33 +1,103 @@
-import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeContext';
 import GlobalIcon from '../components/common/GlobalIcon';
+
+// Screen Imports
 import Home from '../screens/home/Home';
 import Messages from '../screens/messages/Messages';
 import Services from '../screens/services/Services';
 import History from '../screens/history/History';
 import Profile from '../screens/user/Profile';
-import ServicesSvg from '../assets/svg/service';
-import { HomeSvg , MessageSvg , HistorySvg , ProfileSvg} from '../assets/svg';
 
+// Sub-screen Imports
+import ServiceDetail from '../screens/services/ServiceDetail';
+import ConsultationList from '../screens/consultation/ConsultationList';
+import BookingCalendar from '../screens/booking/BookingCalendar';
+import Transactions from '../screens/transactions/Transactions';
+import Contact from '../screens/contact/Contact';
+import About from '../screens/about/About';
+import Invoice from '../screens/invoice/Invoice';
+import PayslipDetail from '../screens/invoice/PayslipDetail';
+import Assessment from '../screens/assessment/Assessment';
+import FAQ from '../screens/faq/FAQ';
+import CoachProfile from '../screens/coach/CoachProfile';
+import PurchaseSummary from '../screens/payment/PurchaseSummary';
+import PaymentInProcess from '../screens/payment/PaymentInProcess';
+import PaymentSuccess from '../screens/payment/PaymentSuccess';
+import PaymentFailed from '../screens/payment/PaymentFailed';
+import SessionExpired from '../screens/session/SessionExpired';
+import SessionCompleted from '../screens/session/SessionCompleted';
+import ConsultationHistory from '../screens/consultation/ConsultationHistory';
+import ChatDetail from '../screens/messages/ChatDetail';
+
+import { HomeSvg, MessageSvg, HistorySvg, ProfileSvg } from '../assets/svg';
+import ServicesSvg from '../assets/svg/service';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+// --- Nested Stacks ---
+
+const HomeStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="HomeMain" component={Home} />
+    <Stack.Screen name="About" component={About} />
+    <Stack.Screen name="Contact" component={Contact} />
+    <Stack.Screen name="FAQ" component={FAQ} />
+    <Stack.Screen name="Transactions" component={Transactions} />
+    <Stack.Screen name="ConsultationList" component={ConsultationList} />
+  </Stack.Navigator>
+);
+
+const MessagesStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="MessagesMain" component={Messages} />
+    <Stack.Screen name="ChatDetail" component={ChatDetail} />
+  </Stack.Navigator>
+);
+
+const ServicesStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="ServicesMain" component={Services} />
+    <Stack.Screen name="ServiceDetail" component={ServiceDetail} />
+    <Stack.Screen name="BookingCalendar" component={BookingCalendar} />
+    <Stack.Screen name="PurchaseSummary" component={PurchaseSummary} />
+    <Stack.Screen name="PaymentInProcess" component={PaymentInProcess} />
+    <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+    <Stack.Screen name="PaymentFailed" component={PaymentFailed} />
+    <Stack.Screen name="CoachProfile" component={CoachProfile} />
+  </Stack.Navigator>
+);
+
+const HistoryStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="HistoryMain" component={History} />
+    <Stack.Screen name="ConsultationHistory" component={ConsultationHistory} />
+    <Stack.Screen name="Invoice" component={Invoice} />
+    <Stack.Screen name="PayslipDetail" component={PayslipDetail} />
+    <Stack.Screen name="Assessment" component={Assessment} />
+    <Stack.Screen name="SessionExpired" component={SessionExpired} />
+    <Stack.Screen name="SessionCompleted" component={SessionCompleted} />
+  </Stack.Navigator>
+);
+
+const ProfileStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="ProfileMain" component={Profile} />
+  </Stack.Navigator>
+);
 
 export const AppTabs = () => {
   const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
-  // Calculate tab bar height based on safe area insets
   const getTabBarHeight = () => {
     if (Platform.OS === 'ios') {
-      // iOS: Account for home indicator
       return insets.bottom > 0 ? 65 + insets.bottom : 75;
     } else {
-      // Android: Account for gesture navigation vs 3-button navigation
-      // Gesture navigation typically has insets.bottom > 0
-      // 3-button navigation has insets.bottom === 0
       return insets.bottom > 0 ? 70 + insets.bottom : 70;
     }
   };
@@ -36,15 +106,13 @@ export const AppTabs = () => {
     if (Platform.OS === 'ios') {
       return insets.bottom > 0 ? insets.bottom + 5 : 10;
     } else {
-      // Android: Add extra padding for gesture navigation
       return insets.bottom > 0 ? insets.bottom + 8 : 12;
     }
   };
 
   const getBottomPosition = () => {
-    // Add margin from bottom for gesture navigation
     if (Platform.OS === 'android' && insets.bottom > 0) {
-      return 8; // 8px gap from bottom for gesture bar
+      return 8;
     }
     return 0;
   };
@@ -95,61 +163,66 @@ export const AppTabs = () => {
         },
       }}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={Home} 
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
         options={{
-          tabBarIcon: ({ focused, color }) => (
-            <HomeSvg 
-              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <HomeSvg
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')}
               focused={focused}
             />
           ),
         }}
       />
-      <Tab.Screen 
-        name="Messages" 
-        component={Messages}
+      <Tab.Screen
+        name="Messages"
+        component={MessagesStack}
         options={{
-          tabBarIcon: ({ focused, color }) => (
-            <MessageSvg 
-              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+          tabBarLabel: 'Messages',
+          tabBarIcon: ({ focused }) => (
+            <MessageSvg
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')}
               focused={focused}
             />
           ),
         }}
       />
-      <Tab.Screen 
-        name="Services" 
-        component={Services}
+      <Tab.Screen
+        name="Services"
+        component={ServicesStack}
         options={{
-          tabBarIcon: ({ focused, color }) => (
-            <ServicesSvg 
-              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+          tabBarLabel: 'Services',
+          tabBarIcon: ({ focused }) => (
+            <ServicesSvg
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')}
               focused={focused}
             />
           ),
         }}
       />
-      <Tab.Screen 
-        name="History" 
-        component={History}
+      <Tab.Screen
+        name="History"
+        component={HistoryStack}
         options={{
-          tabBarIcon: ({ focused, color }) => (
-            <HistorySvg 
-              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+          tabBarLabel: 'History',
+          tabBarIcon: ({ focused }) => (
+            <HistorySvg
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')}
               focused={focused}
             />
           ),
         }}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={Profile}
+      <Tab.Screen
+        name="Profile"
+        component={ProfileStack}
         options={{
-          tabBarIcon: ({ focused, color }) => (
-            <ProfileSvg 
-              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')} 
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ focused }) => (
+            <ProfileSvg
+              color={focused ? '#578096' : (isDark ? '#94A3B8' : '#9CA3AF')}
               focused={focused}
             />
           ),

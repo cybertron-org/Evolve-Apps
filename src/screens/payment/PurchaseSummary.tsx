@@ -91,8 +91,7 @@ function PurchaseSummary() {
     };
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <ScreenWrapper scroll={true}>
                 <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
 
                 {/* Session Image Section */}
@@ -163,7 +162,6 @@ function PurchaseSummary() {
                         </AppText>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
 
             {/* Modals */}
             <DatePickerModal

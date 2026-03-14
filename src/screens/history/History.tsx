@@ -39,44 +39,55 @@ function History() {
     const todayCategoryConsultations = newConsultations.filter(c => c.category === 'today');
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
+        <ScreenWrapper scroll={true} className='mb-12'>
+            <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
 
-                <View className="px-6 mt-4 mb-4">
-                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
-                        CONSULTATION HISTORY
+            <View className="px-6 mt-4 mb-4">
+                <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    CONSULTATION HISTORY
+                </AppText>
+            </View>
+
+            <View className="px-6 mb-4">
+                <TouchableOpacity
+                    onPress={() => setSortOrder(sortOrder === 'older' ? 'newer' : 'older')}
+                    className="flex-row items-center"
+                >
+                    <AppText className="text-sm font-normal text-gray-600 dark:text-gray-400 capitalize">
+                        {sortOrder}
                     </AppText>
-                </View>
+                    <GlobalIcon name="chevron-down" library="Feather" size={16} color={isDark ? '#9CA3AF' : '#6B7280'} />
+                </TouchableOpacity>
+            </View>
 
-                <View className="px-6 mb-4">
-                    <TouchableOpacity
-                        onPress={() => setSortOrder(sortOrder === 'older' ? 'newer' : 'older')}
-                        className="flex-row items-center"
-                    >
-                        <AppText className="text-sm font-normal text-gray-600 dark:text-gray-400 capitalize">
-                            {sortOrder}
-                        </AppText>
-                        <GlobalIcon name="chevron-down" library="Feather" size={16} color={isDark ? '#9CA3AF' : '#6B7280'} />
-                    </TouchableOpacity>
-                </View>
-
-                <View className="px-6">
-                    {sortOrder === 'older' ? (
-                        oldConsultations.map((consultation, index) => (
-                            <OldConsultationCard
+            <View className="px-6">
+                {sortOrder === 'older' ? (
+                    oldConsultations.map((consultation, index) => (
+                        <OldConsultationCard
+                            key={consultation.id}
+                            title={consultation.title}
+                            price={consultation.price}
+                            status={consultation.status}
+                            startTime={consultation.startTime}
+                            isHighlighted={index === 1}
+                            onPress={() => handleViewIntake(consultation.id)}
+                        />
+                    ))
+                ) : (
+                    <>
+                        {newCategoryConsultations.map((consultation) => (
+                            <NewConsultationCard
                                 key={consultation.id}
                                 title={consultation.title}
-                                price={consultation.price}
+                                time={consultation.time}
                                 status={consultation.status}
-                                startTime={consultation.startTime}
-                                isHighlighted={index === 1}
-                                onPress={() => handleViewIntake(consultation.id)}
+                                statusText={consultation.statusText}
+                                onViewDetail={() => handleViewDetail(consultation.id)}
                             />
-                        ))
-                    ) : (
-                        <>
-                            {newCategoryConsultations.map((consultation) => (
+                        ))}
+
+                        <ConsultationSection title="Today's">
+                            {todayCategoryConsultations.map((consultation) => (
                                 <NewConsultationCard
                                     key={consultation.id}
                                     title={consultation.title}
@@ -84,32 +95,19 @@ function History() {
                                     status={consultation.status}
                                     statusText={consultation.statusText}
                                     onViewDetail={() => handleViewDetail(consultation.id)}
+                                    onJoinNow={
+                                        consultation.status === 'live'
+                                            ? () => handleJoinNow(consultation.id)
+                                            : undefined
+                                    }
                                 />
                             ))}
+                        </ConsultationSection>
+                    </>
+                )}
+            </View>
 
-                            <ConsultationSection title="Today's">
-                                {todayCategoryConsultations.map((consultation) => (
-                                    <NewConsultationCard
-                                        key={consultation.id}
-                                        title={consultation.title}
-                                        time={consultation.time}
-                                        status={consultation.status}
-                                        statusText={consultation.statusText}
-                                        onViewDetail={() => handleViewDetail(consultation.id)}
-                                        onJoinNow={
-                                            consultation.status === 'live'
-                                                ? () => handleJoinNow(consultation.id)
-                                                : undefined
-                                        }
-                                    />
-                                ))}
-                            </ConsultationSection>
-                        </>
-                    )}
-                </View>
-
-                <View className="h-6" />
-            </ScrollView>
+            <View className="h-6" />
 
             <MenuDrawer
                 visible={menuVisible}
@@ -118,6 +116,7 @@ function History() {
             />
         </ScreenWrapper>
     );
+
 }
 
 export default History;

@@ -130,9 +130,8 @@ function BookingCalendar() {
     const handleNextImage = () => setCurrentImageIndex(p => p === images.length - 1 ? 0 : p + 1);
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: pageBg }}>
-                <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
+        <ScreenWrapper scroll={true} scrollViewProps={{ style: { backgroundColor: pageBg , marginBottom: 40 } }}>
+            <Header userName="Angelina" onMenuPress={() => setMenuVisible(true)} />
 
                 {/* Image Carousel */}
                 <ImageCarousel
@@ -235,7 +234,6 @@ function BookingCalendar() {
                 </View>
 
                 <View className="h-6" />
-            </ScrollView>
 
             {/* Time Picker */}
             <PickerModal

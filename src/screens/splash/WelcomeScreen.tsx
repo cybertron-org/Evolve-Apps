@@ -12,6 +12,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { themeStorage } from '../../theme/storage';
 import OnboardingContent from '../../components/specific/OnboardingContent';
+import { DarkSvg } from '../../assets/svg';
+import LightSvg from '../../assets/svg/light';
 
 const { width, height } = Dimensions.get('screen');
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
@@ -44,6 +46,13 @@ export const WelcomeScreen: React.FC = () => {
       {/* ───── Slide 1: Welcome ───── */}
       <ScreenWrapper safe={false}>
         <View className="flex-1 justify-end items-center mb-52">
+
+          {isDark ?
+            <LightSvg/>
+            :
+            <DarkSvg/>
+          }
+{/*          
           <Image
             source={
               isDark
@@ -52,7 +61,7 @@ export const WelcomeScreen: React.FC = () => {
             }
             style={{ width: 320, height: 320 }}
             resizeMode="contain"
-          />
+          /> */}
         </View>
         <View className="mb-16 px-6 gap-y-4">
           <AppText className="text-sublabel dark:text-sublabel-dark text-center tracking-widest uppercase">

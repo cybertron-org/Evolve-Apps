@@ -30,11 +30,11 @@ export const NewConsultationCard: React.FC<NewConsultationCardProps> = ({
             <AppText className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                 {title}
             </AppText>
-            <View className="flex-row items-center mb-4">
+            <View className="flex-row items-center">
                 <GlobalIcon
                     name="clock"
                     library="Feather"
-                    size={20}
+                    size={16}
                     color={status === 'live' ? '#EF4444' : '#6B7280'}
                 />
                 <AppText
@@ -46,7 +46,7 @@ export const NewConsultationCard: React.FC<NewConsultationCardProps> = ({
                 </AppText>
             </View>
             <AppText
-                className={`text-sm mb-4 ${
+                className={`text-sm mb-4 ml-7 ${
                     status === 'live' ? 'text-red-500' : 'text-gray-600 dark:text-gray-400'
                 }`}
             >

@@ -33,7 +33,7 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
     { key: 'profile', label: 'My Profile', SvgComponent: ProfileManuSvg, route: 'Profile' },
-    { key: 'consultation', label: 'My Consultation', SvgComponent: ConsultationManuSvg, route: 'ConsultationList' },
+    { key: 'consultation', label: 'My Consultation', SvgComponent: ConsultationManuSvg, route: 'History' },
     { key: 'invoice', label: 'Invoice', SvgComponent: InvoiceManuSvg, route: 'Invoice' },
     { key: 'assessment', label: 'Assessment / Exercise', SvgComponent: AssessmentManuSvg, route: 'Assessment' },
     { key: 'transactions', label: 'Transactions', SvgComponent: TranscationsManuSvg, route: 'Transactions' },
@@ -69,7 +69,8 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                                 routes: [{ name: 'Welcome' as any }]
                             });
                         });
-                    }},
+                    }
+                },
             ]
         );
     };
@@ -80,18 +81,25 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
             handleLogout();
             return;
         }
-        
+
         if (item.route) {
-            const tabRoutes = ['Home', 'Messages', 'Services', 'History', 'Profile'];
-            if (tabRoutes.includes(item.route)) {
-                // Navigate to nested tab in Main navigator
-                navigation.navigate('Main', { screen: item.route });
+            const homeTabScreens = ['About', 'Contact', 'FAQ', 'Transactions', 'ConsultationList'];
+            const historyTabScreens = ['Assessment', 'Invoice', 'ConsultationHistory'];
+            const servicesTabScreens = ['ServiceDetail', 'BookingCalendar', 'PurchaseSummary'];
+
+            if (homeTabScreens.includes(item.route)) {
+                navigation.navigate('Home', { screen: item.route });
+            } else if (historyTabScreens.includes(item.route)) {
+                navigation.navigate('History', { screen: item.route });
+            } else if (servicesTabScreens.includes(item.route)) {
+                navigation.navigate('Services', { screen: item.route });
+            } else if (item.route === 'Profile') {
+                navigation.navigate('Profile', { screen: 'ProfileMain' });
             } else {
-                // Navigate to root stack screen
                 navigation.navigate(item.route as any);
             }
         }
-        
+
         onMenuItemPress(item.key);
         onClose();
     };
@@ -186,13 +194,14 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                                             alignItems: 'center',
                                             paddingHorizontal: 20,
                                             paddingVertical: 18,
-                                            backgroundColor: isDark ? '#1F2937' : '#F4F7F9'}}
+                                            backgroundColor: isDark ? '#1F2937' : '#F4F7F9'
+                                        }}
                                     >
                                         <View style={{ width: 32, alignItems: 'center' }}>
-                                            <item.SvgComponent 
-                                                width={22} 
-                                                height={22} 
-                                                color={isDark ? '#E5E7EB' : '#374151'} 
+                                            <item.SvgComponent
+                                                width={22}
+                                                height={22}
+                                                color={isDark ? '#E5E7EB' : '#374151'}
                                             />
                                         </View>
                                         <AppText
@@ -201,7 +210,8 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                                                 fontWeight: '600',
                                                 color: isDark ? '#E5E7EB' : '#374151',
                                                 marginLeft: 12,
-                                                flexShrink: 1}}
+                                                flexShrink: 1
+                                            }}
                                             numberOfLines={1}
                                         >
                                             {item.label}
@@ -211,7 +221,8 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                                         <View
                                             style={{
                                                 height: 1,
-                                                backgroundColor: isDark ? '#374151' : '#E5E7EB'}}
+                                                backgroundColor: isDark ? '#374151' : '#E5E7EB'
+                                            }}
                                         />
                                     )}
                                 </View>

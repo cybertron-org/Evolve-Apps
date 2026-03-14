@@ -1,27 +1,42 @@
 import React from 'react';
-import { View, ViewProps } from 'react-native';
+import { View, ViewProps, ScrollView, ScrollViewProps } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props extends ViewProps {
   children: React.ReactNode;
-  safe?: boolean;       
+  safe?: boolean;
+  scroll?: boolean;
+  scrollViewProps?: ScrollViewProps;
   className?: string;
 }
 
 export const ScreenWrapper: React.FC<Props> = ({
   children,
   safe = true,
+  scroll = false,
+  scrollViewProps,
   className = '',
   style,
   ...props
 }) => {
+  const content = scroll ? (
+    <ScrollView 
+      showsVerticalScrollIndicator={false} 
+      {...scrollViewProps}
+    >
+      {children}
+    </ScrollView>
+  ) : (
+    children
+  );
+
   if (safe) {
     return (
       <SafeAreaView
         className={`flex-1 bg-background dark:bg-background-dark ${className}`}
         style={style}
         {...props}>
-        {children}
+        {content}
       </SafeAreaView>
     );
   }
@@ -31,7 +46,7 @@ export const ScreenWrapper: React.FC<Props> = ({
       className={`flex-1 bg-background dark:bg-background-dark ${className}`}
       style={style}
       {...props}>
-      {children}
+      {content}
     </View>
   );
 };

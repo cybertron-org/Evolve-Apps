@@ -36,51 +36,49 @@ function Services() {
     };
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Header 
-                    userName="Angelina" 
-                    onMenuPress={() => setMenuVisible(true)} 
-                />
+        <ScreenWrapper scroll={true}>
+            <Header 
+                userName="Angelina" 
+                onMenuPress={() => setMenuVisible(true)} 
+            />
 
-                {/* Title */}
-                <View className="px-6 mt-4 mb-6">
-                    <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
-                        OUR SERVICES
-                    </AppText>
-                </View>
+            {/* Title */}
+            <View className="px-6 mt-4 mb-6">
+                <AppText className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                    OUR SERVICES
+                </AppText>
+            </View>
 
-                {/* Services Grid */}
-                <View className="px-6">
-                    <View className="flex-row flex-wrap justify-between gap-y-4">
-                        {services.map((service) => (
-                            <TouchableOpacity
-                                key={service.id}
-                                onPress={() => handleServicePress(service)}
-                                activeOpacity={0.8}
-                                className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
-                                style={{ width: '48%' }}
-                            >
-                                <Image
-                                    source={typeof service.image === 'string' ? { uri: service.image } : service.image}
-                                    className="w-full h-32"
-                                    resizeMode="cover"
-                                />
-                                <View className="p-3">
-                                    <AppText 
-                                        className="text-sm font-semibold text-gray-900 dark:text-white" 
-                                        numberOfLines={2}
-                                    >
-                                        {service.title}
-                                    </AppText>
-                                </View>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+            {/* Services Grid */}
+            <View className="px-6">
+                <View className="flex-row flex-wrap justify-between gap-y-4">
+                    {services.map((service) => (
+                        <TouchableOpacity
+                            key={service.id}
+                            onPress={() => handleServicePress(service)}
+                            activeOpacity={0.8}
+                            className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
+                            style={{ width: '48%' }}
+                        >
+                            <Image
+                                source={typeof service.image === 'string' ? { uri: service.image } : service.image}
+                                className="w-full h-32"
+                                resizeMode="cover"
+                            />
+                            <View className="p-3">
+                                <AppText 
+                                    className="text-sm font-semibold text-gray-900 dark:text-white" 
+                                    numberOfLines={2}
+                                >
+                                    {service.title}
+                                </AppText>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
                 </View>
-                    
-                <View className="h-6" />
-            </ScrollView>
+            </View>
+                
+            <View className="h-6" />
 
             <MenuDrawer
                 visible={menuVisible}

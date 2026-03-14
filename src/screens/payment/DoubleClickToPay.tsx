@@ -19,13 +19,13 @@ function DoubleClickToPay() {
         setClickCount(newCount);
         if (newCount >= 2) {
             // Navigate to payment in process
-            navigation.navigate('PaymentInProcess');
+            navigation.navigate('Services', { screen: 'PaymentInProcess' });
         }
     };
 
     const handleGooglePayPress = () => {
         // Mock Google Pay Tap Action
-        navigation.navigate('PaymentInProcess');
+        navigation.navigate('Services', { screen: 'PaymentInProcess' });
     };
 
     return (

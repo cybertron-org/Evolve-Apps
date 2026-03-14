@@ -129,8 +129,7 @@ function FAQ() {
     };
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <ScreenWrapper scroll={true}>
                 <Header 
                     userName="Angelina" 
                     onMenuPress={() => setMenuVisible(true)} 
@@ -155,7 +154,6 @@ function FAQ() {
                 </View>
 
                 <View className="h-6" />
-            </ScrollView>
 
             <MenuDrawer
                 visible={menuVisible}

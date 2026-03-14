@@ -64,8 +64,7 @@ function ConsultationList() {
     const filteredConsultations = consultations.filter(c => c.category === selectedFilter);
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <ScreenWrapper scroll={true}>
                 <Header 
                     userName="Angelina" 
                     onMenuPress={() => setMenuVisible(true)} 
@@ -151,7 +150,6 @@ function ConsultationList() {
                 </View>
 
                 <View className="h-6" />
-            </ScrollView>
 
             <MenuDrawer
                 visible={menuVisible}

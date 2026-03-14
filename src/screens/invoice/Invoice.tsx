@@ -64,84 +64,82 @@ function Invoice() {
         : allPayslips.filter(payslip => payslip.year === selectedYear);
 
     return (
-        <ScreenWrapper>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Header 
-                    userName="Angelina" 
-                    onMenuPress={() => setMenuVisible(true)} 
-                />
+        <ScreenWrapper scroll={true}>
+            <Header 
+                userName="Angelina" 
+                onMenuPress={() => setMenuVisible(true)} 
+            />
 
-                <View className="px-6 mt-4">
-                    <View className="flex-row items-center justify-between mb-6">
-                        <View>
-                            <TouchableOpacity 
-                                onPress={() => setShowYearDropdown(!showYearDropdown)}
-                                className="bg-gray-100 dark:bg-gray-800 rounded-xl px-6 py-3 flex-row items-center"
-                            >
-                                <AppText className="text-lg text-gray-700 dark:text-gray-300 mr-2">
-                                    {selectedYear}
-                                </AppText>
-                                <GlobalIcon name="chevron-down" library="Feather" size={20} color="#6B7280" />
-                            </TouchableOpacity>
+            <View className="px-6 mt-4">
+                <View className="flex-row items-center justify-between mb-6">
+                    <View>
+                        <TouchableOpacity 
+                            onPress={() => setShowYearDropdown(!showYearDropdown)}
+                            className="bg-gray-100 dark:bg-gray-800 rounded-xl px-6 py-3 flex-row items-center"
+                        >
+                            <AppText className="text-lg text-gray-700 dark:text-gray-300 mr-2">
+                                {selectedYear}
+                            </AppText>
+                            <GlobalIcon name="chevron-down" library="Feather" size={20} color="#6B7280" />
+                        </TouchableOpacity>
 
-                            {showYearDropdown && (
-                                <View className="absolute top-14 left-0 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-10 w-32">
-                                    {years.map((year) => (
-                                        <TouchableOpacity
-                                            key={year}
-                                            onPress={() => handleYearSelect(year)}
-                                            className="px-6 py-3 border-b border-gray-200 dark:border-gray-700"
-                                        >
-                                            <AppText className={`text-base ${
-                                                year === selectedYear 
-                                                    ? 'text-[#578096] font-bold' 
-                                                    : 'text-gray-700 dark:text-gray-300'
-                                            }`}>
-                                                {year}
-                                            </AppText>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            )}
-                        </View>
-
-                        <AppText className="text-lg text-gray-600 dark:text-gray-400">
-                            Payslips Per month
-                        </AppText>
+                        {showYearDropdown && (
+                            <View className="absolute top-14 left-0 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-10 w-32">
+                                {years.map((year) => (
+                                    <TouchableOpacity
+                                        key={year}
+                                        onPress={() => handleYearSelect(year)}
+                                        className="px-6 py-3 border-b border-gray-200 dark:border-gray-700"
+                                    >
+                                        <AppText className={`text-base ${
+                                            year === selectedYear 
+                                                ? 'text-[#578096] font-bold' 
+                                                : 'text-gray-700 dark:text-gray-300'
+                                        }`}>
+                                            {year}
+                                        </AppText>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        )}
                     </View>
 
-                    {filteredPayslips.map((payslip) => (
-                        <TouchableOpacity
-                            key={payslip.id}
-                            onPress={() => handlePayslipPress(payslip)}
-                            className={`rounded-2xl p-4 mb-4 flex-row items-center ${
-                                payslip.isActive
-                                    ? 'border-2 border-[#578096] bg-white dark:bg-gray-800'
-                                    : 'bg-gray-50 dark:bg-gray-800'
-                            }`}
-                        >
-                            <View className="mr-4">
-                                <GlobalIcon 
-                                    name="file-text" 
-                                    library="Feather" 
-                                    size={40} 
-                                    color="#578096" 
-                                />
-                            </View>
-                            <View className="flex-1">
-                                <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                                    {payslip.month}
-                                </AppText>
-                                <AppText className="text-sm text-gray-600 dark:text-gray-400">
-                                    {payslip.dateRange}
-                                </AppText>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                    <AppText className="text-lg text-gray-600 dark:text-gray-400">
+                        Payslips Per month
+                    </AppText>
                 </View>
 
-                <View className="h-6" />
-            </ScrollView>
+                {filteredPayslips.map((payslip) => (
+                    <TouchableOpacity
+                        key={payslip.id}
+                        onPress={() => handlePayslipPress(payslip)}
+                        className={`rounded-2xl p-4 mb-4 flex-row items-center ${
+                            payslip.isActive
+                                ? 'border-2 border-[#578096] bg-white dark:bg-gray-800'
+                                : 'bg-gray-50 dark:bg-gray-800'
+                        }`}
+                    >
+                        <View className="mr-4">
+                            <GlobalIcon 
+                                name="file-text" 
+                                library="Feather" 
+                                size={40} 
+                                color="#578096" 
+                            />
+                        </View>
+                        <View className="flex-1">
+                            <AppText className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                                {payslip.month}
+                            </AppText>
+                            <AppText className="text-sm text-gray-600 dark:text-gray-400">
+                                {payslip.dateRange}
+                            </AppText>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+            </View>
+
+            <View className="h-6" />
 
             <MenuDrawer
                 visible={menuVisible}
