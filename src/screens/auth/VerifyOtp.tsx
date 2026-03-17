@@ -19,6 +19,8 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useToast } from '../../hooks/useToast';
 import AccountCreated from '../../components/specific/AccountCreated';
 
+import { useVerifyOtp } from '../../hooks/mutations/useVerifyOtp';
+
 const { height ,width  } = Dimensions.get('window');
 const otpFontSize = width < 360 ? 14 : width < 400 ? 18 : 22;
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
@@ -32,8 +34,9 @@ const VerifyOTP: React.FC = () => {
     const { isDark } = useTheme();
     const navigation = useNavigation<NavProp>();
     const { showToast } = useToast();
-const route = useRoute<RouteProp<{ VerifyOTP: VerifyOTPParams }, 'VerifyOTP'>>();
-const { email } = route.params;
+    const route = useRoute<RouteProp<{ VerifyOTP: VerifyOTPParams }, 'VerifyOTP'>>();
+    const { email } = route.params;
+    const { mutate: verifyOtp, isPending } = useVerifyOtp();
 
 
 useEffect(() => {
@@ -48,7 +51,6 @@ useEffect(() => {
     const [showAccountCreated, setShowAccountCreated] = useState(false);
     const inputRefs = useRef<Array<any | null>>([]);
 
-    const phoneNumber = '+823478252532';
 
     useEffect(() => {
         if (showAccountCreated) {
@@ -79,15 +81,38 @@ useEffect(() => {
     const handleVerifyOTP = () => {
         const otpString = otp.join('');
         if (otpString.length === 4) {
-            console.log('Verifying OTP:', otpString);
-            setShowAccountCreated(true);
+             verifyOtp(
+                { email, otp: otpString },
+                {
+                    onSuccess: () => {
+                         showToast({
+                            type: 'success',
+                            title: 'Verification Successful',
+                            message: 'Your account has been verified!'
+                         });
+                         setShowAccountCreated(true);
+                    },
+                    onError: (error: any) => {
+                        showToast({
+                            type: 'error',
+                            title: 'Verification Failed',
+                            message: error.response?.data?.message || 'Invalid OTP'
+                        });
+                    }
+                }
+            );
         } else {
-            console.log('Please enter complete OTP');
+            showToast({
+                type: 'error',
+                title: 'Invalid OTP',
+                message: 'Please enter complete code'
+            });
         }
     };
 
     const handleResendCode = () => {
         console.log('Resending OTP...');
+        // Optional: Call register API again or resend OTP API if exists
     };
 
      const getInputBgColor = (value: string) => {
@@ -142,7 +167,7 @@ useEffect(() => {
                             </AppText>
 
                             <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-2 opacity-70">
-                                Code has been sent to {phoneNumber}
+                                Code has been sent to {email}
                             </AppText>
                         </View>
 
@@ -191,7 +216,7 @@ useEffect(() => {
                         {/* Verify Button */}
                         <View className="mt-8">
                             <Button
-                                title="Verify OTP"
+                                title={isPending ? "Verifying..." : "Verify OTP"}
                                 onPress={handleVerifyOTP}
                                 variant="primary"
                                 style={{

@@ -9,6 +9,9 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { ToastProvider } from './src/hooks/useToast';
 import Toast from './src/components/common/Toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export const storage = createMMKV();
 
@@ -102,9 +105,11 @@ function AppContent(): React.JSX.Element {
 
 function App(): React.JSX.Element {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -18,6 +18,8 @@ import {
     LogoutManuSvg
 } from '../../assets/svg/manu';
 
+import { useLogout } from '../../hooks/mutations/useLogout';
+
 interface MenuDrawerProps {
     visible: boolean;
     onClose: () => void;
@@ -46,6 +48,7 @@ const menuItems: MenuItem[] = [
 const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPress }) => {
     const { isDark, setThemeMode } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const { mutate: logoutApiCall } = useLogout();
 
     const handleThemeToggle = (value: boolean) => {
         setThemeMode(value ? 'dark' : 'light');
@@ -61,15 +64,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ visible, onClose, onMenuItemPre
                 {
                     text: 'Logout',
                     style: 'destructive',
-                    onPress: () => {
-                        import('../../../App').then(({ storage }) => {
-                            storage.remove('NAVIGATION_STATE');
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'Welcome' as any }]
-                            });
-                        });
-                    }
+                    onPress: () => logoutApiCall()
                 },
             ]
         );

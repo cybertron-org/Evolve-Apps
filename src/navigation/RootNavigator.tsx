@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthStack from './AuthStack';
 import { AppTabs } from './AppTabs';
+import { useAuthStore } from '../store/authStore';
 
 import { WelcomeScreen } from '../screens/splash/WelcomeScreen';
 import OnlineSession from '../screens/consultation/OnlineSession';
@@ -15,8 +16,11 @@ import SessionCompleted from '../screens/session/SessionCompleted';
 import ChatDetail from '../screens/messages/ChatDetail';
 
 export type RootStackParamList = {
+  // ... (keeping existing params for brevity, or list them if needed)
   Welcome: undefined;
   Auth: undefined;
+  Login: undefined;
+  Register: undefined;
   Main: { screen?: string; params?: any } | undefined;
   Home: { screen?: string; params?: any } | undefined;
   Messages: { screen?: string; params?: any } | undefined;
@@ -27,7 +31,6 @@ export type RootStackParamList = {
   AddProfile: undefined;
   DoubleClickToPay: undefined;
   VerifyOTP:{ email?: string } | undefined;
-  // Nested screens available via navigation
   ServiceDetail: { serviceId: number };
   ConsultationList: undefined;
   BookingCalendar: { serviceId: number };
@@ -51,24 +54,37 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
+  const token = useAuthStore((state) => state.token);
+  console.log("token=>", token)
+  // console.log('RootNavigator: Current token status:', token ? 'Logged In' : 'Logged Out');
+
   return (
-    <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{ animation: 'fade' }}
-      />
-      <Stack.Screen name="Auth" component={AuthStack} />
-      <Stack.Screen name="Main" component={AppTabs} />
-      <Stack.Screen name="OnlineSession" component={OnlineSession} />
-      <Stack.Screen name="AddProfile" component={AddProfile} />
-      <Stack.Screen name="DoubleClickToPay" component={DoubleClickToPay} options={{ animation: 'fade' }} />
-      <Stack.Screen name="ChatDetail" component={ChatDetail} />
-      <Stack.Screen name="PurchaseSummary" component={PurchaseSummary} />
-      <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
-      <Stack.Screen name="PaymentFailed" component={PaymentFailed} />
-      <Stack.Screen name="SessionExpired" component={SessionExpired} />
-      <Stack.Screen name="SessionCompleted" component={SessionCompleted} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!token ? (
+        // Auth Stack
+        <>
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{ animation: 'fade' }}
+          />
+          <Stack.Screen name="Auth" component={AuthStack} />
+        </>
+      ) : (
+        // Protected Stack
+        <>
+          <Stack.Screen name="Main" component={AppTabs} />
+          <Stack.Screen name="OnlineSession" component={OnlineSession} />
+          <Stack.Screen name="AddProfile" component={AddProfile} />
+          <Stack.Screen name="DoubleClickToPay" component={DoubleClickToPay} options={{ animation: 'fade' }} />
+          <Stack.Screen name="ChatDetail" component={ChatDetail} />
+          <Stack.Screen name="PurchaseSummary" component={PurchaseSummary} />
+          <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+          <Stack.Screen name="PaymentFailed" component={PaymentFailed} />
+          <Stack.Screen name="SessionExpired" component={SessionExpired} />
+          <Stack.Screen name="SessionCompleted" component={SessionCompleted} />
+        </>
+      )}
     </Stack.Navigator>
   );
 };

@@ -11,10 +11,13 @@
     "reverse": "adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "^12.0.1",
     "@react-native/new-app-screen": "0.84.1",
     "@react-navigation/bottom-tabs": "^7.15.3",
     "@react-navigation/native": "^7.1.31",
     "@react-navigation/native-stack": "^7.14.2",
+    "@tanstack/react-query": "^5.90.21",
+    "axios": "^1.13.6",
     "country-state-city": "^3.2.1",
     "nativewind": "^4.2.2",
     "react": "19.2.3",
@@ -34,7 +37,8 @@
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^10.3.0",
     "react-native-worklets": "^0.7.4",
-    "world-countries": "^5.1.0"
+    "world-countries": "^5.1.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

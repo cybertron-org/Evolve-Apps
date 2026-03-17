@@ -6,33 +6,33 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import { AuthForm } from '../../components/specific/auth/AuthForm';
 import AppText from '../../components/common/AppText';
 
-import { useLogin } from '../../hooks/mutations/useLogin';
+import { useRegister } from '../../hooks/mutations/useRegister';
 import { useToast } from '../../hooks/useToast';
 
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
-const LoginScreen: React.FC = () => {
+const RegisterScreen: React.FC = () => {
   const navigation = useNavigation<NavProp>();
-  const { mutate: login, isPending } = useLogin();
+  const { mutate: register, isPending } = useRegister();
   const { showToast } = useToast();
 
-  const handleLogin = (email: string, password: string) => {
-    login(
+  const handleRegister = (email: string, password: string) => {
+    register(
       { email, password },
       {
         onSuccess: () => {
           showToast({
             type: 'success',
-            title: 'Welcome Back!',
-            message: 'You have successfully logged in.'
+            title: 'OTP Sent!',
+            message: `Check your inbox: ${email}`
           });
-          // Navigation is handled automatically by RootNavigator based on auth state
+          navigation.navigate('VerifyOTP', { email });
         },
         onError: (error: any) => {
           showToast({
             type: 'error',
-            title: 'Login Failed',
-            message: error.response?.data?.message || 'Invalid credentials'
+            title: 'Registration Failed',
+            message: error.response?.data?.message || 'Something went wrong'
           });
         }
       }
@@ -41,22 +41,22 @@ const LoginScreen: React.FC = () => {
 
   const footer = (
     <View className="flex-row justify-center mt-6">
-      <AppText className="text-gray-500">Don't have an account? </AppText>
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <AppText className="text-[#578096] dark:text-[#BDC3C7] font-bold">Register</AppText>
+      <AppText className="text-gray-500">Already have an account? </AppText>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <AppText className="text-[#578096] dark:text-[#BDC3C7] font-bold">Login</AppText>
       </TouchableOpacity>
     </View>
   );
 
   return (
     <AuthForm
-      title="WELCOME BACK"
-      subTitleText="Hi, Welcome back to evolve vocational"
-      buttonTitle={isPending ? "LOGGING IN..." : "LOGIN"}
-      onSubmit={handleLogin}
+      title="CREATE ACCOUNT"
+      subTitleText="Hi, Welcome to evolve vocational"
+      buttonTitle={isPending ? "SENDING..." : "GET OTP"}
+      onSubmit={handleRegister}
       footer={footer}
     />
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
