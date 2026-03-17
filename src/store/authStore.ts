@@ -30,15 +30,15 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       user: null,
       setToken: (token) => {
-        console.log('📝 Setting Auth Token in store:', token ? 'Token received' : 'Token cleared');
+        console.log('Setting Auth Token in store:', token ? 'Token received' : 'Token cleared');
         set({ token });
       },
       setUser: (user) => {
-        console.log('👤 Setting User in store:', user?.email);
+        console.log('Setting User in store:', user?.email);
         set({ user });
       },
       logout: () => {
-        console.log('🚪 Clearing Auth State (logout action)');
+        console.log('Clearing Auth State (logout action)');
         set({ token: null, user: null });
       },
     }),
