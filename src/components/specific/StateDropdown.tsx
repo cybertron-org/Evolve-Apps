@@ -5,7 +5,10 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
-  TextInput} from 'react-native';
+  TextInput,
+  InteractionManager
+} from 'react-native';
+
 import { useTheme } from '../../theme/ThemeContext';
 import { State } from 'country-state-city';
 import GlobalIcon from '../common/GlobalIcon';
@@ -196,9 +199,13 @@ const StateDropdown: React.FC<Props> = ({
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
-                    onSelect(item);
                     handleClose();
+                    InteractionManager.runAfterInteractions(() => {
+                      onSelect(item);
+                    });
                   }}
+
+
                   className={`
                     flex-row items-center px-5 py-3 border-b
                     ${isDark ? 'border-item-border-dark' : 'border-gray-100'}

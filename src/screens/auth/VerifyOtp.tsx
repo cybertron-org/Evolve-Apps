@@ -20,6 +20,9 @@ import { useToast } from '../../hooks/useToast';
 import AccountCreated from '../../components/specific/AccountCreated';
 
 import { useVerifyOtp } from '../../hooks/mutations/useVerifyOtp';
+import { useResendOtp } from '../../hooks/mutations/useResendOtp';
+import { useAuthStore } from '../../store/authStore';
+
 
 const { height ,width  } = Dimensions.get('window');
 const otpFontSize = width < 360 ? 14 : width < 400 ? 18 : 22;
@@ -37,6 +40,16 @@ const VerifyOTP: React.FC = () => {
     const route = useRoute<RouteProp<{ VerifyOTP: VerifyOTPParams }, 'VerifyOTP'>>();
     const { email } = route.params;
     const { mutate: verifyOtp, isPending } = useVerifyOtp();
+    const { mutate: resendOtp, isPending: isResending } = useResendOtp();
+
+    const setToken = useAuthStore((state) => state.setToken);
+    const setUser = useAuthStore((state) => state.setUser);
+    const [verifiedData, setVerifiedData] = useState<any>(null);
+
+    const [timer, setTimer] = useState(60);
+    const [canResend, setCanResend] = useState(false);
+
+
 
 
 useEffect(() => {
@@ -44,7 +57,24 @@ useEffect(() => {
     type: 'success',
     title: 'OTP Sent!',
     message: `Check your inbox: ${email}`});
+
+  // Start timer on mount
+  setTimer(60);
+  setCanResend(false);
 }, []); 
+
+useEffect(() => {
+    let interval: any;
+
+    if (timer > 0) {
+        interval = setInterval(() => {
+            setTimer((prev) => prev - 1);
+        }, 1000);
+    } else {
+        setCanResend(true);
+    }
+    return () => clearInterval(interval);
+}, [timer]);
 
 
     const [otp, setOtp] = useState(['', '', '', '']);
@@ -53,13 +83,24 @@ useEffect(() => {
 
 
     useEffect(() => {
-        if (showAccountCreated) {
+        if (showAccountCreated && verifiedData) {
             const timer = setTimeout(() => {
-                navigation.navigate('AddProfile');
+                const token = verifiedData.data?.token || verifiedData.token;
+                const user = verifiedData.data?.user || verifiedData.user;
+
+                console.log('--- VerifyOTP: Setting Auth Data ---');
+                console.log('Token:', !!token);
+                console.log('User profile_completed:', user?.profile_completed);
+                console.log('User Data:', JSON.stringify(user, null, 2));
+
+                if (token) setToken(token);
+                if (user) setUser(user);
+                // RootNavigator will automatically switch stacks and show AddProfile
+                // since profile_completed is 0 for new registrations.
             }, 2000);
             return () => clearTimeout(timer);
         }
-    }, [showAccountCreated, navigation]);
+    }, [showAccountCreated, verifiedData, setToken, setUser]);
 
     const handleOtpChange = (text: string, index: number) => {
         const newOtp = [...otp];
@@ -70,7 +111,13 @@ useEffect(() => {
         if (text && index < 3) {
             inputRefs.current[index + 1]?.focus();
         }
+
+        // Auto submit if all 4 digits are filled
+        if (newOtp.every(digit => digit !== '') && index === 3) {
+            handleVerifyOTPInternal(newOtp.join(''));
+        }
     };
+
 
     const handleKeyPress = (e: any, index: number) => {
         if (e.nativeEvent.key === 'Backspace' && !otp[index] && index > 0) {
@@ -79,17 +126,21 @@ useEffect(() => {
     };
 
     const handleVerifyOTP = () => {
-        const otpString = otp.join('');
+        handleVerifyOTPInternal(otp.join(''));
+    };
+
+    const handleVerifyOTPInternal = (otpString: string) => {
         if (otpString.length === 4) {
              verifyOtp(
                 { email, otp: otpString },
                 {
-                    onSuccess: () => {
+                    onSuccess: (data) => {
                          showToast({
                             type: 'success',
                             title: 'Verification Successful',
                             message: 'Your account has been verified!'
                          });
+                         setVerifiedData(data);
                          setShowAccountCreated(true);
                     },
                     onError: (error: any) => {
@@ -110,10 +161,34 @@ useEffect(() => {
         }
     };
 
+
     const handleResendCode = () => {
-        console.log('Resending OTP...');
-        // Optional: Call register API again or resend OTP API if exists
+        if (!canResend) return;
+        
+        resendOtp(
+            { email },
+            {
+                onSuccess: () => {
+                    showToast({
+                        type: 'success',
+                        title: 'OTP Resent',
+                        message: `A new code has been sent to ${email}`
+                    });
+                    setTimer(60);
+                    setCanResend(false);
+                },
+                onError: (error: any) => {
+                    showToast({
+                        type: 'error',
+                        title: 'Resend Failed',
+                        message: error.response?.data?.message || 'Something went wrong'
+                    });
+                }
+            }
+        );
     };
+
+
 
      const getInputBgColor = (value: string) => {
         if (value) {
@@ -169,6 +244,11 @@ useEffect(() => {
                             <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-2 opacity-70">
                                 Code has been sent to {email}
                             </AppText>
+
+                            <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-bold mt-2 opacity-80">
+                                This code will expire in 10 minutes.
+                            </AppText>
+
                         </View>
 
                         <View className="mt-10 w-full">
@@ -185,7 +265,9 @@ useEffect(() => {
                                                 onKeyPress={(e) => handleKeyPress(e, index)}
                                                 keyboardType="number-pad"
                                                 maxLength={1}
+                                                textContentType="oneTimeCode"
                                                 className="w-16 text-center font-bold px-0"
+
                                                 style={[
                                                 {
                                                         backgroundColor: getInputBgColor(digit),fontSize: otpFontSize }]
@@ -206,9 +288,13 @@ useEffect(() => {
                             <AppText className="text-sublabel dark:text-sublabel-dark text-base not-italic font-normal">
                                 Didn't get OTP Code?{' '}
                             </AppText>
-                            <TouchableOpacity onPress={handleResendCode}>
-                                <AppText className="text-gray-600 text-base not-italic font-normal">
-                                    Resend Code
+                            <TouchableOpacity 
+                                onPress={handleResendCode}
+                                disabled={!canResend || isResending}
+                                className={(!canResend || isResending) ? 'opacity-40' : 'opacity-100'}
+                            >
+                                <AppText className={`text-base not-italic font-bold ${canResend ? 'text-[#578096] dark:text-[#BDC3C7]' : 'text-gray-400'}`}>
+                                    {isResending ? 'Sending...' : canResend ? 'Resend Code' : `Resend in ${timer}s`}
                                 </AppText>
                             </TouchableOpacity>
                         </View>

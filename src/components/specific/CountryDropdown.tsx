@@ -5,7 +5,10 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
-  TextInput} from 'react-native';
+  TextInput,
+  InteractionManager
+} from 'react-native';
+
 import { useTheme } from '../../theme/ThemeContext';
 import worldCountries from 'world-countries';
 import GlobalIcon from '../common/GlobalIcon';
@@ -26,7 +29,8 @@ const COUNTRIES: Country[] = worldCountries
       name: c.name.common,
       code: c.cca2,
       dial_code: `${root}${suffix}`,
-      flag: c.flag};
+      flag: c.flag
+    };
   })
   .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -78,13 +82,11 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
           />
         )}
 
-        {/* ✅ Country NAME show hoga — pehle dial_code tha */}
         <AppText
-          className={`ml-2 flex-1 text-sm font-medium ${
-            selectedCountry
+          className={`ml-2 flex-1 text-sm font-medium ${selectedCountry
               ? isDark ? 'text-gray-100' : 'text-gray-800'
               : isDark ? 'text-gray-500' : 'text-gray-400'
-          }`}
+            }`}
         >
           {selectedCountry?.name ?? 'Select Country'}
         </AppText>
@@ -164,9 +166,13 @@ const CountryDropdown: React.FC<Props> = ({ onSelect, selectedCountry }) => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
-                    onSelect(item);
                     setVisible(false);
+                    InteractionManager.runAfterInteractions(() => {
+                      onSelect(item);
+                    });
                   }}
+
+
                   className={`
                     flex-row items-center px-5 py-3 border-b
                     ${isDark ? 'border-item-border-dark' : 'border-gray-100'}

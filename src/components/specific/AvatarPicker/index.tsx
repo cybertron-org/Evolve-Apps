@@ -7,7 +7,7 @@ import ImagePickerModal from './ImagePickerModal';
 
 interface Props {
     initialUri?: string;
-    onImageSelected?: (base64: string, uri: string) => void;
+    onImageSelected?: (file: { uri: string; name: string; type: string } | null) => void;
     size?: number;
 }
 
@@ -51,7 +51,14 @@ const AvatarPicker: React.FC<Props> = ({
                 const asset = response.assets?.[0];
                 if (!asset) return;
                 setImageUri(asset.uri ?? '');
-                onImageSelected?.(asset.base64 ?? '', asset.uri ?? '');
+                
+                if (onImageSelected && asset.uri) {
+                    onImageSelected({
+                        uri: asset.uri,
+                        name: asset.fileName || `avatar_${Date.now()}.jpg`,
+                        type: asset.type || 'image/jpeg',
+                    });
+                }
             });
         }, 300);
     };
@@ -88,10 +95,17 @@ const AvatarPicker: React.FC<Props> = ({
                     console.log('No asset returned from camera');
                     return;
                 }
-
+                
                 console.log('Camera photo captured:', asset.uri);
                 setImageUri(asset.uri ?? '');
-                onImageSelected?.(asset.base64 ?? '', asset.uri ?? '');
+                
+                if (onImageSelected && asset.uri) {
+                    onImageSelected({
+                        uri: asset.uri,
+                        name: asset.fileName || `camera_${Date.now()}.jpg`,
+                        type: asset.type || 'image/jpeg',
+                    });
+                }
             });
         }, 300);
     };
@@ -99,7 +113,7 @@ const AvatarPicker: React.FC<Props> = ({
     const removeImage = () => {
         setDropdownVisible(false);
         setImageUri(null);
-        onImageSelected?.('', '');
+        onImageSelected?.(null);
     };
 
     const handleLayout = (e: any) => {

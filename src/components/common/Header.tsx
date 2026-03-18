@@ -18,7 +18,14 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Angelina', userImage, onMen
             <View className="flex-row items-center gap-3">
                 <View className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
                     {userImage ? (
-                        <Image source={{ uri: userImage || require('../../assets/images/image.png')}} className="w-full h-full" />
+                        <Image 
+                            source={{ 
+                                uri: userImage.startsWith('http') || userImage.startsWith('data:') 
+                                    ? userImage 
+                                    : `data:image/jpeg;base64,${userImage}` 
+                            }} 
+                            className="w-full h-full" 
+                        />
                     ) : (
                         <View className="w-full h-full items-center justify-center">
                             <GlobalIcon name="user" library="Feather" size={24} color={isDark ? '#94A3B8' : '#9CA3AF'} />

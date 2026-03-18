@@ -39,7 +39,7 @@ const Input = forwardRef<TextInput, Props>(({
       {leftIcon || rightIcon ? (
         <View
           className={`
-            flex-row items-center
+            flex-row ${props.multiline ? 'items-start' : 'items-center'}
             bg-surface dark:bg-surface-dark
             border rounded-md px-4
             ${borderColorClass}
@@ -47,7 +47,7 @@ const Input = forwardRef<TextInput, Props>(({
         >
           {/* Left Icon */}
           {leftIcon && (
-            <View className="mr-3 opacity-60">
+            <View className={`mr-3 opacity-60 ${props.multiline ? 'mt-4' : ''}`}>
               {leftIcon}
             </View>
           )}
@@ -55,14 +55,14 @@ const Input = forwardRef<TextInput, Props>(({
           {/* Input */}
           <TextInput
             ref={ref}
-            className={`flex-1 py-5 text-label dark:text-label-dark ${className}`}
+            className={`flex-1 ${props.multiline ? 'pt-4 pb-4' : 'py-5'} text-label dark:text-label-dark ${className}`}
             placeholderTextColor={isDark ? '#c1c6cf' : '#9CA3AF'}
             {...props}
           />
 
           {/* Right Icon */}
           {rightIcon && (
-            <View className="ml-3 opacity-100">
+            <View className={`ml-3 opacity-100 ${props.multiline ? 'mt-4' : ''}`}>
               {rightIcon}
             </View>
           )}

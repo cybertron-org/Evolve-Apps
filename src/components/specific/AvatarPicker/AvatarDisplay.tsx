@@ -43,7 +43,14 @@ const AvatarDisplay: React.FC<AvatarDisplayProps> = ({
                     <ActivityIndicator color={isDark ? '#BDC3C7' : '#578096'} />
                 ) : imageUri ? (
                     <Image
-                        source={{ uri: imageUri }}
+                        source={{ 
+                            uri: imageUri.startsWith('http') || 
+                                 imageUri.startsWith('data:') || 
+                                 imageUri.startsWith('file://') || 
+                                 imageUri.startsWith('/')
+                                ? imageUri 
+                                : `data:image/jpeg;base64,${imageUri}` 
+                        }}
                         style={{ width: size, height: size }}
                         resizeMode="cover"
                     />

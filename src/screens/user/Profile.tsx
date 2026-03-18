@@ -9,31 +9,43 @@ import { ProfileAvatar } from '../../components/profile/ProfileAvatar';
 import { ProfileInfoItem } from '../../components/profile/ProfileInfoItem';
 import { OrderHistory } from '../../components/profile/OrderHistory';
 import { PaymentMethod } from '../../components/profile/PaymentMethod';
-import { userProfile, orders, paymentCards } from '../../data/profileData';
+import { ProfileSkeleton } from '../../components/profile/ProfileSkeleton';
+import { orders, paymentCards } from '../../data/profileData';
+import { useAuthStore } from '../../store/authStore';
+import { useProfile } from '../../hooks/queries/useProfile';
 
 function Profile() {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
-    const [menuVisible, setMenuVisible] = useState(false);
-    const [isRestoring, setIsRestoring] = useState(true);
+    const { user } = useAuthStore();
+    console.log("user=>", user)
 
-    React.useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsRestoring(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, []);
+    // Fetch profile data from API
+    const { isLoading, profile: profileData } = useProfile(user?.id);
+    console.log("profileApiData=>", profileData);
+
+    const displayUser = profileData ? {
+        ...user,
+        name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim() || profileData.name,
+        profile_image: profileData.profile_image,
+        bio: profileData.bio,
+        phone: profileData.phone_no,
+        email: profileData.email,
+        country: profileData.country,
+        state: profileData.state,
+        postal_code: profileData.postal_code,
+    } : user;
+
+    const [menuVisible, setMenuVisible] = useState(false);
 
     const handleMenuItemPress = (item: string) => {
-        if (item === 'profile' && !isRestoring) {
+        if (item === 'profile') {
             navigation.navigate('AddProfile');
         }
         console.log('Menu item pressed:', item);
     };
 
     const handleEditProfile = () => {
-        if (!isRestoring) {
-            navigation.navigate('AddProfile');
-        }
+        navigation.navigate('AddProfile');
     };
 
     const handleMakeDefault = (cardId: string) => {
@@ -60,56 +72,79 @@ function Profile() {
         console.log('Privacy policy');
     };
 
+    if (isLoading) {
+        return (
+            <ScreenWrapper>
+                <ProfileSkeleton />
+            </ScreenWrapper>
+        );
+    }
+
     return (
         <ScreenWrapper scroll={true}>
-                <ProfileHeader 
-                    name={userProfile.name} 
-                    avatar={userProfile.avatar}
-                    onMenuPress={() => setMenuVisible(true)}
-                />
+            <ProfileHeader
+                name={displayUser?.name || ''}
+                avatar={displayUser?.profile_image || ''}
+                onMenuPress={() => setMenuVisible(true)}
+            />
 
-                <ProfileAvatar 
-                    avatar={userProfile.avatar}
+            <ProfileAvatar
+                avatar={displayUser?.profile_image || ''}
+                onEditPress={handleEditProfile}
+            />
+
+            <View className="px-6 mb-6">
+                <ProfileInfoItem
+                    label="Full Name"
+                    value={displayUser?.name || ''}
                     onEditPress={handleEditProfile}
                 />
-
-                <View className="px-6 mb-6">
-                    <ProfileInfoItem 
-                        label="Full Name"
-                        value={userProfile.name}
-                        onEditPress={handleEditProfile}
-                    />
-                    <ProfileInfoItem 
-                        label="Email Address"
-                        value={userProfile.email}
-                        onEditPress={handleEditProfile}
-                    />
-                    <ProfileInfoItem 
-                        label="Phone Number"
-                        value={userProfile.phone}
-                        onEditPress={handleEditProfile}
-                    />
-                    <ProfileInfoItem 
-                        label="Bio"
-                        value={userProfile.bio}
-                        onEditPress={handleEditProfile}
-                        isLast
-                    />
-                </View>
-
-                <OrderHistory orders={orders} />
-
-                <PaymentMethod 
-                    cards={paymentCards}
-                    onMakeDefault={handleMakeDefault}
-                    onRemove={handleRemoveCard}
-                    onAddCard={handleAddCard}
-                    onSave={handleSave}
-                    onUpdate={handleUpdate}
-                    onPrivacyPolicy={handlePrivacyPolicy}
+                <ProfileInfoItem
+                    label="Email Address"
+                    value={displayUser?.email || ''}
+                    onEditPress={handleEditProfile}
                 />
+                <ProfileInfoItem
+                    label="Phone Number"
+                    value={(displayUser as any)?.phone || ''}
+                    onEditPress={handleEditProfile}
+                />
+                <ProfileInfoItem
+                    label="Country"
+                    value={(displayUser as any)?.country || ''}
+                    onEditPress={handleEditProfile}
+                />
+                <ProfileInfoItem
+                    label="State"
+                    value={(displayUser as any)?.state || ''}
+                    onEditPress={handleEditProfile}
+                />
+                <ProfileInfoItem
+                    label="Postal Code"
+                    value={(displayUser as any)?.postal_code || ''}
+                    onEditPress={handleEditProfile}
+                />
+                <ProfileInfoItem
+                    label="Bio"
+                    value={displayUser?.bio || ''}
+                    onEditPress={handleEditProfile}
+                    isLast
+                />
+            </View>
 
-                <View className="h-24" />
+            <OrderHistory orders={orders} />
+
+            <PaymentMethod
+                cards={paymentCards}
+                onMakeDefault={handleMakeDefault}
+                onRemove={handleRemoveCard}
+                onAddCard={handleAddCard}
+                onSave={handleSave}
+                onUpdate={handleUpdate}
+                onPrivacyPolicy={handlePrivacyPolicy}
+            />
+
+            <View className="h-24" />
 
             <MenuDrawer
                 visible={menuVisible}

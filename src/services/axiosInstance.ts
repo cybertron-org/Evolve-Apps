@@ -42,7 +42,16 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error(`[Response Error] ${error.response?.status || 'Network Error'} from ${error.config?.url}`);
+    const status = error.response?.status || 'Network Error';
+    const url = error.config?.url || 'Unknown URL';
+    
+    // Use console.warn for 401s to avoid triggering the dev-mode LogBox error screen
+    if (error.response?.status === 401) {
+      console.warn(`[Response Error] ${status} from ${url}`);
+    } else {
+      console.error(`[Response Error] ${status} from ${url}`);
+    }
+
     if (error.response?.data) {
       console.log('Error Response Data:', JSON.stringify(error.response.data, null, 2));
     }

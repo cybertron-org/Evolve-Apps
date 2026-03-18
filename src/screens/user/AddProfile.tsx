@@ -2,19 +2,25 @@ import AppText from '../../components/common/AppText';
 import React, { useState } from "react";
 import {
   View,
-  Platform} from 'react-native';
+  Platform
+} from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScreenWrapper } from "../../components/specific/ScreenWrapper";
-import Input from "../../components/common/Input";
 import { Button } from "../../components/common/Button";
 import { useTheme } from "../../theme/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
-import GlobalIcon from "../../components/common/GlobalIcon";
-import AvatarPicker from "../../components/specific/AvatarPicker";
-import CountryDropdown, { Country } from "../../components/specific/CountryDropdown";
-import StateDropdown, { StateItem } from "../../components/specific/StateDropdown";
+import { ProfileAvatarSection } from "../../components/profile/ProfileAvatarSection";
+import { ProfileFormFields } from "../../components/profile/ProfileFormFields";
+import { useAuthStore } from "../../store/authStore";
+import { useUpdateProfile } from "../../hooks/mutations/useUpdateProfile";
+import { useToast } from "../../hooks/useToast";
+import { Country } from "../../components/specific/CountryDropdown";
+import { StateItem } from "../../components/specific/StateDropdown";
+
+import { useProfile } from "../../hooks/queries/useProfile";
+
 
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,76 +31,157 @@ function Profile() {
   const { isDark } = useTheme();
   const navigation = useNavigation<NavProp>();
 
-  const [fullName, setFullName]         = useState('');
-  const [email, setEmail]               = useState('');
-  const [phone, setPhone]               = useState('');
-  const [postalCode, setPostalCode]     = useState('');
-  const [avatarBase64, setAvatarBase64] = useState('');
+  const { user } = useAuthStore();
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { showToast } = useToast();
+  
+  // Fetch latest profile data from API for prepopulation
+  const { profile: profileData } = useProfile(user?.id);
 
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [selectedState, setSelectedState]     = useState<StateItem | null>(null);
+  console.log('--- AddProfile Debug: Email ---');
+  console.log('Store User Email:', user?.email);
+  console.log('API Profile Email:', profileData?.email);
+  console.log('-------------------------------');
 
-  const [fullNameError, setFullNameError] = useState('');
-  const [emailError, setEmailError]       = useState('');
-  const [phoneError, setPhoneError]       = useState('');
-  const [countryError, setCountryError]   = useState('');
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    postalCode: '',
+    avatarFile: null as { uri: string; name: string; type: string } | null,
+    bio: '',
+    selectedCountry: null as Country | null,
+    selectedState: null as StateItem | null,
+  });
 
-  const handleCountrySelect = (country: Country) => {
-    setSelectedCountry(country);
-    setSelectedState(null);
-    if (countryError) setCountryError('');
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    country: '',
+  });
+
+  const handleChange = (key: string, value: any) => {
+    setForm(prev => ({ ...prev, [key]: value }));
+    if (errors[key as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [key]: '' }));
+    }
   };
 
+  const handleCountrySelect = (country: Country) => {
+    setForm(prev => ({
+      ...prev,
+      selectedCountry: country,
+      selectedState: null,
+    }));
+    if (errors.country) {
+      setErrors(prev => ({ ...prev, country: '' }));
+    }
+  };
+
+  // Sync with API data or user data from store
+  React.useEffect(() => {
+    if (profileData) {
+      setForm(prev => ({
+        ...prev,
+        firstName: profileData.first_name || '',
+        lastName: profileData.last_name || '',
+        phone: profileData.phone_no || '',
+        postalCode: profileData.postal_code || '',
+        bio: profileData.bio || '',
+        selectedCountry: profileData.country ? { name: profileData.country } as any : prev.selectedCountry,
+        selectedState: profileData.state ? { name: profileData.state } as any : prev.selectedState,
+      }));
+    } else if (user) {
+      const parts = (user.name || '').split(' ');
+      setForm(prev => ({
+        ...prev,
+        firstName: prev.firstName || parts[0] || '',
+        lastName: prev.lastName || parts.slice(1).join(' ') || '',
+        bio: prev.bio || user.bio || '',
+        phone: prev.phone || user.phone || '',
+      }));
+    }
+  }, [profileData, user]);
+
   const handleSubmit = () => {
-    let isValid = true;
+    const newErrors = {
+      firstName: !form.firstName.trim() ? 'First name is required' : '',
+      lastName: !form.lastName.trim() ? 'Last name is required' : '',
+      phone: !form.phone ? 'Phone number is required' : !PHONE_REGEX.test(form.phone) ? 'Please enter a valid phone number' : '',
+      country: !form.selectedCountry ? 'Please select a country' : '',
+    };
 
-    if (!fullName.trim()) {
-      setFullNameError('Full name is required');
-      isValid = false;
-    } else {
-      setFullNameError('');
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some(error => error !== '')) {
+      showToast({
+        type: 'error',
+        title: 'Form Error',
+        message: 'Please fill all required fields correctly'
+      });
+      return;
     }
 
-    if (!email) {
-      setEmailError('Email is required');
-      isValid = false;
-    } else if (!EMAIL_REGEX.test(email)) {
-      setEmailError('Please enter a valid email address');
-      isValid = false;
-    } else {
-      setEmailError('');
+     const formData = new FormData();
+    formData.append('id', user?.id || '');
+    formData.append('first_name', form.firstName);
+    formData.append('last_name', form.lastName);
+    formData.append('phone_no', form.phone);
+    if (form.selectedCountry?.name) formData.append('country', form.selectedCountry.name);
+    if (form.selectedCountry?.code) formData.append('countryCode', form.selectedCountry.code);
+    if (form.selectedState?.name) formData.append('state', form.selectedState.name);
+    if (form.selectedState?.code) formData.append('stateCode', form.selectedState.code);
+    formData.append('postal_code', form.postalCode);
+    formData.append('bio', form.bio);
+
+    if (form.avatarFile) {
+      console.log('Appending image to FormData:', form.avatarFile.name);
+      
+      // Handle platform specific URI normalization for robust file upload
+      const imageUri = Platform.OS === 'ios' 
+        ? form.avatarFile.uri.replace('file://', '') 
+        : form.avatarFile.uri;
+
+      formData.append('profile_image', {
+        uri: imageUri,
+        name: form.avatarFile.name,
+        type: form.avatarFile.type,
+      } as any);
     }
 
-    if (!phone) {
-      setPhoneError('Phone number is required');
-      isValid = false;
-    } else if (!PHONE_REGEX.test(phone)) {
-      setPhoneError('Please enter a valid phone number');
-      isValid = false;
-    } else {
-      setPhoneError('');
-    }
+    console.log('Submitting profile update...', {
+        firstName: form.firstName,
+        lastName: form.lastName,
+        phone_no: form.phone,
+        hasImage: !!form.avatarFile
+    });
 
-    if (!selectedCountry) {
-      setCountryError('Please select a country');
-      isValid = false;
-    } else {
-      setCountryError('');
-    }
-
-    if (!isValid) return;
-
-    console.log({
-      fullName,
-      email,
-      phone,
-      country: selectedCountry?.name,
-      countryCode: selectedCountry?.code,
-      state: selectedState?.name,
-      stateCode: selectedState?.code,
-      postalCode});
-
-    navigation.navigate('Main');
+    updateProfile(formData, {
+      onSuccess: () => {
+        showToast({
+          type: 'success',
+          title: 'Success',
+          message: 'Profile updated successfully'
+        });
+        
+        // If we can go back, go back to Profile screen. 
+        // If not (e.g. mandatory registration flow), go to Main app.
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        } else {
+          navigation.navigate('Main');
+        }
+      },
+      onError: (error: any) => {
+        console.error('Update Profile Error:', error.response?.data || error.message);
+        showToast({
+          type: 'error',
+          title: 'Error',
+          message: error.response?.data?.message || 'Something went wrong'
+        });
+      }
+    });
   };
 
   return (
@@ -109,149 +196,28 @@ function Profile() {
       >
         <View className="flex-1 px-6 pb-16">
 
-          {/* ── Avatar ──────────────────────────────────────────────── */}
-          <View className="items-center mb-6">
-            <AvatarPicker
-              size={96}
-              onImageSelected={(base64) => setAvatarBase64(base64)}
-            />
-            <AppText className="text-sublabel dark:text-sublabel-dark text-xl font-bold uppercase mt-4 tracking-widest">
-              CHOOSE IMAGE
-            </AppText>
-            <AppText className="text-sublabel dark:text-sublabel-dark text-sm font-normal mt-1 opacity-70">
-              Hi, Welcome to evolve vocational
-            </AppText>
-          </View>
+          <ProfileAvatarSection 
+            initialUri={user?.profile_image}
+            onImageSelected={(file) => handleChange('avatarFile', file)}
+          />
 
-          {/* ── Form fields ─────────────────────────────────────────── */}
-          <View className="w-full gap-1">
-
-            {/* Full Name */}
-            <Input
-              label="Full Name"
-              value={fullName}
-              onChangeText={(text) => {
-                setFullName(text);
-                if (fullNameError) setFullNameError('');
-              }}
-              placeholder="Enter name"
-              error={fullNameError}
-              leftIcon={
-                <GlobalIcon
-                  name="user"
-                  library="Feather"
-                  size={18}
-                  color={isDark ? '#94A3B8' : '#9CA3AF'}
-                />
-              }
-            />
-
-            {/* Email */}
-            <Input
-              label="Enter Your Email"
-              value={email}
-              onChangeText={(text) => {
-                setEmail(text);
-                if (emailError) setEmailError('');
-              }}
-              keyboardType="email-address"
-              placeholder="Enter your email"
-              error={emailError}
-              leftIcon={
-                <GlobalIcon
-                  name="mail"
-                  library="Feather"
-                  size={18}
-                  color={isDark ? '#94A3B8' : '#9CA3AF'}
-                />
-              }
-            />
-
-            {/* Phone */}
-            <Input
-              label="Enter Your Phone Number"
-              value={phone}
-              onChangeText={(text) => {
-                setPhone(text);
-                if (phoneError) setPhoneError('');
-              }}
-              keyboardType="phone-pad"
-              placeholder="Enter your phone number"
-              error={phoneError}
-              leftIcon={
-                <GlobalIcon
-                  name="phone"
-                  library="Feather"
-                  size={18}
-                  color={isDark ? '#94A3B8' : '#9CA3AF'}
-                />
-              }
-            />
-
-            {/* Country Dropdown */}
-            <View className="w-full">
-              <AppText
-                className={`text-sm font-medium mb-1 ${
-                  isDark ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                Select Country
-              </AppText>
-              <CountryDropdown
-                selectedCountry={selectedCountry}
-                onSelect={handleCountrySelect}
-              />
-              {countryError ? (
-                <AppText className="text-red-500 text-xs mt-1 ml-1">
-                  {countryError}
-                </AppText>
-              ) : null}
-            </View>
-
-            {/* State Dropdown */}
-            <View className="w-full">
-              <AppText
-                className={`text-sm font-medium mb-1 ${
-                  isDark ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                Select State
-              </AppText>
-              <StateDropdown
-                countryCode={selectedCountry?.code ?? null}
-                selectedState={selectedState}
-                onSelect={(s) => setSelectedState(s)}
-              />
-            </View>
-
-            {/* Postal Code ← ab keyboard ke peeche hide nahi hogi */}
-            <Input
-              label="Postal Code"
-              value={postalCode}
-              onChangeText={setPostalCode}
-              keyboardType="number-pad"
-              placeholder="Postal code"
-              leftIcon={
-                <GlobalIcon
-                  name="lock"
-                  library="Feather"
-                  size={18}
-                  color={isDark ? '#94A3B8' : '#9CA3AF'}
-                />
-              }
-            />
-
-          </View>
+          <ProfileFormFields 
+            form={form}
+            errors={errors}
+            userEmail={user?.email || ''}
+            isDark={isDark}
+            handleChange={handleChange}
+            handleCountrySelect={handleCountrySelect}
+          />
 
           {/* ── Submit ──────────────────────────────────────────────── */}
           <Button
-            title="SAVE"
-            className={`rounded-full mt-6 h-14 ${
-              isDark ? 'bg-[#BDC3C7]' : 'bg-[#578096]'
-            }`}
-            textClassName={`font-bold tracking-widest text-base ${
-              isDark ? 'text-[#333337]' : 'text-white'
-            }`}
+            title={isPending ? "SAVING..." : "SAVE"}
+            disabled={isPending}
+            className={`rounded-full mt-6 h-14 ${isDark ? 'bg-[#BDC3C7]' : 'bg-[#578096]'
+              }`}
+            textClassName={`font-bold tracking-widest text-base ${isDark ? 'text-[#333337]' : 'text-white'
+              }`}
             onPress={handleSubmit}
           />
         </View>

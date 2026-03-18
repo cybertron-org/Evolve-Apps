@@ -14,6 +14,10 @@ interface User {
   id: string;
   email: string;
   name?: string;
+  profile_image?: string;
+  bio?: string;
+  phone?: string;
+  profile_completed?: number;
 }
 
 interface AuthState {

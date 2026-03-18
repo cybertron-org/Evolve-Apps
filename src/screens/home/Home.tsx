@@ -11,18 +11,21 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 
+import { useAuthStore } from '../../store/authStore';
+ 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const isSmallScreen = SCREEN_WIDTH < 375;
 const isLargeScreen = SCREEN_WIDTH > 414;
-
+ 
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
-
+ 
 function Home() {
     const { isDark } = useTheme();
     const navigation = useNavigation<NavProp>();
+    const { user } = useAuthStore();
     const [searchQuery, setSearchQuery] = useState('');
     const [menuVisible, setMenuVisible] = useState(false);
-
+ 
     const topServices = [
         { id: 1, title: 'Executive Coaching Session', image: require('../../assets/images/homeservice.png') },
         { id: 2, title: 'Personal Aid Services', image: require('../../assets/images/homeservice1.png') },
@@ -44,7 +47,8 @@ function Home() {
             }}
         >
             <Header
-                userName="Angelina"
+                userName={user?.name || 'Angelina'}
+                userImage={user?.profile_image}
                 onMenuPress={() => setMenuVisible(true)}
             />
 

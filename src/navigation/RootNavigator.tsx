@@ -55,8 +55,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
   const token = useAuthStore((state) => state.token);
-  console.log("token=>", token)
-  // console.log('RootNavigator: Current token status:', token ? 'Logged In' : 'Logged Out');
+  const user = useAuthStore((state) => state.user);
+  
+  console.log('--- RootNavigator Auth State ---');
+  console.log('Token exists:', !!token);
+  console.log('User Object:', JSON.stringify(user, null, 2));
+  console.log('Profile Completed status:', user?.profile_completed);
+  console.log('-------------------------------');
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -73,9 +78,24 @@ export const RootNavigator = () => {
       ) : (
         // Protected Stack
         <>
-          <Stack.Screen name="Main" component={AppTabs} />
+          {/* Force AddProfile if profile is not completed (0 or '0' or undefined for new users) */}
+          {(Number(user?.profile_completed) === 0 || !user?.profile_completed) ? (
+            <>
+              <Stack.Screen 
+                name="AddProfile" 
+                component={AddProfile} 
+                options={{ title: 'Complete Your Profile' }}
+              />
+              <Stack.Screen name="Main" component={AppTabs} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Main" component={AppTabs} />
+              <Stack.Screen name="AddProfile" component={AddProfile} />
+            </>
+          )}
+          
           <Stack.Screen name="OnlineSession" component={OnlineSession} />
-          <Stack.Screen name="AddProfile" component={AddProfile} />
           <Stack.Screen name="DoubleClickToPay" component={DoubleClickToPay} options={{ animation: 'fade' }} />
           <Stack.Screen name="ChatDetail" component={ChatDetail} />
           <Stack.Screen name="PurchaseSummary" component={PurchaseSummary} />

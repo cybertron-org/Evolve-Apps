@@ -9,13 +9,17 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginApi,
     onSuccess: (data) => {
-      // console.log('Login API Success:', data);
-      if (data.data?.token) {
-        setToken(data.data.token);
+      console.log('Login Response Data:', data);
+      const token = data.data?.token || data.token;
+      const user = data.data?.user || data.user;
+
+      if (token) {
+        setToken(token);
       }
-      if (data.data?.user) {
-        setUser(data.data.user);
+      if (user) {
+        setUser(user);
       }
     },
+
   });
 };
