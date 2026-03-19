@@ -38,7 +38,8 @@ export const useAuthStore = create<AuthState>()(
         set({ token });
       },
       setUser: (user) => {
-        console.log('Setting User in store:', user?.email);
+        console.log('--- AuthStore: Setting User ---');
+        console.log(JSON.stringify(user, null, 2));
         set({ user });
       },
       logout: () => {

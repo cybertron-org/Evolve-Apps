@@ -12,6 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 
 import { useAuthStore } from '../../store/authStore';
+import { useCourses } from '../../hooks/queries/useCourses';
  
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const isSmallScreen = SCREEN_WIDTH < 375;
@@ -26,12 +27,13 @@ function Home() {
     const [searchQuery, setSearchQuery] = useState('');
     const [menuVisible, setMenuVisible] = useState(false);
  
-    const topServices = [
-        { id: 1, title: 'Executive Coaching Session', image: require('../../assets/images/homeservice.png') },
-        { id: 2, title: 'Personal Aid Services', image: require('../../assets/images/homeservice1.png') },
-        { id: 3, title: 'ADA Accommodations Consultation', image: require('../../assets/images/homeservice2.png') },
-        { id: 4, title: 'Career Counseling', image: require('../../assets/images/homeservice3.png') },
-    ];
+    const { data: coursesData, isLoading } = useCourses();
+
+    const topServices = coursesData?.data?.map((course: any) => ({
+        id: course.id,
+        title: course.title,
+        image: course.banner
+    })) || [];
 
     const handleMenuItemPress = (item: string) => {
         console.log('Menu item pressed:', item);
@@ -123,11 +125,14 @@ function Home() {
                     TOP SERVICES
                 </AppText>
 
-                {/* Render Filtered Services or Fallback */}
-                {topServices.filter(service => service.title.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
+                {isLoading ? (
+                    <View className="py-10 items-center justify-center w-full">
+                        <AppText className="text-gray-500">Loading services...</AppText>
+                    </View>
+                ) : topServices.filter((service: any) => service.title.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
                     <ServiceCarousel
-                        services={topServices.filter(service => service.title.toLowerCase().includes(searchQuery.toLowerCase()))}
-                        onServicePress={(service) => {
+                        services={topServices.filter((service: any) => service.title.toLowerCase().includes(searchQuery.toLowerCase()))}
+                        onServicePress={(service: any) => {
                             console.log('Service pressed:', service.title);
                             navigation.navigate('Services', { 
                                 screen: 'ServiceDetail', 

@@ -17,8 +17,12 @@ api.interceptors.request.use(
     console.log(`[Request] ${config.method?.toUpperCase()} ${config.url}`);
     console.log('Current Auth Store State:', {
       hasToken: !!state.token,
-      user: state.user?.email,
+      user: state.user,
     });
+    
+    if (config.data) {
+      console.log('Request Data:', config.data instanceof FormData ? '[FormData]' : config.data);
+    }
     
     if (state.token) {
       console.log('Attaching Auth Token to request');

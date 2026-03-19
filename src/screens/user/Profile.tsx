@@ -17,7 +17,7 @@ import { useProfile } from '../../hooks/queries/useProfile';
 function Profile() {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const { user } = useAuthStore();
-    console.log("user=>", user)
+    console.log("user=>", user?.id)
 
     // Fetch profile data from API
     const { isLoading, profile: profileData } = useProfile(user?.id);

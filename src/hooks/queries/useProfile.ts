@@ -16,23 +16,26 @@ export const useProfile = (id: string | number | undefined) => {
 
   useEffect(() => {
     if (profileData) {
+        const currentUser = useAuthStore.getState().user;
+        
         console.log('useProfile: Updating store with API data', {
             apiEmail: profileData.email,
-            storeEmail: storeUser?.email
+            storeEmail: currentUser?.email,
+            storeId: currentUser?.id
         });
         
         setUser({
-            ...storeUser, // Preserving existing data
+            ...currentUser, // Preserving latest data
             id: profileData.id.toString(),
-            email: profileData.email || storeUser?.email, // Fallback to store email if API misses it
-            name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim() || profileData.name || storeUser?.name,
-            profile_image: profileData.profile_image || storeUser?.profile_image,
-            bio: profileData.bio || storeUser?.bio,
-            phone: profileData.phone_no || storeUser?.phone,
+            email: profileData.email || currentUser?.email,
+            name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim() || profileData.name || currentUser?.name,
+            profile_image: profileData.profile_image || currentUser?.profile_image,
+            bio: profileData.bio || currentUser?.bio,
+            phone: profileData.phone_no || currentUser?.phone,
             profile_completed: profileData.profile_completed,
         } as any);
     }
-  }, [profileData, setUser]); // Removed storeUser from deps to avoid loop, but using it inside
+  }, [profileData, setUser]);
 
   return {
     ...query,

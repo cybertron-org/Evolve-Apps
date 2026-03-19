@@ -85,13 +85,32 @@ useEffect(() => {
     useEffect(() => {
         if (showAccountCreated && verifiedData) {
             const timer = setTimeout(() => {
+                console.log('--- VerifyOTP: Raw API Response ---');
+                console.log(JSON.stringify(verifiedData, null, 2));
+                console.log('----------------------------------');
+
                 const token = verifiedData.data?.token || verifiedData.token;
-                const user = verifiedData.data?.user || verifiedData.user;
+                let user = verifiedData.data?.user || verifiedData.user;
+                
+                // Prioritize ID from user object, then fallback to other fields
+                const id = user?.id || verifiedData.data?.id || verifiedData.id || 
+                           user?.user_id || verifiedData.data?.user_id || verifiedData.user_id || 
+                           user?.userID || verifiedData.data?.userID || verifiedData.userID;
 
                 console.log('--- VerifyOTP: Setting Auth Data ---');
                 console.log('Token:', !!token);
-                console.log('User profile_completed:', user?.profile_completed);
-                console.log('User Data:', JSON.stringify(user, null, 2));
+                console.log('Found ID:', id);
+
+                if (!user && (id || email)) {
+                    console.log('Creating user object from ID/email');
+                    user = { id: id?.toString() || '', email: email || '' } as any;
+                } else if (user) {
+                    // Ensure ID is a string and always present
+                    user.id = (user.id || id)?.toString() || '';
+                    if (!user.email && email) user.email = email;
+                }
+
+                console.log('User Data after merge:', JSON.stringify(user, null, 2));
 
                 if (token) setToken(token);
                 if (user) setUser(user);
@@ -100,7 +119,7 @@ useEffect(() => {
             }, 2000);
             return () => clearTimeout(timer);
         }
-    }, [showAccountCreated, verifiedData, setToken, setUser]);
+    }, [showAccountCreated, verifiedData, setToken, setUser, email]);
 
     const handleOtpChange = (text: string, index: number) => {
         const newOtp = [...otp];

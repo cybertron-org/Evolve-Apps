@@ -7,7 +7,9 @@ import { useTheme } from '../../theme/ThemeContext';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import GlobalIcon from '../../components/common/GlobalIcon';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { getServiceById } from '../../data/servicesData';
+import { useCourseDetail } from '../../hooks/queries/useCourseDetail';
+import { useAuthStore } from '../../store/authStore';
+import { ActivityIndicator } from 'react-native';
 
 type ServiceDetailRouteParams = {
     ServiceDetail: {
@@ -21,22 +23,49 @@ function ServiceDetail() {
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const route = useRoute<RouteProp<ServiceDetailRouteParams, 'ServiceDetail'>>();
+    const { user } = useAuthStore();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isExpanded, setIsExpanded] = useState(false);
-
-    const serviceId = route.params?.serviceId || 1;
-    const serviceData = getServiceById(serviceId);
+ 
+    const serviceId = route.params?.serviceId;
+    const { data: course, isLoading, error } = useCourseDetail(serviceId);
     
-    if (!serviceData) {
-        return null;
+    if (isLoading) {
+        return (
+            <ScreenWrapper>
+                <Header 
+                    userName={user?.name || 'Angelina'} 
+                    userImage={user?.profile_image}
+                    onMenuPress={() => {}} 
+                />
+                <View className="flex-1 items-center justify-center">
+                    <ActivityIndicator size="large" color="#578096" />
+                </View>
+            </ScreenWrapper>
+        );
     }
 
+    if (!course || error) {
+        return (
+            <ScreenWrapper>
+                <Header 
+                    userName={user?.name || 'Angelina'} 
+                    userImage={user?.profile_image}
+                    onMenuPress={() => {}} 
+                />
+                <View className="flex-1 items-center justify-center p-6">
+                    <AppText className="text-gray-500 text-center">Course details not found.</AppText>
+                </View>
+            </ScreenWrapper>
+        );
+    }
+ 
     const service = {
-        title: serviceData.title.toUpperCase(),
-        description: serviceData.description,
-        fee: serviceData.fee,
-        images: serviceData.images};
-
+        title: course.title.toUpperCase(),
+        description: course.description || 'No description available.',
+        fee: `${course.currency || 'USD'} ${course.rate_per_hour}`,
+        images: [course.banner]};
+ 
     const isLongText = service.description.length > COLLAPSED_CHAR_LIMIT;
     const displayedText =
         isExpanded || !isLongText
@@ -53,7 +82,11 @@ function ServiceDetail() {
 
     return (
         <ScreenWrapper scroll={true}>
-            <Header userName="Angelina" onMenuPress={() => console.log('Menu pressed')} />
+            <Header 
+                userName={user?.name || 'Angelina'} 
+                userImage={user?.profile_image}
+                onMenuPress={() => console.log('Menu pressed')} 
+            />
 
             <View className="mx-6 mt-4 mb-6 rounded-2xl overflow-hidden relative">
                 <Image
@@ -79,7 +112,7 @@ function ServiceDetail() {
                 </TouchableOpacity>
 
                 <View className="absolute bottom-4 left-0 right-0 flex-row justify-center gap-2">
-                    {service.images.map((_, index) => (
+                    {service.images.map((_: any, index: number) => (
                         <View
                             key={index}
                             className={`w-2 h-2 rounded-full ${

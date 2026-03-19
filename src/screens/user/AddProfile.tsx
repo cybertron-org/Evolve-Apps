@@ -38,7 +38,7 @@ function Profile() {
   // Fetch latest profile data from API for prepopulation
   const { profile: profileData } = useProfile(user?.id);
 
-  console.log('--- AddProfile Debug: Email ---');
+  console.log('--- AddProfile Debug: ID ---', user?.id);
   console.log('Store User Email:', user?.email);
   console.log('API Profile Email:', profileData?.email);
   console.log('-------------------------------');
@@ -123,24 +123,35 @@ function Profile() {
       return;
     }
 
-     const formData = new FormData();
-    formData.append('id', user?.id || '');
-    formData.append('first_name', form.firstName);
-    formData.append('last_name', form.lastName);
-    formData.append('phone_no', form.phone);
-    if (form.selectedCountry?.name) formData.append('country', form.selectedCountry.name);
-    if (form.selectedCountry?.code) formData.append('countryCode', form.selectedCountry.code);
-    if (form.selectedState?.name) formData.append('state', form.selectedState.name);
-    if (form.selectedState?.code) formData.append('stateCode', form.selectedState.code);
-    formData.append('postal_code', form.postalCode);
-    formData.append('bio', form.bio);
+    const data: any = {
+      id: user?.id || '',
+      email: user?.email || '',
+      first_name: form.firstName,
+      last_name: form.lastName,
+      phone_no: form.phone,
+      country: form.selectedCountry?.name || '',
+      countryCode: form.selectedCountry?.code || '',
+      state: form.selectedState?.name || '',
+      stateCode: form.selectedState?.code || '',
+      postal_code: form.postalCode,
+      bio: form.bio,
+    };
+
+    console.log('--- Submitting Profile Update ---');
+    console.log('Submission Data Object:', JSON.stringify(data, null, 2));
+
+    let finalData: any = data;
 
     if (form.avatarFile) {
-      console.log('Appending image to FormData:', form.avatarFile.name);
-      
-      // Handle platform specific URI normalization for robust file upload
-      const imageUri = Platform.OS === 'ios' 
-        ? form.avatarFile.uri.replace('file://', '') 
+      console.log('Converting to FormData for image upload');
+      const formData = new FormData();
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+      });
+
+      // Handle platform specific URI normalization
+      const imageUri = Platform.OS === 'ios'
+        ? form.avatarFile.uri.replace('file://', '')
         : form.avatarFile.uri;
 
       formData.append('profile_image', {
@@ -148,16 +159,13 @@ function Profile() {
         name: form.avatarFile.name,
         type: form.avatarFile.type,
       } as any);
+      
+      finalData = formData;
     }
 
-    console.log('Submitting profile update...', {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        phone_no: form.phone,
-        hasImage: !!form.avatarFile
-    });
+    console.log('---------------------------------', finalData);
 
-    updateProfile(formData, {
+    updateProfile(finalData, {
       onSuccess: () => {
         showToast({
           type: 'success',

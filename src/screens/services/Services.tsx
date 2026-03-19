@@ -7,7 +7,8 @@ import MenuDrawer from '../../components/specific/MenuDrawer';
 import { useTheme } from '../../theme/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { getAllServices } from '../../data/servicesData';
+import { useCourses } from '../../hooks/queries/useCourses';
+import { useAuthStore } from '../../store/authStore';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const isSmallScreen = SCREEN_WIDTH < 375;
@@ -19,10 +20,15 @@ type ServiceItem = {
 };
 
 function Services() {
-    const services: ServiceItem[] = getAllServices().map(service => ({
-        id: service.id,
-        title: service.title,
-        image: service.thumbnail}));
+    const { data: coursesData, isLoading } = useCourses();
+    const { user } = useAuthStore();
+    
+    const services: ServiceItem[] = coursesData?.data?.map((course: any) => ({
+        id: course.id,
+        title: course.title,
+        image: course.banner
+    })) || [];
+
     const { isDark } = useTheme();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [menuVisible, setMenuVisible] = useState(false);
@@ -38,7 +44,8 @@ function Services() {
     return (
         <ScreenWrapper scroll={true}>
             <Header 
-                userName="Angelina" 
+                userName={user?.name || 'Angelina'} 
+                userImage={user?.profile_image}
                 onMenuPress={() => setMenuVisible(true)} 
             />
 
@@ -51,31 +58,37 @@ function Services() {
 
             {/* Services Grid */}
             <View className="px-6">
-                <View className="flex-row flex-wrap justify-between gap-y-4">
-                    {services.map((service) => (
-                        <TouchableOpacity
-                            key={service.id}
-                            onPress={() => handleServicePress(service)}
-                            activeOpacity={0.8}
-                            className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
-                            style={{ width: '48%' }}
-                        >
-                            <Image
-                                source={typeof service.image === 'string' ? { uri: service.image } : service.image}
-                                className="w-full h-32"
-                                resizeMode="cover"
-                            />
-                            <View className="p-3">
-                                <AppText 
-                                    className="text-sm font-semibold text-gray-900 dark:text-white" 
-                                    numberOfLines={2}
-                                >
-                                    {service.title}
-                                </AppText>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                {isLoading ? (
+                    <View className="py-10 items-center justify-center w-full">
+                        <AppText className="text-gray-500">Loading services...</AppText>
+                    </View>
+                ) : (
+                    <View className="flex-row flex-wrap justify-between gap-y-4">
+                        {services.map((service) => (
+                            <TouchableOpacity
+                                key={service.id}
+                                onPress={() => handleServicePress(service)}
+                                activeOpacity={0.8}
+                                className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
+                                style={{ width: '48%' }}
+                            >
+                                <Image
+                                    source={typeof service.image === 'string' ? { uri: service.image } : service.image}
+                                    className="w-full h-32"
+                                    resizeMode="cover"
+                                />
+                                <View className="p-3">
+                                    <AppText 
+                                        className="text-sm font-semibold text-gray-900 dark:text-white" 
+                                        numberOfLines={2}
+                                    >
+                                        {service.title}
+                                    </AppText>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
             </View>
                 
             <View className="h-6" />
