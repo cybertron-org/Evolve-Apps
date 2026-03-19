@@ -8,7 +8,8 @@ interface CalendarLegendProps {
 
 const COLOR_TODAY = '#3B82F6';
 const COLOR_SELECTED = '#1ABC9C';
-const COLOR_BOOKED = '#FB7185';
+const COLOR_WEEKLY = '#FB7185';
+const COLOR_CUSTOM = '#F59E0B';
 
 const CalendarLegend: React.FC<CalendarLegendProps> = ({ textSecondary }) => {
     return (
@@ -30,8 +31,25 @@ const CalendarLegend: React.FC<CalendarLegendProps> = ({ textSecondary }) => {
                 <AppText style={{ color: textSecondary, fontSize: 11, fontWeight: '500' }}>Selected</AppText>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <View style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: COLOR_BOOKED }} />
-                <AppText style={{ color: textSecondary, fontSize: 11, fontWeight: '500' }}>Booked</AppText>
+                <View style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: COLOR_WEEKLY }} />
+                <AppText style={{ color: textSecondary, fontSize: 11, fontWeight: '500' }}>Weekly</AppText>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <View style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: COLOR_CUSTOM }} />
+                <AppText style={{ color: textSecondary, fontSize: 11, fontWeight: '500' }}>Special Date</AppText>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <View style={{ 
+                    width: 10, 
+                    height: 10, 
+                    borderRadius: 3, 
+                    overflow: 'hidden', 
+                    flexDirection: 'row' 
+                }}>
+                    <View style={{ flex: 1, backgroundColor: COLOR_WEEKLY }} />
+                    <View style={{ flex: 1, backgroundColor: COLOR_CUSTOM }} />
+                </View>
+                <AppText style={{ color: textSecondary, fontSize: 11, fontWeight: '500' }}>Both</AppText>
             </View>
         </View>
     );

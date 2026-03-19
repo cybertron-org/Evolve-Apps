@@ -31,9 +31,9 @@ export type RootStackParamList = {
   AddProfile: undefined;
   DoubleClickToPay: undefined;
   VerifyOTP:{ email?: string } | undefined;
-  ServiceDetail: { serviceId: number };
+  ServiceDetail: { serviceId: number; image?: string };
   ConsultationList: undefined;
-  BookingCalendar: { serviceId: number };
+  BookingCalendar: { serviceId: number; image?: string };
   Transactions: undefined;
   Contact: undefined;
   About: undefined;

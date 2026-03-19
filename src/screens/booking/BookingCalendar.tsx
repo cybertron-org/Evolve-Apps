@@ -1,6 +1,6 @@
 import AppText from '../../components/common/AppText';
 import React, { useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Modal, Pressable } from 'react-native';
+import { View, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
@@ -11,114 +11,53 @@ import CalendarHeader from '../../components/booking/CalendarHeader';
 import CalendarGrid from '../../components/booking/CalendarGrid';
 import CalendarLegend from '../../components/booking/CalendarLegend';
 import BookingDetails from '../../components/booking/BookingDetails';
-import GlobalIcon from '../../components/common/GlobalIcon';
 import PickerModal from '../../components/common/PickerModal';
-import { getServiceById, ServiceData } from '../../data/servicesData';
-import { ImageSourcePropType } from 'react-native';
+import { useBookingCalendarLogic, DurationOption, MONTHS, DAYS } from '../../hooks/useBookingCalendar';
 
 type BookingCalendarRouteParams = {
-    BookingCalendar: { serviceId: number };
+    BookingCalendar: { serviceId: number; image?: string };
 };
 
-const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-const availableDates = [2, 3, 6, 8, 9, 10, 13, 15, 16, 17, 18, 20, 22, 28, 29, 30, 31];
-const bookedRanges = [{ start: 18, end: 21 }];
-const singleBookings = [2, 3, 6, 8, 10, 13, 17];
-
 const PRICE_PER_HOUR = 70;
-
-const TIME_OPTIONS = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
-
-const DURATION_OPTIONS: { label: string; hours: number }[] = [
-    { label: '30 mins', hours: 0.5 },
-    { label: '1:00 hr', hours: 1 },
-    { label: '1:30 hrs', hours: 1.5 },
-    { label: '2:00 hrs', hours: 2 },
-    { label: '2:30 hrs', hours: 2.5 },
-    { label: '3:00 hrs', hours: 3 },
-];
 
 function BookingCalendar() {
     const { isDark } = useTheme();
     const navigation = useNavigation<any>();
     const route = useRoute<RouteProp<BookingCalendarRouteParams, 'BookingCalendar'>>();
 
-    // Get service data
     const serviceId = route.params?.serviceId || 1;
-    const serviceData = getServiceById(serviceId);
-    const images: (string | ImageSourcePropType)[] = serviceData?.images || [];
+    const routeImage = route.params?.image;
 
-    // 1. Pehle saare plain constants
-    const todayInit = new Date();
-    const todayDay = todayInit.getDate();
-    const todayMonth = todayInit.getMonth();
-    const todayYear = todayInit.getFullYear();
+    const {
+        course,
+        selectedDate, setSelectedDate,
+        currentImageIndex, setCurrentImageIndex,
+        selectedTime, setSelectedTime,
+        selectedDuration, setSelectedDuration,
+        currentMonth, currentYear,
+        handlePrevMonth, handleNextMonth,
+        calendarDays,
+        helpers,
+        specialDayNumbers,
+        weeklyDayNumbers,
+        isBookingComplete,
+        timeOptions,
+        durationOptions,
+        isLoadingSlots
+    } = useBookingCalendarLogic(serviceId);
 
-    // 2. Phir saare useState hooks ek saath
+    const images: (string | ImageSourcePropType)[] = course?.banner
+        ? [course.banner]
+        : routeImage
+            ? [routeImage]
+            : [];
+
     const [menuVisible, setMenuVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState<number | null>(null);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [selectedTime, setSelectedTime] = useState('10:00 AM');
-    const [selectedDuration, setSelectedDuration] = useState(DURATION_OPTIONS[1]);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [showDurationPicker, setShowDurationPicker] = useState(false);
-    const [currentMonth, setCurrentMonth] = useState(todayMonth);
-    const [currentYear, setCurrentYear] = useState(todayYear);
-
-    const handlePrevMonth = () => {
-        if (currentMonth === 0) { setCurrentMonth(11); setCurrentYear(y => y - 1); }
-        else setCurrentMonth(m => m - 1);
-    };
-    const handleNextMonth = () => {
-        if (currentMonth === 11) { setCurrentMonth(0); setCurrentYear(y => y + 1); }
-        else setCurrentMonth(m => m + 1);
-    };
-
-    const getDaysInMonth = (m: number, y: number) => new Date(y, m + 1, 0).getDate();
-    const getFirstDayOfMonth = (m: number, y: number) => {
-        const d = new Date(y, m, 1).getDay();
-        return d === 0 ? 6 : d - 1;
-    };
-
-    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
-    const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
-    const prevMonthDays = getDaysInMonth(currentMonth - 1, currentYear);
-
-    const calendarDays: { day: number; isCurrentMonth: boolean }[] = [];
-    for (let i = firstDay - 1; i >= 0; i--) calendarDays.push({ day: prevMonthDays - i, isCurrentMonth: false });
-    for (let i = 1; i <= daysInMonth; i++)  calendarDays.push({ day: i, isCurrentMonth: true });
-    const remaining = 42 - calendarDays.length;
-    for (let i = 1; i <= remaining; i++)    calendarDays.push({ day: i, isCurrentMonth: false });
-
-    const isDateAvailable = (day: number) => availableDates.includes(day);
-    const isDateSelected = (day: number) => selectedDate === day;
-    const isToday = (day: number) =>
-        day === todayDay &&
-        currentMonth === todayMonth &&
-        currentYear === todayYear;
-    const hasSingleBooking = (day: number) => singleBookings.includes(day);
-
-    const getDateRangeStatus = (day: number) => {
-        for (const range of bookedRanges) {
-            if (day === range.start) return 'range-start';
-            if (day === range.end) return 'range-end';
-            if (day > range.start && day < range.end) return 'range-middle';
-        }
-        return null;
-    };
 
     // Price calculation
-    const totalPrice = Math.round(PRICE_PER_HOUR * selectedDuration.hours);
-
-    const formatBookingDate = () => {
-        if (!selectedDate) return 'Select a date';
-        return `${selectedDate} ${MONTHS[currentMonth]} ${currentYear}`;
-    };
-
-    // Check if booking is complete
-    const isBookingComplete = selectedDate !== null && selectedTime && selectedDuration;
+    const totalPrice = Math.round(PRICE_PER_HOUR * (selectedDuration?.hours || 0));
 
     const cardBg = isDark ? '#242427' : '#F1F5F9';
     const cardBorder = isDark ? '#2A3240' : '#E2E8F0';
@@ -128,6 +67,8 @@ function BookingCalendar() {
 
     const handlePrevImage = () => setCurrentImageIndex(p => p === 0 ? images.length - 1 : p - 1);
     const handleNextImage = () => setCurrentImageIndex(p => p === images.length - 1 ? 0 : p + 1);
+
+    const bookingDateFormatted = helpers.formatBookingDate();
 
     return (
         <ScreenWrapper scroll={true} scrollViewProps={{ style: { backgroundColor: pageBg, marginBottom: 40 } }}>
@@ -171,9 +112,11 @@ function BookingCalendar() {
                     calendarDays={calendarDays}
                     selectedDate={selectedDate}
                     onSelectDate={setSelectedDate}
-                    isDateAvailable={isDateAvailable}
-                    isToday={isToday}
-                    getDateRangeStatus={getDateRangeStatus}
+                    isDateAvailable={helpers.isDateAvailable}
+                    isToday={helpers.isToday}
+                    getDateRangeStatus={helpers.getDateRangeStatus}
+                    hasSingleBooking={(day: number) => specialDayNumbers.includes(day)}
+                    isWeeklyDay={(day: number) => weeklyDayNumbers.includes(day)}
                     isDark={isDark}
                     textPrimary={textPrimary}
                     textSecondary={textSecondary}
@@ -190,13 +133,13 @@ function BookingCalendar() {
 
             {/* Booking Details */}
             <BookingDetails
-                bookingDate={formatBookingDate()}
-                selectedTime={selectedTime}
-                selectedDuration={selectedDuration.label}
+                bookingDate={helpers.formatBookingDate()}
+                selectedTime={selectedTime || 'Select Time'}
+                selectedDuration={selectedDuration?.label || 'Select Duration'}
                 totalPrice={totalPrice}
                 pricePerHour={PRICE_PER_HOUR}
-                onTimePress={() => setShowTimePicker(true)}
-                onDurationPress={() => setShowDurationPicker(true)}
+                onTimePress={() => timeOptions.length > 0 && setShowTimePicker(true)}
+                onDurationPress={() => durationOptions.length > 0 && setShowDurationPicker(true)}
                 textPrimary={textPrimary}
                 textSecondary={textSecondary}
                 cardBorder={cardBorder}
@@ -208,14 +151,15 @@ function BookingCalendar() {
                     activeOpacity={0.85}
                     disabled={!isBookingComplete}
                     onPress={() => {
+                        if (!selectedDuration) return;
                         navigation.navigate('PurchaseSummary', {
                             serviceId,
-                            date: formatBookingDate(),
+                            date: helpers.formatBookingDate(),
                             time: selectedTime,
                             durationHours: selectedDuration.hours,
                             durationLabel: selectedDuration.label,
                             totalPrice,
-                            serviceTitle: serviceData?.title
+                            serviceTitle: course?.title
                         });
                     }}
                     style={{
@@ -239,7 +183,7 @@ function BookingCalendar() {
             <PickerModal
                 visible={showTimePicker}
                 title="Select Time"
-                options={TIME_OPTIONS}
+                options={timeOptions}
                 selected={selectedTime}
                 onSelect={(v: string) => setSelectedTime(v)}
                 onClose={() => setShowTimePicker(false)}
@@ -250,11 +194,11 @@ function BookingCalendar() {
             <PickerModal
                 visible={showDurationPicker}
                 title="Select Duration"
-                options={DURATION_OPTIONS}
-                selected={selectedDuration}
-                onSelect={(v: typeof DURATION_OPTIONS[0]) => setSelectedDuration(v)}
+                options={durationOptions}
+                selected={selectedDuration as DurationOption}
+                onSelect={(v: DurationOption) => setSelectedDuration(v)}
                 onClose={() => setShowDurationPicker(false)}
-                labelFn={(v) => (v as typeof DURATION_OPTIONS[0]).label}
+                labelFn={(v) => (v as DurationOption).label}
             />
 
             <MenuDrawer

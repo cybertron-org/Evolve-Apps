@@ -44,6 +44,9 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="HomeMain" component={Home} />
+    <Stack.Screen name="ServiceDetail" component={ServiceDetail} />
+    <Stack.Screen name="BookingCalendar" component={BookingCalendar} />
+    <Stack.Screen name="PurchaseSummary" component={PurchaseSummary} />
     <Stack.Screen name="About" component={About} />
     <Stack.Screen name="Contact" component={Contact} />
     <Stack.Screen name="FAQ" component={FAQ} />
@@ -201,6 +204,12 @@ export const AppTabs = () => {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate('Services', { screen: 'ServicesMain' });
+          },
+        })}
       />
       <Tab.Screen
         name="History"

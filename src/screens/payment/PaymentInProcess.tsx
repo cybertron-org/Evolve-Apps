@@ -1,9 +1,10 @@
 import AppText from '../../components/common/AppText';
 import React, { useEffect } from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/RootNavigator';
+import Skeleton from '../../components/common/Skeleton';
 
 type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -52,8 +53,11 @@ function PaymentInProcess() {
                     <AppText className="text-white text-center text-base font-bold">DON'T PRESS BACK</AppText>
                 </TouchableOpacity>
 
-                <ActivityIndicator size="small" color="#578096" style={{ marginTop: 24 }} />
-                <AppText className="text-gray-400 text-sm mt-2">Processing your payment...</AppText>
+                <View className="mt-8 items-center">
+                    <Skeleton width={200} height={16} variant="text" />
+                    <View className="h-2" />
+                    <Skeleton width={150} height={12} variant="text" />
+                </View>
             </View>
 
             {/* Bottom Tab Bar */}

@@ -8,7 +8,7 @@ interface PickerModalProps<T> {
     visible: boolean;
     title: string;
     options: T[];
-    selected: T;
+    selected: T | null;
     onSelect: (v: T) => void;
     onClose: () => void;
     labelFn: (v: T) => string;
@@ -42,7 +42,7 @@ export default function PickerModal<T>({
                         <ScrollView style={{ maxHeight: 300 }} showsVerticalScrollIndicator={false}>
                             {options.map((opt, idx) => {
                                 const label = labelFn(opt);
-                                const isSelected = labelFn(selected as T) === label;
+                                const isSelected = selected !== null && selected !== undefined ? labelFn(selected as T) === label : false;
                                 return (
                                     <TouchableOpacity
                                         key={idx}

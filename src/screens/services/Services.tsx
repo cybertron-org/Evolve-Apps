@@ -5,6 +5,7 @@ import { ScreenWrapper } from '../../components/specific/ScreenWrapper';
 import Header from '../../components/common/Header';
 import MenuDrawer from '../../components/specific/MenuDrawer';
 import { useTheme } from '../../theme/ThemeContext';
+import Skeleton from '../../components/common/Skeleton';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCourses } from '../../hooks/queries/useCourses';
@@ -34,7 +35,7 @@ function Services() {
     const [menuVisible, setMenuVisible] = useState(false);
 
     const handleServicePress = (service: ServiceItem) => {
-        navigation.navigate('ServiceDetail', { serviceId: service.id });
+        navigation.navigate('ServiceDetail', { serviceId: service.id, image: service.image });
     };
 
     const handleMenuItemPress = (item: string) => {
@@ -59,8 +60,15 @@ function Services() {
             {/* Services Grid */}
             <View className="px-6">
                 {isLoading ? (
-                    <View className="py-10 items-center justify-center w-full">
-                        <AppText className="text-gray-500">Loading services...</AppText>
+                    <View className="flex-row flex-wrap justify-between gap-y-4">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <View key={i} className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm" style={{ width: '48%' }}>
+                                <Skeleton width="100%" height={128} variant="rect" />
+                                <View className="p-3">
+                                    <Skeleton width="80%" height={16} variant="text" />
+                                </View>
+                            </View>
+                        ))}
                     </View>
                 ) : (
                     <View className="flex-row flex-wrap justify-between gap-y-4">

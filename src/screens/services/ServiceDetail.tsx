@@ -9,11 +9,12 @@ import GlobalIcon from '../../components/common/GlobalIcon';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCourseDetail } from '../../hooks/queries/useCourseDetail';
 import { useAuthStore } from '../../store/authStore';
-import { ActivityIndicator } from 'react-native';
+import Skeleton from '../../components/common/Skeleton';
 
 type ServiceDetailRouteParams = {
     ServiceDetail: {
         serviceId: number;
+        image?: string;
     };
 };
 
@@ -38,8 +39,37 @@ function ServiceDetail() {
                     userImage={user?.profile_image}
                     onMenuPress={() => {}} 
                 />
-                <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" color="#578096" />
+                <View className="mx-6 mt-4 mb-6 rounded-2xl overflow-hidden">
+                    <Skeleton width="100%" height={224} variant="rect" />
+                </View>
+
+                <View className="px-6 mb-6">
+                    <Skeleton width="70%" height={28} variant="text" />
+                    <View className="h-4" />
+                    <Skeleton width="100%" height={16} variant="text" />
+                    <View className="h-2" />
+                    <Skeleton width="90%" height={16} variant="text" />
+                    <View className="h-2" />
+                    <Skeleton width="95%" height={16} variant="text" />
+                    <View className="h-2" />
+                    <Skeleton width="80%" height={16} variant="text" />
+                    
+                    <View className="h-8" />
+                    <View className="flex-row items-center justify-between">
+                        <Skeleton width={80} height={20} variant="text" />
+                        <View className="flex-row items-center gap-2">
+                            <Skeleton width={32} height={32} variant="circle" />
+                            <View>
+                                <Skeleton width={40} height={16} variant="text" />
+                                <View className="h-1" />
+                                <Skeleton width={60} height={20} variant="text" />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+
+                <View className="px-6">
+                    <Skeleton width="100%" height={56} variant="rect" />
                 </View>
             </ScreenWrapper>
         );
@@ -160,7 +190,7 @@ function ServiceDetail() {
             <View className="px-6 mb-6">
                 <TouchableOpacity
                     activeOpacity={0.85}
-                    onPress={() => navigation.navigate('BookingCalendar', { serviceId })}
+                    onPress={() => navigation.navigate('BookingCalendar', { serviceId, image: service.images[0] as string })}
                     style={{ backgroundColor: isDark ? '#0C213F' : '#1ABC9C' }}
                     className="rounded-full py-6 items-center justify-center"
                 >

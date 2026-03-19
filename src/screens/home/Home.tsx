@@ -6,6 +6,7 @@ import Header from '../../components/common/Header';
 import SearchBar from '../../components/common/SearchBar';
 import ServiceCarousel from '../../components/common/ServiceCarousel';
 import MenuDrawer from '../../components/specific/MenuDrawer';
+import Skeleton from '../../components/common/Skeleton';
 import { useTheme } from '../../theme/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -126,17 +127,26 @@ function Home() {
                 </AppText>
 
                 {isLoading ? (
-                    <View className="py-10 items-center justify-center w-full">
-                        <AppText className="text-gray-500">Loading services...</AppText>
+                    <View className="w-full pl-6 flex-row">
+                        {[1, 2, 3].map((i) => (
+                            <View key={i} className="rounded-2xl overflow-hidden bg-white dark:bg-gray-800 mr-4" style={{ width: 220, height: 260 }}>
+                                <Skeleton width="100%" height={180} variant="rect" />
+                                <View className="p-4">
+                                    <Skeleton width="90%" height={20} variant="text" />
+                                    <View className="h-2" />
+                                    <Skeleton width="50%" height={16} variant="text" />
+                                </View>
+                            </View>
+                        ))}
                     </View>
                 ) : topServices.filter((service: any) => service.title.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
                     <ServiceCarousel
                         services={topServices.filter((service: any) => service.title.toLowerCase().includes(searchQuery.toLowerCase()))}
                         onServicePress={(service: any) => {
                             console.log('Service pressed:', service.title);
-                            navigation.navigate('Services', { 
-                                screen: 'ServiceDetail', 
-                                params: { serviceId: service.id } 
+                            navigation.navigate('ServiceDetail', { 
+                                serviceId: service.id,
+                                image: service.image 
                             });
                         }}
                     />
